@@ -24,13 +24,15 @@ struct GatheringDetailView: View {
                     header
                     VStack(alignment: .leading, spacing: 14) {
                         titleBlock(now: now)
+                        InfoStrip(items: facts(now: now))
                         capacityCard
-                        if let note = wrenNote(now: now) { WrenNote(text: note) }
+                        if let note = tipNote(now: now) { TipNote(text: note) }
                         if !gathering.details.isEmpty {
-                            Text(gathering.details).font(.system(size: 15)).foregroundStyle(Lamp.ink.opacity(0.9))
+                            Text(gathering.details).font(.system(size: 15)).foregroundStyle(Palette.ink.opacity(0.9))
                         }
                         hostLine
                         checkInHint(now: now)
+                        if gathering.isSample { SampleNote() }
                         if gathering.isMine {
                             Button("Cancel this gathering", role: .destructive) { confirmDelete = true }
                                 .font(.system(size: 14, weight: .semibold))
@@ -41,10 +43,12 @@ struct GatheringDetailView: View {
                 }
                 .padding(.bottom, 24)
             }
-            .background(Lamp.bg)
+            .scrollIndicators(.hidden)
+            .background(Palette.bg)
+            .ignoresSafeArea(edges: .top)
             .safeAreaInset(edge: .bottom) { actions(now: now) }
         }
-        .ignoresSafeArea(edges: .top)
+        .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $earned) { StampEarnedView(stamp: $0) }
         .errorAlert($problem)
         .confirmationDialog("Cancel \(gathering.title)?", isPresented: $confirmDelete, titleVisibility: .visible) {
@@ -63,34 +67,35 @@ struct GatheringDetailView: View {
         Map(initialPosition: .camera(MapCamera(centerCoordinate: gathering.coordinate, distance: 900)), interactionModes: []) {
             UserAnnotation()
             Annotation("", coordinate: gathering.coordinate) {
-                GlowPin(category: gathering.category, badge: nil, live: true)
+                MapMarker(genre: gathering.category, caption: gathering.placeName, selected: true)
             }
         }
         .mapStyle(.standard(elevation: .flat, emphasis: .muted, pointsOfInterest: .excludingAll))
-        .frame(height: 230)
+        .frame(height: 260)
         .overlay(alignment: .bottom) {
-            LinearGradient(colors: [.clear, Lamp.bg], startPoint: .top, endPoint: .bottom).frame(height: 60)
+            LinearGradient(colors: [.clear, Palette.bg], startPoint: .top, endPoint: .bottom).frame(height: 70)
         }
     }
 
     private func titleBlock(now: Date) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 6) {
-                Text(gathering.recurring.isEmpty ? gathering.category.label : "\(gathering.category.label) · \(gathering.recurring)")
-                    .eyebrow(gathering.category.color)
-                if gathering.isSample { SampleTag() }
-            }
-            Text(gathering.title).font(.display(28)).foregroundStyle(Lamp.ink)
-            HStack(spacing: 14) {
-                Label(gathering.placeName, systemImage: "mappin")
-                Label(gathering.isLive(at: now) ? "On now, until \(gathering.end.formatted(date: .omitted, time: .shortened))" : When.short(gathering.start, now: now), systemImage: "clock")
-            }
-            .font(.system(size: 13, weight: .medium))
-            .foregroundStyle(Lamp.muted)
-            Text(Walk.label(location.center.distance(to: gathering.coordinate)))
-                .font(.system(size: 13, weight: .medium))
-                .foregroundStyle(Lamp.muted)
+            Text(gathering.recurring.isEmpty ? gathering.category.label : "\(gathering.category.label) · \(gathering.recurring)")
+                .eyebrow()
+            Text(gathering.title).display(28).foregroundStyle(Palette.ink)
+            Label(gathering.placeName, systemImage: "mappin.and.ellipse")
+                .font(.system(size: 15))
+                .foregroundStyle(Palette.muted)
         }
+    }
+
+    private func facts(now: Date) -> [InfoStrip.Item] {
+        let live = gathering.isLive(at: now)
+        return [
+            .init(label: live ? "On" : "Starts", value: live ? "Now" : gathering.start.formatted(.dateTime.hour().minute()),
+                  detail: live ? "until \(gathering.end.formatted(date: .omitted, time: .shortened))" : When.relative(gathering.start, now: now)),
+            .init(label: "Walk", value: "\(Walk.minutes(location.center.distance(to: gathering.coordinate)))", detail: "minutes"),
+            .init(label: "Going", value: "\(gathering.going)", detail: gathering.capacity > 0 ? "of \(gathering.capacity)" : "so far"),
+        ]
     }
 
     private var capacityCard: some View {
@@ -101,15 +106,15 @@ struct GatheringDetailView: View {
                 Spacer()
                 if let left = gathering.spotsLeft {
                     Text(left == 0 ? "Full" : "\(left) open")
-                        .font(.label)
-                        .foregroundStyle(left == 0 ? Lamp.muted : gathering.category.color)
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(left == 0 ? Palette.muted : Palette.live)
                 }
             }
             if gathering.capacity > 0 {
-                SeatsBar(taken: gathering.going, capacity: gathering.capacity, color: gathering.category.color)
+                SeatsBar(taken: gathering.going, capacity: gathering.capacity, color: Palette.ink)
             }
             if !gathering.bring.isEmpty {
-                Text("Bring: \(gathering.bring)").font(.system(size: 13)).foregroundStyle(Lamp.muted)
+                Text("Bring: \(gathering.bring)").font(.system(size: 13)).foregroundStyle(Palette.muted)
             }
         }
         .padding(14)
@@ -119,14 +124,14 @@ struct GatheringDetailView: View {
     private var hostLine: some View {
         HStack(spacing: 10) {
             Text(initials(gathering.hostName))
-                .font(.system(size: 12, weight: .heavy))
-                .foregroundStyle(Lamp.bg)
-                .frame(width: 34, height: 34)
-                .background(gathering.category.color, in: .circle)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(Palette.ink)
+                .frame(width: 38, height: 38)
+                .background(Palette.raise, in: .circle)
             VStack(alignment: .leading, spacing: 1) {
                 Text(gathering.isMine ? "You're hosting" : "\(gathering.hostName) runs this").font(.system(size: 14, weight: .semibold))
                 if !gathering.recurring.isEmpty {
-                    Text(gathering.recurring).font(.system(size: 12)).foregroundStyle(Lamp.muted)
+                    Text(gathering.recurring).font(.system(size: 12)).foregroundStyle(Palette.muted)
                 }
             }
         }
@@ -141,7 +146,7 @@ struct GatheringDetailView: View {
         } else {
             Label("Check in when you're there to collect the \(gathering.placeName) stamp.", systemImage: "seal")
                 .font(.system(size: 13))
-                .foregroundStyle(Lamp.muted)
+                .foregroundStyle(Palette.muted)
         }
     }
 
@@ -161,7 +166,7 @@ struct GatheringDetailView: View {
                 .buttonStyle(PrimaryButtonStyle(color: gathering.category.color))
             } else if gathering.isJoined {
                 Button("You're in") {}
-                    .buttonStyle(PrimaryButtonStyle(color: Lamp.raise))
+                    .buttonStyle(PrimaryButtonStyle(color: Palette.raise))
                     .disabled(true)
                 if !gathering.isMine {
                     Button("Leave") {
@@ -184,7 +189,7 @@ struct GatheringDetailView: View {
         .padding(.horizontal, 18)
         .padding(.top, 10)
         .padding(.bottom, 6)
-        .background(Lamp.bg)
+        .background(Palette.bg)
     }
 
     private func run(_ work: @escaping () async throws(APIError) -> Void) {
@@ -195,7 +200,7 @@ struct GatheringDetailView: View {
         }
     }
 
-    private func wrenNote(now: Date) -> String? {
+    private func tipNote(now: Date) -> String? {
         let sameKind = allGatherings.filter { $0.id != gathering.id && $0.category == gathering.category && $0.checkedInAt != nil }.count
         var parts: [String] = []
         if let left = gathering.spotsLeft, left > 0, left <= 3 {
@@ -223,14 +228,14 @@ struct StampEarnedView: View {
             StampBadge(symbol: stamp.symbol, color: stamp.category.color, size: 120)
                 .padding(.top, 30)
             Text("Stamp collected").eyebrow(stamp.category.color)
-            Text(stamp.title).font(.display(26)).multilineTextAlignment(.center)
-            Text("It's in your passport.").foregroundStyle(Lamp.muted)
+            Text(stamp.title).display(26).multilineTextAlignment(.center)
+            Text("It's in your passport.").foregroundStyle(Palette.muted)
             Spacer()
             Button("Nice") { dismiss() }.buttonStyle(PrimaryButtonStyle(color: stamp.category.color))
         }
         .padding(24)
         .presentationDetents([.medium])
-        .presentationBackground(Lamp.bg)
+        .presentationBackground(Palette.bg)
     }
 }
 
@@ -248,7 +253,7 @@ struct StampBadge: View {
                 .padding(size * 0.07)
             Image(systemName: symbol)
                 .font(.system(size: size * 0.38, weight: .semibold))
-                .foregroundStyle(locked ? Lamp.muted : color)
+                .foregroundStyle(locked ? Palette.muted : color)
         }
         .frame(width: size, height: size)
         .opacity(locked ? 0.6 : 1)

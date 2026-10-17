@@ -1,7 +1,7 @@
 import Foundation
 import CoreLocation
 
-/// One thing Wren could suggest: a gathering, or a kitchen's drop.
+/// One thing worth showing: a gathering, or a kitchen's drop.
 /// A plain value so the scoring can be tested without a database.
 struct Candidate: Identifiable, Hashable, Sendable {
     enum Kind: Hashable, Sendable { case gathering, drop }
@@ -20,6 +20,10 @@ struct Candidate: Identifiable, Hashable, Sendable {
     var priceFromCents: Int?
     var isJoined: Bool = false
     var isSample: Bool = false
+    /// Where it is, in words: "Lafayette Park", or a kitchen's cuisine.
+    var place: String = ""
+    /// Everything search looks through, lowercased.
+    var searchText: String = ""
 
     var spotsLeft: Int? { capacity > 0 ? max(0, capacity - going) : nil }
     var walkMinutes: Int { Walk.minutes(meters) }
@@ -31,7 +35,10 @@ extension Candidate {
         self.init(
             id: g.id, kind: .gathering, title: g.title, category: g.category,
             start: g.start, end: g.end, meters: here.distance(to: g.coordinate),
-            capacity: g.capacity, going: g.going, isJoined: g.isJoined, isSample: g.isSample
+            capacity: g.capacity, going: g.going, isJoined: g.isJoined, isSample: g.isSample,
+            place: g.placeName,
+            searchText: [g.title, g.details, g.placeName, g.hostName, g.bring, g.category.label, g.category.noun]
+                .joined(separator: " ").lowercased()
         )
     }
 
@@ -41,13 +48,16 @@ extension Candidate {
             id: k.id, kind: .drop, title: k.name, category: .food,
             start: drop.start, end: drop.end, meters: here.distance(to: k.coordinate),
             dropLeft: drop.left, dropTotal: drop.total,
-            priceFromCents: k.menu.map(\.priceCents).min(), isSample: k.isSample
+            priceFromCents: k.menu.map(\.priceCents).min(), isSample: k.isSample,
+            place: k.cuisine,
+            searchText: ([k.name, k.cookName, k.cuisine, k.story, "food home cooking kitchen"] + k.menu.map { "\($0.name) \($0.note)" })
+                .joined(separator: " ").lowercased()
         )
     }
 }
 
 /// How much you seem to like each kind of thing, 0...1, learned from what you
-/// joined, showed up to and ordered, minus anything you told Wren to forget.
+/// joined, showed up to and ordered, minus anything you deleted from your interests.
 struct Taste: Sendable {
     var weights: [Genre: Double] = [:]
 
@@ -70,7 +80,8 @@ struct Taste: Sendable {
     }
 }
 
-enum Wren {
+/// Ranks what's nearby: soon, close, filling up, and the kinds of things you show up for.
+enum Picks {
     /// How far ahead the map counts as "now".
     static let horizon: TimeInterval = 3 * 3600
 
@@ -115,40 +126,6 @@ enum Wren {
         if let price = c.priceFromCents { parts.append("from \(Pricing.format(price))") }
         parts.append(Walk.label(c.meters))
         return parts.joined(separator: " · ")
-    }
-
-    /// Wren's one line at the top of the map, written from the top picks.
-    /// Markdown, with the figures in bold.
-    static func line(_ picks: [Candidate], now: Date) -> String {
-        guard let first = picks.first else {
-            return "Quiet around you right now. Start something and people nearby will see it."
-        }
-        let a = clause(first, now: now, lead: true)
-        guard picks.count > 1 else { return a + "." }
-        let second = picks[1]
-        let b = clause(second, now: now, lead: false)
-        // Both fit if the second starts after the first one's first hour.
-        let doable = abs(second.start.timeIntervalSince(first.start)) >= 45 * 60
-            || second.kind != first.kind
-        return "\(a), and \(b).\(doable ? " You could do both." : "")"
-    }
-
-    private static func clause(_ c: Candidate, now: Date, lead: Bool) -> String {
-        let name = lead ? c.title : c.title.lowercasedFirst
-        let when = c.start <= now ? "**on now**" : "**\(When.relative(c.start, now: now))**"
-        switch c.kind {
-        case .gathering:
-            if let spots = c.spotsLeft, spots <= 3 {
-                let short = spots == 1 ? "**one short**" : "**\(spots) short**"
-                return "\(name) is \(short), \(c.walkMinutes) min away"
-            }
-            return c.start <= now ? "\(name) is \(when), \(c.walkMinutes) min away" : "\(name) starts \(when)"
-        case .drop:
-            if c.start <= now, let left = c.dropLeft {
-                return "\(name) has **\(left) left**, \(c.walkMinutes) min away"
-            }
-            return "\(name) drops \(when), \(c.walkMinutes) min away"
-        }
     }
 }
 

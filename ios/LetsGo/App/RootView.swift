@@ -13,9 +13,6 @@ struct RootView: View {
             Tab("Map", systemImage: "map.fill", value: AppTab.map) {
                 MapHomeView()
             }
-            Tab("Wren", systemImage: "sparkles", value: AppTab.wren) {
-                WrenView()
-            }
             Tab("Kitchens", systemImage: "takeoutbag.and.cup.and.straw.fill", value: AppTab.kitchens) {
                 KitchensView()
             }
@@ -24,11 +21,12 @@ struct RootView: View {
             }
         }
         .task { location.start() }
-        .onChange(of: location.center.roundedKey, initial: true) {
-            SampleNeighborhood.refreshIfNeeded(around: location.center, context: context)
+        // Fill in the sample neighborhood and pull from the server when the
+        // neighborhood changes, and whenever the app comes back.
+        .task(id: location.center.roundedKey) {
+            await SampleNeighborhood.refreshIfNeeded(around: location.center, context: context)
+            await pull()
         }
-        // Pull from the server when the neighborhood changes and whenever the app comes back.
-        .task(id: location.center.roundedKey) { await pull() }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active { Task { await pull() } }
         }
@@ -43,5 +41,5 @@ struct RootView: View {
 }
 
 enum AppTab: Hashable {
-    case map, wren, kitchens, you
+    case map, kitchens, you
 }

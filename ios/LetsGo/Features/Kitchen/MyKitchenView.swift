@@ -13,7 +13,7 @@ struct MyKitchenView: View {
                 OpenKitchenForm()
             }
         }
-        .background(Lamp.bg)
+        .background(Palette.bg)
     }
 }
 
@@ -34,7 +34,7 @@ private struct OpenKitchenForm: View {
         Form {
             Section {
                 Text("Sell what you're good at making to people a few blocks away. You set the batch, the time and the price; people reserve and pick up at your door.")
-                    .font(.system(size: 14)).foregroundStyle(Lamp.muted)
+                    .font(.system(size: 14)).foregroundStyle(Palette.muted)
             }
             Section("Your kitchen") {
                 TextField("Name, like \"Back Gate Ice Cream\"", text: $name)
@@ -102,7 +102,7 @@ private struct KitchenDashboard: View {
             VStack(alignment: .leading, spacing: 18) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Your kitchen").eyebrow()
-                    Text(kitchen.name).font(.display(26))
+                    Text(kitchen.name).display(26)
                     if let r = kitchen.rating {
                         HStack(spacing: 5) { Stars(value: r); Text(String(format: "%.1f · %d reviews", r, kitchen.reviewCount)) }
                             .font(.system(size: 13))
@@ -110,7 +110,7 @@ private struct KitchenDashboard: View {
                 }
                 stats
                 dropSection(now: now)
-                if let tip = tip(now: now) { WrenNote(text: tip) }
+                if let tip = tip(now: now) { TipNote(text: tip) }
                 menuSection
                 checklist
             }
@@ -135,8 +135,8 @@ private struct KitchenDashboard: View {
 
     private func stat(_ value: String, _ label: String) -> some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(value).font(.display(20)).monospacedDigit()
-            Text(label).font(.system(size: 11, weight: .semibold)).foregroundStyle(Lamp.muted)
+            Text(value).display(20).monospacedDigit()
+            Text(label).font(.system(size: 11, weight: .semibold)).foregroundStyle(Palette.muted)
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -161,7 +161,7 @@ private struct KitchenDashboard: View {
                             Text(o.pickupAt.formatted(date: .omitted, time: .shortened)).font(.system(size: 13, design: .monospaced))
                             Text(o.lines.map { "\($0.quantity)× \($0.name)" }.joined(separator: ", ")).font(.system(size: 13)).lineLimit(1)
                         }
-                        .foregroundStyle(Lamp.muted)
+                        .foregroundStyle(Palette.muted)
                     }
                 }
                 .padding(14)
@@ -175,7 +175,7 @@ private struct KitchenDashboard: View {
             .buttonStyle(PrimaryButtonStyle())
             .disabled(kitchen.menu.isEmpty)
             if kitchen.menu.isEmpty {
-                Text("Add something to the menu first.").font(.system(size: 12)).foregroundStyle(Lamp.muted)
+                Text("Add something to the menu first.").font(.system(size: 12)).foregroundStyle(Palette.muted)
             }
         }
     }
@@ -200,7 +200,7 @@ private struct KitchenDashboard: View {
                         Task { await attempt($problem) { () throws(APIError) in try await Sync.remove(item, context: context) } }
                     }
                 }
-                Divider().overlay(Lamp.line)
+                Divider().overlay(Palette.line)
             }
         }
     }
@@ -218,8 +218,8 @@ private struct KitchenDashboard: View {
         Button { action?() } label: {
             HStack(spacing: 9) {
                 Image(systemName: done ? "checkmark.circle.fill" : "circle.dashed")
-                    .foregroundStyle(done ? Genre.play.color : Lamp.muted)
-                Text(label).foregroundStyle(done ? Lamp.ink : Lamp.muted)
+                    .foregroundStyle(done ? Genre.play.color : Palette.muted)
+                Text(label).foregroundStyle(done ? Palette.ink : Palette.muted)
             }
             .font(.system(size: 14))
         }
@@ -263,7 +263,7 @@ private struct AddMenuItemView: View {
                 Stepper("Price: \(Pricing.format(Int(price * 100)))", value: $price, in: 1...200, step: 0.5)
             }
             .scrollContentBackground(.hidden)
-            .background(Lamp.bg)
+            .background(Palette.bg)
             .navigationTitle("Add to menu")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -306,7 +306,7 @@ private struct PostDropView: View {
                 Stepper("\(perSlot) pickups per 15 min", value: $perSlot, in: 1...20)
             }
             .scrollContentBackground(.hidden)
-            .background(Lamp.bg)
+            .background(Palette.bg)
             .navigationTitle("Post a drop")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

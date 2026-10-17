@@ -31,7 +31,7 @@ struct KitchensView: View {
                     }
                     .padding(16)
                 }
-                .background(Lamp.bg)
+                .background(Palette.bg)
             }
             .navigationTitle("Kitchens")
             .navigationDestination(for: Kitchen.self) { KitchenView(kitchen: $0) }
@@ -57,16 +57,16 @@ struct KitchensView: View {
             HStack(spacing: 12) {
                 Image(systemName: mine == nil ? "house.and.flag" : "house.fill")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(Lamp.accent)
+                    .foregroundStyle(Palette.accent)
                     .frame(width: 44, height: 44)
-                    .background(Lamp.accent.opacity(0.14), in: .rect(cornerRadius: 12))
+                    .background(Palette.accent.opacity(0.14), in: .rect(cornerRadius: 12))
                 VStack(alignment: .leading, spacing: 2) {
                     Text(mine?.name ?? "Open your kitchen").font(.system(size: 16, weight: .bold))
                     Text(mine == nil ? "Sell what you're good at making to people nearby." : "Menu, drops and orders")
-                        .font(.system(size: 13)).foregroundStyle(Lamp.muted)
+                        .font(.system(size: 13)).foregroundStyle(Palette.muted)
                 }
                 Spacer()
-                Image(systemName: "chevron.right").foregroundStyle(Lamp.muted)
+                Image(systemName: "chevron.right").foregroundStyle(Palette.muted)
             }
             .padding(14)
             .card()
@@ -91,40 +91,40 @@ struct KitchenRow: View {
 
     var body: some View {
         let drop = kitchen.nextDrop(after: now)
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 3) {
-                    HStack(spacing: 6) {
-                        Text(kitchen.name).font(.system(size: 16, weight: .bold))
-                        if kitchen.isSample { SampleTag() }
+        HStack(spacing: 14) {
+            PhotoHero(kitchen: kitchen, height: 72, radius: 14)
+                .frame(width: 72)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(kitchen.name).font(.system(size: 16, weight: .semibold)).lineLimit(1)
+                HStack(spacing: 4) {
+                    if let r = kitchen.rating {
+                        Image(systemName: "star.fill").foregroundStyle(Palette.star).font(.system(size: 10))
+                        Text(String(format: "%.1f", r)).fontWeight(.medium)
+                        Text("·")
                     }
-                    HStack(spacing: 5) {
-                        if let r = kitchen.rating {
-                            Image(systemName: "star.fill").foregroundStyle(Lamp.star).font(.system(size: 11))
-                            Text(String(format: "%.1f", r)).fontWeight(.semibold)
-                        }
-                        Text("· \(kitchen.cuisine) · \(Walk.label(meters))")
+                    Text("\(kitchen.cuisine) · \(Walk.label(meters))")
+                }
+                .font(.system(size: 13))
+                .foregroundStyle(Palette.muted)
+                .lineLimit(1)
+                if let drop {
+                    HStack(spacing: 6) {
+                        Text(drop.isLive(at: now) ? "On now" : When.short(drop.start, now: now))
+                            .fontWeight(.semibold)
+                            .foregroundStyle(drop.isLive(at: now) ? Palette.live : Palette.ink)
+                        Text(drop.isSoldOut ? "Sold out" : "\(drop.left) of \(drop.total) left")
+                            .foregroundStyle(Palette.muted)
                     }
                     .font(.system(size: 13))
-                    .foregroundStyle(Lamp.muted)
-                }
-                Spacer()
-                if let drop {
-                    Text(drop.isLive(at: now) ? "ON NOW" : When.short(drop.start, now: now))
-                        .font(.label)
-                        .foregroundStyle(drop.isLive(at: now) ? Genre.food.color : Lamp.ink)
+                    .monospacedDigit()
+                } else {
+                    Text("No drop scheduled").font(.system(size: 13)).foregroundStyle(Palette.muted)
                 }
             }
-            if let drop {
-                LeftBar(left: drop.left, total: drop.total)
-                Text(drop.isSoldOut ? "Sold out" : "\(drop.left) of \(drop.total) left")
-                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
-                    .foregroundStyle(drop.isSoldOut ? Lamp.muted : Genre.food.color)
-            } else {
-                Text("No drop scheduled").font(.system(size: 12)).foregroundStyle(Lamp.muted)
-            }
+            Spacer(minLength: 0)
+            Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(Palette.muted.opacity(0.6))
         }
-        .padding(14)
+        .padding(10)
         .card()
     }
 }
@@ -139,11 +139,11 @@ struct OrderRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(order.kitchen?.name ?? "Order").font(.system(size: 15, weight: .bold))
                 Text(order.status == .reserved ? "Pickup \(When.short(order.pickupAt, now: now))" : "Picked up · leave a review")
-                    .font(.system(size: 13)).foregroundStyle(order.status == .reserved ? Lamp.muted : Lamp.accent)
+                    .font(.system(size: 13)).foregroundStyle(order.status == .reserved ? Palette.muted : Palette.accent)
             }
             Spacer()
             Text(Pricing.format(order.totalCents)).font(.system(size: 13, weight: .semibold, design: .monospaced))
-            Image(systemName: "chevron.right").foregroundStyle(Lamp.muted)
+            Image(systemName: "chevron.right").foregroundStyle(Palette.muted)
         }
         .padding(14)
         .card()

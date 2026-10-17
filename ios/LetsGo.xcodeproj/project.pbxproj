@@ -19,7 +19,7 @@
 /* Begin PBXFileReference section */
 		73D86873393FB2E091C0BDD1 /* LetsGo.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LetsGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED8E5C370D513B84E07CBB5F /* LetsGoTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LetsGoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		"TEMP_112CF6DE-7346-47CA-A683-2386A6A58DEC" /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		"TEMP_8E76AD1B-D5E5-4CD1-B797-3645D0B5D4C8" /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -62,10 +62,10 @@
 			);
 			sourceTree = "<group>";
 		};
-		"TEMP_7C89F6E9-8577-4C6D-A88B-AE2B28719734" /* ios */ = {
+		"TEMP_2481B738-5547-4719-9DE7-53F0C6CAD252" /* ios */ = {
 			isa = PBXGroup;
 			children = (
-				"TEMP_112CF6DE-7346-47CA-A683-2386A6A58DEC" /* Config.xcconfig */,
+				"TEMP_8E76AD1B-D5E5-4CD1-B797-3645D0B5D4C8" /* Config.xcconfig */,
 			);
 			path = ios;
 			sourceTree = "<group>";
@@ -212,7 +212,6 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -243,7 +242,7 @@
 		};
 		8AA92754BBDFEE95B9B8C699 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = "TEMP_112CF6DE-7346-47CA-A683-2386A6A58DEC" /* Config.xcconfig */;
+			baseConfigurationReference = "TEMP_8E76AD1B-D5E5-4CD1-B797-3645D0B5D4C8" /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -324,7 +323,6 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -338,7 +336,7 @@
 		};
 		B2A3A9E13FF78C6A677CA385 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = "TEMP_112CF6DE-7346-47CA-A683-2386A6A58DEC" /* Config.xcconfig */;
+			baseConfigurationReference = "TEMP_8E76AD1B-D5E5-4CD1-B797-3645D0B5D4C8" /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;

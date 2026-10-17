@@ -35,7 +35,6 @@ targets:
         INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "Let's Go shows what's happening within walking distance of you, and checks you in when you show up."
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
-        INFOPLIST_KEY_UIUserInterfaceStyle: Dark
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
         INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
   LetsGoTests:
