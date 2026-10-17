@@ -1,0 +1,6 @@
+// Single source of truth for identity and version. project.yml and fastlane read these.
+APP_BUNDLE_IDENTIFIER = com.yasser100ali.letsgo
+DEVELOPMENT_TEAM = X3HMA23KKN
+MARKETING_VERSION = 0.1.0
+// Bump with scripts/bump-build.sh before every TestFlight upload.
+CURRENT_PROJECT_VERSION = 1

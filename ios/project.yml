@@ -1,0 +1,64 @@
+name: LetsGo
+options:
+  bundleIdPrefix: com.yasser100ali
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+configFiles:
+  Debug: Config.xcconfig
+  Release: Config.xcconfig
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+    SWIFT_APPROACHABLE_CONCURRENCY: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    CODE_SIGN_STYLE: Automatic
+targets:
+  LetsGo:
+    type: application
+    platform: iOS
+    sources:
+      - path: LetsGo
+        type: syncedFolder
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(APP_BUNDLE_IDENTIFIER)
+        PRODUCT_NAME: LetsGo
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        INFOPLIST_KEY_CFBundleDisplayName: "Let's Go"
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.social-networking
+        INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "Let's Go shows what's happening within walking distance of you, and checks you in when you show up."
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UIUserInterfaceStyle: Dark
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
+  LetsGoTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: LetsGoTests
+        type: syncedFolder
+    dependencies:
+      - target: LetsGo
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(APP_BUNDLE_IDENTIFIER).tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/LetsGo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LetsGo
+        BUNDLE_LOADER: $(TEST_HOST)
+schemes:
+  LetsGo:
+    build:
+      targets:
+        LetsGo: all
+    test:
+      targets:
+        - LetsGoTests
+    archive:
+      config: Release

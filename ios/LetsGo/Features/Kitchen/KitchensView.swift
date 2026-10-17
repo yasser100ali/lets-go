@@ -1,0 +1,151 @@
+import SwiftUI
+import SwiftData
+
+/// The Kitchens tab: tonight's drops, your orders, and your own kitchen.
+struct KitchensView: View {
+    @Environment(LocationService.self) private var location
+    @Query private var kitchens: [Kitchen]
+    @Query(sort: \Order.pickupAt, order: .reverse) private var orders: [Order]
+
+    var body: some View {
+        NavigationStack {
+            TimelineView(.periodic(from: .now, by: 60)) { timeline in
+                let now = timeline.date
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 22) {
+                        let open = openOrders
+                        if !open.isEmpty {
+                            section("Your orders") {
+                                ForEach(open) { o in
+                                    NavigationLink(value: o) { OrderRow(order: o, now: now) }.buttonStyle(.plain)
+                                }
+                            }
+                        }
+                        section("Drops near you") {
+                            ForEach(sorted(now: now)) { k in
+                                NavigationLink(value: k) { KitchenRow(kitchen: k, now: now, meters: location.center.distance(to: k.coordinate)) }
+                                    .buttonStyle(.plain)
+                            }
+                        }
+                        myKitchenCard
+                    }
+                    .padding(16)
+                }
+                .background(Lamp.bg)
+            }
+            .navigationTitle("Kitchens")
+            .navigationDestination(for: Kitchen.self) { KitchenView(kitchen: $0) }
+            .navigationDestination(for: Order.self) { OrderStatusView(order: $0) }
+            .navigationDestination(for: MyKitchenRoute.self) { _ in MyKitchenView() }
+        }
+    }
+
+    private var openOrders: [Order] { orders.filter { $0.status != .reviewed } }
+
+    private var mine: Kitchen? { kitchens.first(where: \.isMine) }
+
+    private func sorted(now: Date) -> [Kitchen] {
+        kitchens.filter { !$0.isMine }.sorted { a, b in
+            let da = a.nextDrop(after: now)?.start ?? .distantFuture
+            let db = b.nextDrop(after: now)?.start ?? .distantFuture
+            return da < db
+        }
+    }
+
+    private var myKitchenCard: some View {
+        NavigationLink(value: MyKitchenRoute()) {
+            HStack(spacing: 12) {
+                Image(systemName: mine == nil ? "house.and.flag" : "house.fill")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(Lamp.accent)
+                    .frame(width: 44, height: 44)
+                    .background(Lamp.accent.opacity(0.14), in: .rect(cornerRadius: 12))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(mine?.name ?? "Open your kitchen").font(.system(size: 16, weight: .bold))
+                    Text(mine == nil ? "Sell what you're good at making to people nearby." : "Menu, drops and orders")
+                        .font(.system(size: 13)).foregroundStyle(Lamp.muted)
+                }
+                Spacer()
+                Image(systemName: "chevron.right").foregroundStyle(Lamp.muted)
+            }
+            .padding(14)
+            .card()
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func section<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(title).eyebrow()
+            content()
+        }
+    }
+}
+
+struct MyKitchenRoute: Hashable {}
+
+struct KitchenRow: View {
+    var kitchen: Kitchen
+    var now: Date
+    var meters: Double
+
+    var body: some View {
+        let drop = kitchen.nextDrop(after: now)
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 3) {
+                    HStack(spacing: 6) {
+                        Text(kitchen.name).font(.system(size: 16, weight: .bold))
+                        if kitchen.isSample { SampleTag() }
+                    }
+                    HStack(spacing: 5) {
+                        if let r = kitchen.rating {
+                            Image(systemName: "star.fill").foregroundStyle(Lamp.star).font(.system(size: 11))
+                            Text(String(format: "%.1f", r)).fontWeight(.semibold)
+                        }
+                        Text("· \(kitchen.cuisine) · \(Walk.label(meters))")
+                    }
+                    .font(.system(size: 13))
+                    .foregroundStyle(Lamp.muted)
+                }
+                Spacer()
+                if let drop {
+                    Text(drop.isLive(at: now) ? "ON NOW" : When.short(drop.start, now: now))
+                        .font(.label)
+                        .foregroundStyle(drop.isLive(at: now) ? Genre.food.color : Lamp.ink)
+                }
+            }
+            if let drop {
+                LeftBar(left: drop.left, total: drop.total)
+                Text(drop.isSoldOut ? "Sold out" : "\(drop.left) of \(drop.total) left")
+                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                    .foregroundStyle(drop.isSoldOut ? Lamp.muted : Genre.food.color)
+            } else {
+                Text("No drop scheduled").font(.system(size: 12)).foregroundStyle(Lamp.muted)
+            }
+        }
+        .padding(14)
+        .card()
+    }
+}
+
+struct OrderRow: View {
+    var order: Order
+    var now: Date
+
+    var body: some View {
+        HStack(spacing: 12) {
+            CategoryDot(category: .food)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(order.kitchen?.name ?? "Order").font(.system(size: 15, weight: .bold))
+                Text(order.status == .reserved ? "Pickup \(When.short(order.pickupAt, now: now))" : "Picked up · leave a review")
+                    .font(.system(size: 13)).foregroundStyle(order.status == .reserved ? Lamp.muted : Lamp.accent)
+            }
+            Spacer()
+            Text(Pricing.format(order.totalCents)).font(.system(size: 13, weight: .semibold, design: .monospaced))
+            Image(systemName: "chevron.right").foregroundStyle(Lamp.muted)
+        }
+        .padding(14)
+        .card()
+    }
+}

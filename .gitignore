@@ -1,0 +1,16 @@
+.DS_Store
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+*.ipa
+*.dSYM.zip
+# fastlane
+ios/fastlane/report.xml
+ios/fastlane/README.md
+ios/fastlane/test_output/
+# secrets: App Store Connect key lives outside the repo
+*.p8
+asc_api_key.json
+.env
