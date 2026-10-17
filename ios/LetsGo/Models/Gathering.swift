@@ -27,6 +27,14 @@ final class Gathering {
     var isSample: Bool
     /// The backend's id, for things that came from (or were posted to) the server.
     var remoteID: UUID?
+    /// Set for real-world happenings listed by the app (a farmers market, a run club),
+    /// as "title|start", so a refresh keeps your join and check-in.
+    var listingKey: String?
+    var sourceURL: String?
+    var priceText: String = ""
+    var address: String = ""
+
+    var isListing: Bool { listingKey != nil }
 
     init(
         title: String, category: Genre, details: String = "", placeName: String,
