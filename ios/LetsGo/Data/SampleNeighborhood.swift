@@ -13,7 +13,7 @@ enum SampleNeighborhood {
     private static let seededAtKey = "sample.seededAt"
     private static let versionKey = "sample.version"
     /// Bump when the seed content changes so phones reseed.
-    private static let version = 2
+    private static let version = 3
     static let enabledKey = "sample.enabled"
     private static let log = Logger(subsystem: "com.yasser100ali.letsgo", category: "seed")
     private static var seeding = false
@@ -24,15 +24,17 @@ enum SampleNeighborhood {
 
     /// Reseeds when there are no samples, the batch is old or from an older version,
     /// or you've moved to a different neighborhood.
+    /// In San Francisco, real listings stand in for the made-up gatherings, so only kitchens are seeded.
     static func refreshIfNeeded(around center: CLLocationCoordinate2D, context: ModelContext, now: Date = .now) async {
+        let includeGatherings = !CityListings.covers(center)
         guard isEnabled, !seeding else { return }
         let defaults = UserDefaults.standard
         let sameCenter = defaults.string(forKey: centerKey) == center.roundedKey
         let fresh = (defaults.object(forKey: seededAtKey) as? Date).map { now.timeIntervalSince($0) < 6 * 3600 } ?? false
         let current = defaults.integer(forKey: versionKey) == version
-        let count = (try? context.fetchCount(FetchDescriptor<Gathering>(predicate: #Predicate { $0.isSample }))) ?? 0
+        let count = (try? context.fetchCount(FetchDescriptor<Kitchen>(predicate: #Predicate { $0.isSample }))) ?? 0
         guard !(sameCenter && fresh && current && count > 0) else { return }
-        await seed(around: center, context: context, now: now)
+        await seed(around: center, context: context, now: now, includeGatherings: includeGatherings)
         defaults.set(center.roundedKey, forKey: centerKey)
         defaults.set(now, forKey: seededAtKey)
         defaults.set(version, forKey: versionKey)
@@ -50,11 +52,12 @@ enum SampleNeighborhood {
         Ledger.save(context, "clear samples")
     }
 
-    static func seed(around c: CLLocationCoordinate2D, context: ModelContext, now: Date = .now) async {
+    static func seed(around c: CLLocationCoordinate2D, context: ModelContext, now: Date = .now, includeGatherings: Bool? = nil) async {
         guard !seeding else { return }
         seeding = true
         defer { seeding = false }
-        let places = await PlaceFinder.find(around: c)
+        let withGatherings = includeGatherings ?? !CityListings.covers(c)
+        let places = withGatherings ? await PlaceFinder.find(around: c) : []
         clear(context: context)
         let t = Times(now: now)
         var spots = Spots(places: places, center: c)
@@ -116,7 +119,7 @@ enum SampleNeighborhood {
               "Ten laps, then coffee at whoever's closest.", t.tomorrow(7, 0), t.tomorrow(8, 0), going: 5,
               host: "June Lee"),
         ]
-        gatherings.forEach(context.insert)
+        if withGatherings { gatherings.forEach(context.insert) }
 
         for k in kitchens(around: c, t: t) {
             context.insert(k.kitchen)
@@ -129,7 +132,7 @@ enum SampleNeighborhood {
             k.drop.kitchen = k.kitchen
         }
         Ledger.save(context, "seed samples")
-        log.info("Seeded \(gatherings.count) gatherings, \(places.count) real places nearby")
+        log.info("Seeded \(withGatherings ? gatherings.count : 0) gatherings, \(places.count) real places nearby")
     }
 
     // MARK: Building blocks

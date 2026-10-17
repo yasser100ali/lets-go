@@ -1,0 +1,1101 @@
+[
+  {
+    "title": "November Project workout (Dolores Park)",
+    "genre": "move",
+    "venue": "Mission Dolores Park",
+    "address": "Dolores St & 19th St, San Francisco, CA 94114",
+    "lat": 37.7597,
+    "lon": -122.4271,
+    "schedule": {
+      "weekday": "Wednesday",
+      "start": "06:29",
+      "end": null
+    },
+    "price": "Free",
+    "organizer": "November Project SF",
+    "url": "https://november-project.com/san-francisco-ca/",
+    "description": "Free, loud, hug-heavy bodyweight workout at dawn; just show up, any fitness level.",
+    "confidence": "medium"
+  },
+  {
+    "title": "November Project track workout (Kezar)",
+    "genre": "move",
+    "venue": "Kezar Stadium",
+    "address": "755 Stanyan St, San Francisco, CA 94117",
+    "lat": 37.7669,
+    "lon": -122.456,
+    "schedule": {
+      "weekday": "Tuesday",
+      "start": "06:29",
+      "end": null
+    },
+    "price": "Free",
+    "organizer": "November Project SF",
+    "url": "https://november-project.com/san-francisco-ca/",
+    "description": "Free early-morning track session on the Kezar oval with a big, welcoming crew.",
+    "confidence": "medium"
+  },
+  {
+    "title": "SFRRC Wednesday Presidio fun run",
+    "genre": "move",
+    "venue": "Sports Basement Presidio",
+    "address": "610 Mason St, San Francisco, CA 94129",
+    "lat": 37.8029,
+    "lon": -122.4593,
+    "schedule": {
+      "weekday": "Wednesday",
+      "start": "18:00",
+      "end": "19:00"
+    },
+    "price": "Free (non-members sign online waiver)",
+    "organizer": "San Francisco Road Runners Club",
+    "url": "https://sfrrc.org/content.aspx?page_id=4002&club_id=798031&item_id=2778539",
+    "description": "5-6 mile Presidio loop at 8:45-10:00/mile, plus a no-drop 3-mile option; meet in the store.",
+    "confidence": "high"
+  },
+  {
+    "title": "SFRRC Thursday Ferry Building tempo run",
+    "genre": "move",
+    "venue": "Ferry Building",
+    "address": "1 Ferry Building, San Francisco, CA 94111",
+    "lat": 37.7955,
+    "lon": -122.3935,
+    "schedule": {
+      "weekday": "Thursday",
+      "start": "19:00",
+      "end": null
+    },
+    "price": "Free (non-members sign online waiver)",
+    "organizer": "San Francisco Road Runners Club",
+    "url": "https://sfrrc.org/content.aspx?page_id=4001&club_id=798031&action=cira&vm=Future&sif=0",
+    "description": "Weekly group tempo run along the Embarcadero for people who want a harder evening effort.",
+    "confidence": "high"
+  },
+  {
+    "title": "Slow Runners Club Sunday 5K",
+    "genre": "move",
+    "venue": "Panhandle (William McKinley Monument)",
+    "address": "Baker St & Oak St, San Francisco, CA 94117",
+    "lat": 37.7731,
+    "lon": -122.4415,
+    "schedule": {
+      "weekday": "Sunday",
+      "start": "10:00",
+      "end": null
+    },
+    "price": "Free",
+    "organizer": "Slow Runners Club SF",
+    "url": "https://www.meetup.com/slowrunnerssf/",
+    "description": "Easy-paced 5K through Golden Gate Park; meet 10:00, run at 10:15, coffee after if you want.",
+    "confidence": "high"
+  },
+  {
+    "title": "Mission Fun Runs Taco Tuesday run",
+    "genre": "move",
+    "venue": "El Metate",
+    "address": "2406 Bryant St, San Francisco, CA 94110",
+    "lat": 37.7557,
+    "lon": -122.4097,
+    "schedule": {
+      "weekday": "Tuesday",
+      "start": "18:30",
+      "end": null
+    },
+    "price": "Free",
+    "organizer": "SF Mission Fun Runs",
+    "url": "https://www.meetup.com/missionfunruns/",
+    "description": "Casual Mission 5K that starts and ends at a taqueria; the group says everything is free.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Butterlap Wednesday night ride",
+    "genre": "move",
+    "venue": "Fort Point Beer Co. (Ferry Building)",
+    "address": "1 Ferry Building, San Francisco, CA 94111",
+    "lat": 37.7958,
+    "lon": -122.394,
+    "schedule": {
+      "weekday": "Wednesday",
+      "start": "19:00",
+      "end": "22:15"
+    },
+    "price": "Free",
+    "organizer": "Butterlap (leaderless social ride)",
+    "url": "https://butterlap.bike/",
+    "description": "Relaxed no-drop night bike ride across the city; gather at 7, roll at 7:15.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Free Sunday yoga in the Presidio",
+    "genre": "move",
+    "venue": "Outpost Meadow, Presidio Tunnel Tops",
+    "address": "609 Mason St, San Francisco, CA 94129",
+    "lat": 37.8034,
+    "lon": -122.4581,
+    "schedule": {
+      "weekday": "Sunday",
+      "start": "10:00",
+      "end": "11:00"
+    },
+    "price": "Free (register on Eventbrite)",
+    "organizer": "Presidio Trust with Sutter Health and Sports Basement",
+    "url": "https://presidio.gov/explore/events/free-yoga-in-the-park/2026-11-01",
+    "description": "One-hour outdoor class capped at 50; bring a mat. Series runs through Nov 22.",
+    "confidence": "high"
+  },
+  {
+    "title": "Lindy in the Park swing dancing",
+    "genre": "music",
+    "venue": "JFK Drive behind the de Young",
+    "address": "JFK Dr & Music Concourse Dr, Golden Gate Park, San Francisco, CA 94118",
+    "lat": 37.7721,
+    "lon": -122.4672,
+    "schedule": {
+      "weekday": "Sunday",
+      "start": "11:00",
+      "end": "14:00"
+    },
+    "price": "Free",
+    "organizer": "Lindy in the Park",
+    "url": "https://sf.funcheap.com/lindy-in-the-park-swing-dance-party-golden-gate-park-276/",
+    "description": "Outdoor swing dance on car-free JFK; free beginner lesson at noon, no partner needed. Rain cancels.",
+    "confidence": "high"
+  },
+  {
+    "title": "Golden Gate Park roller disco",
+    "genre": "music",
+    "venue": "Skatin' Place",
+    "address": "6th Ave & JFK Dr, Golden Gate Park, San Francisco, CA 94118",
+    "lat": 37.7727,
+    "lon": -122.4641,
+    "schedule": {
+      "weekday": "Sunday",
+      "start": "13:00",
+      "end": "17:00"
+    },
+    "price": "Free",
+    "organizer": "Skatin' Place regulars (the Godfather of Skate)",
+    "url": "https://sf.funcheap.com/golden-gate-park-sunday-roller-disco-party-sf-3/",
+    "description": "Skaters dance to a mobile DJ on the park's skate spot; bring your own skates.",
+    "confidence": "medium"
+  },
+  {
+    "title": "SalsaCrazy Mondays",
+    "genre": "music",
+    "venue": "Neck of the Woods",
+    "address": "406 Clement St, San Francisco, CA 94118",
+    "lat": 37.7832,
+    "lon": -122.4638,
+    "schedule": {
+      "weekday": "Monday",
+      "start": "18:30",
+      "end": "23:45"
+    },
+    "price": "About $20",
+    "organizer": "SalsaCrazy",
+    "url": "https://salsabachatamondays.com/",
+    "description": "Beginner salsa and bachata classes, then social dancing till late; no partner or experience needed.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Salsa Saturdays at The Ramp",
+    "genre": "music",
+    "venue": "The Ramp",
+    "address": "855 Terry A Francois Blvd, San Francisco, CA 94158",
+    "lat": 37.7642,
+    "lon": -122.3868,
+    "schedule": {
+      "weekday": "Saturday",
+      "start": "16:00",
+      "end": "22:00"
+    },
+    "price": "$20 cover, 21+",
+    "organizer": "The Ramp",
+    "url": "https://salsacrazysf.com/events/list/",
+    "description": "Live salsa bands on a waterfront patio; good dancers often pull beginners in. Bring a layer.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Hotel Utah open mic",
+    "genre": "music",
+    "venue": "Hotel Utah Saloon",
+    "address": "500 4th St, San Francisco, CA 94107",
+    "lat": 37.7794,
+    "lon": -122.3981,
+    "schedule": {
+      "weekday": "Monday",
+      "start": "19:00",
+      "end": null
+    },
+    "price": "Free, 21+",
+    "organizer": "Hotel Utah Saloon",
+    "url": "https://www.hotelutah.com/",
+    "description": "Long-running singer-songwriter open mic in an old SoMa saloon; play or just listen.",
+    "confidence": "high"
+  },
+  {
+    "title": "Hotel Utah bluegrass jam",
+    "genre": "music",
+    "venue": "Hotel Utah Saloon",
+    "address": "500 4th St, San Francisco, CA 94107",
+    "lat": 37.7794,
+    "lon": -122.3981,
+    "schedule": {
+      "weekday": "Tuesday",
+      "start": "19:00",
+      "end": null
+    },
+    "price": "Free, 21+",
+    "organizer": "Hotel Utah Saloon",
+    "url": "https://www.hotelutah.com/",
+    "description": "Open bluegrass jam; bring an instrument and sit in, or grab a beer and listen.",
+    "confidence": "high"
+  },
+  {
+    "title": "Harry's Bar Wednesday trivia",
+    "genre": "party",
+    "venue": "Harry's Bar",
+    "address": "2020 Fillmore St, San Francisco, CA 94115",
+    "lat": 37.7883,
+    "lon": -122.4335,
+    "schedule": {
+      "weekday": "Wednesday",
+      "start": "19:00",
+      "end": null
+    },
+    "price": "Free",
+    "organizer": "Harry's Bar (hosted by TriviawithErin)",
+    "url": "https://www.harrysbarsf.com/events",
+    "description": "Popular Fillmore Street trivia night; reservations recommended if you want a table.",
+    "confidence": "high"
+  },
+  {
+    "title": "The Dubliner Tuesday trivia",
+    "genre": "party",
+    "venue": "The Dubliner",
+    "address": "3838 24th St, San Francisco, CA 94114",
+    "lat": 37.7518,
+    "lon": -122.4283,
+    "schedule": {
+      "weekday": "Tuesday",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "Free",
+    "organizer": "The Dubliner Noe Valley",
+    "url": "https://www.dublinerbarsf.com/",
+    "description": "Noe Valley pub trivia that has run for 10+ years; bring a team.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Kitty Tapata's trivia at Wild Side West",
+    "genre": "party",
+    "venue": "Wild Side West",
+    "address": "424 Cortland Ave, San Francisco, CA 94110",
+    "lat": 37.739,
+    "lon": -122.4172,
+    "schedule": {
+      "weekday": "Wednesday",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "Free",
+    "organizer": "Wild Side West",
+    "url": "https://www.wildsidewest.com/",
+    "description": "Half trivia contest, half comedy show at a beloved Bernal Heights bar with a garden.",
+    "confidence": "high"
+  },
+  {
+    "title": "Detour board game night",
+    "genre": "play",
+    "venue": "The Detour",
+    "address": "2200 Market St, San Francisco, CA 94114",
+    "lat": 37.7657,
+    "lon": -122.4316,
+    "schedule": {
+      "weekday": "Tuesday",
+      "start": "19:30",
+      "end": "22:00"
+    },
+    "price": "Free",
+    "organizer": "The Detour",
+    "url": "https://www.detoursf.com/",
+    "description": "Castro arcade bar pulls out its game library on Tuesdays; drop in solo or with friends.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Marina Chess Club Night",
+    "genre": "play",
+    "venue": "Rick & Roxy's",
+    "address": "2131 Lombard St, San Francisco, CA 94123",
+    "lat": 37.7996,
+    "lon": -122.4371,
+    "schedule": {
+      "weekday": "Wednesday",
+      "start": "19:00",
+      "end": "22:00"
+    },
+    "price": "Free",
+    "organizer": "Silicon Valley Chess Community",
+    "url": "https://meetup.com/silicon_valley_chess",
+    "description": "Casual blitz and social chess at a Marina bar; boards provided, 20+ players most weeks.",
+    "confidence": "high"
+  },
+  {
+    "title": "Crazy Karaoke Thursdays",
+    "genre": "music",
+    "venue": "The Function",
+    "address": "1414 Market St, San Francisco, CA 94102",
+    "lat": 37.7763,
+    "lon": -122.4182,
+    "schedule": {
+      "weekday": "Thursday",
+      "start": "21:00",
+      "end": "02:00"
+    },
+    "price": "Free with RSVP, 21+",
+    "organizer": "HellaFunny / The Function",
+    "url": "https://sf.funcheap.com/crazy-karaoke-sfs-wild-new-thursday-night-party-3-shots-sf-3/",
+    "description": "Late-night karaoke with 1000+ songs and $3 shots on the hour.",
+    "confidence": "high"
+  },
+  {
+    "title": "Battle of the Decades Fridays",
+    "genre": "party",
+    "venue": "Monroe",
+    "address": "473 Broadway, San Francisco, CA 94133",
+    "lat": 37.7979,
+    "lon": -122.405,
+    "schedule": {
+      "weekday": "Friday",
+      "start": "17:00",
+      "end": "23:00"
+    },
+    "price": "Free with RSVP; drinks from $1",
+    "organizer": "Monroe / Battle of the Decades",
+    "url": "https://sf.funcheap.com/1-drink-fridays-battle-of-the-decades-dj-party-north-beach-260/",
+    "description": "North Beach happy-hour DJ party: each hour is a new decade, and drinks get pricier as it goes.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Ferry Plaza Farmers Market",
+    "genre": "food",
+    "venue": "Ferry Building",
+    "address": "1 Ferry Building, San Francisco, CA 94111",
+    "lat": 37.7955,
+    "lon": -122.3935,
+    "schedule": [
+      {
+        "weekday": "Tuesday",
+        "start": "10:00",
+        "end": "14:00"
+      },
+      {
+        "weekday": "Thursday",
+        "start": "10:00",
+        "end": "14:00"
+      },
+      {
+        "weekday": "Saturday",
+        "start": "08:00",
+        "end": "14:00"
+      }
+    ],
+    "price": "Free entry",
+    "organizer": "Foodwise",
+    "url": "https://foodwise.org/markets/visit",
+    "description": "The city's flagship farmers market on the Embarcadero; Saturday is the big one.",
+    "confidence": "high"
+  },
+  {
+    "title": "Alemany Farmers Market",
+    "genre": "food",
+    "venue": "Alemany Farmers Market",
+    "address": "100 Alemany Blvd, San Francisco, CA 94110",
+    "lat": 37.7369,
+    "lon": -122.4089,
+    "schedule": {
+      "weekday": "Saturday",
+      "start": "07:00",
+      "end": "14:00"
+    },
+    "price": "Free entry",
+    "organizer": "Foodwise",
+    "url": "https://foodwise.org/markets/alemany-farmers-market/",
+    "description": "California's oldest farmers market, in Bernal Heights; big, cheap and unfussy produce.",
+    "confidence": "high"
+  },
+  {
+    "title": "Fort Mason Farmers Market",
+    "genre": "food",
+    "venue": "Fort Mason Center (parking lot)",
+    "address": "2 Marina Blvd, San Francisco, CA 94123",
+    "lat": 37.8067,
+    "lon": -122.4314,
+    "schedule": {
+      "weekday": "Sunday",
+      "start": "09:30",
+      "end": "13:30"
+    },
+    "price": "Free entry",
+    "organizer": "California Farmers' Markets Association / Fort Mason Center",
+    "url": "https://fortmason.org/event/sunday-farmers-market/2026-09-27/",
+    "description": "50+ farmers and food vendors by the bay, rain or shine.",
+    "confidence": "high"
+  },
+  {
+    "title": "Heart of the City Farmers Market",
+    "genre": "food",
+    "venue": "Fulton Street (Civic Center)",
+    "address": "Fulton St between Larkin St & Hyde St, San Francisco, CA 94102",
+    "lat": 37.7797,
+    "lon": -122.416,
+    "schedule": [
+      {
+        "weekday": "Wednesday",
+        "start": "07:00",
+        "end": "16:00"
+      },
+      {
+        "weekday": "Sunday",
+        "start": "07:00",
+        "end": "16:00"
+      }
+    ],
+    "price": "Free entry",
+    "organizer": "Heart of the City Farmers' Market",
+    "url": "https://sf.funcheap.com/city-guide/sf-moving-plaza-farmers-market-42-years/",
+    "description": "Farmer-run Civic Center market known for low prices; arrive before 3 for the best selection.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Mission Community Market",
+    "genre": "food",
+    "venue": "22nd St & Bartlett St",
+    "address": "84 Bartlett St, San Francisco, CA 94110",
+    "lat": 37.7557,
+    "lon": -122.42,
+    "schedule": {
+      "weekday": "Thursday",
+      "start": "15:00",
+      "end": "19:00"
+    },
+    "price": "Free entry",
+    "organizer": "Foodwise",
+    "url": "https://foodwise.org/markets/mission-community-market/",
+    "description": "After-work Mission street market with farmers and local food; season ends mid-November.",
+    "confidence": "high"
+  },
+  {
+    "title": "Outer Sunset Farmers Market & Mercantile",
+    "genre": "food",
+    "venue": "37th Ave (Ortega to Quintara)",
+    "address": "37th Ave & Pacheco St, San Francisco, CA 94116",
+    "lat": 37.7497,
+    "lon": -122.4955,
+    "schedule": {
+      "weekday": "Sunday",
+      "start": "09:00",
+      "end": "14:00"
+    },
+    "price": "Free entry",
+    "organizer": "Sunset Mercantile",
+    "url": "https://sf.funcheap.com/diwali-outer-sunset-farmers-market/",
+    "description": "Neighborhood Sunday market with farmers, makers and food stalls a few blocks from the beach.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Ocean Beach volleyball training and open play",
+    "genre": "play",
+    "venue": "Ocean Beach, Stairwell 17",
+    "address": "1000 Great Hwy, San Francisco, CA 94121",
+    "lat": 37.7695,
+    "lon": -122.5104,
+    "schedule": {
+      "weekday": "Saturday",
+      "start": "09:00",
+      "end": null
+    },
+    "price": "Donation",
+    "organizer": "Ocean Beach Volleyball Training & Playing (Meetup)",
+    "url": "https://www.meetup.com/san-francisco-volleyball-training-playing-meetup-group/",
+    "description": "Beach volleyball across from the Beach Chalet; drills first, open play from about 10. All levels.",
+    "confidence": "high"
+  },
+  {
+    "title": "Pay-what-you-can taco Fridays at Tato",
+    "genre": "food",
+    "venue": "Tato",
+    "address": "4608 3rd St, San Francisco, CA 94124",
+    "lat": 37.7363,
+    "lon": -122.3905,
+    "schedule": {
+      "weekday": "Friday",
+      "start": "11:00",
+      "end": "17:00"
+    },
+    "price": "$0-10",
+    "organizer": "Tato",
+    "url": "https://sf.funcheap.com/pay-what-you-can-taco-day-at-sfs-tato-every-friday-302/",
+    "description": "Bayview taqueria's two-taco plate at whatever you can pay; full price funds a free meal.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Flight Club adult trampoline night",
+    "genre": "play",
+    "venue": "House of Air",
+    "address": "926 Mason St, San Francisco, CA 94129",
+    "lat": 37.8049,
+    "lon": -122.4686,
+    "schedule": {
+      "weekday": "Thursday",
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "price": "$20 per hour (grip socks required)",
+    "organizer": "House of Air",
+    "url": "https://sf.funcheap.com/flight-club-adult-flight-night-for-ages-18-at-house-of-air-trampoline-park-sf-61/",
+    "description": "18+ takeover of a Presidio trampoline park: dodgeball court, open jump zones, beer for sale.",
+    "confidence": "high"
+  },
+  {
+    "title": "SF Old Car Picnic",
+    "genre": "party",
+    "venue": "Hellman Hollow, Golden Gate Park",
+    "address": "800 John F Kennedy Dr, San Francisco, CA 94122",
+    "lat": 37.7692,
+    "lon": -122.4857,
+    "schedule": {
+      "date": "2026-10-17",
+      "start": "07:00",
+      "end": "16:00"
+    },
+    "price": "Free for spectators",
+    "organizer": "SF Old Car Picnic",
+    "url": "https://sf.funcheap.com/38th-annual-sf-car-picnic-2026-classic-vehicles-golden-gate-park/",
+    "description": "Hundreds of classic cars parked on the meadow; wander, picnic and talk to owners.",
+    "confidence": "high"
+  },
+  {
+    "title": "Potrero Hill R&B Festival",
+    "genre": "music",
+    "venue": "20th St (Wisconsin to Missouri)",
+    "address": "20th St & Arkansas St, San Francisco, CA 94107",
+    "lat": 37.7598,
+    "lon": -122.3984,
+    "schedule": {
+      "date": "2026-10-17",
+      "start": "10:00",
+      "end": "17:00"
+    },
+    "price": "Free",
+    "organizer": "Potrero Hill Festival",
+    "url": "https://sf.funcheap.com/potrero-hill-festival-4-blocks-fun-sf/",
+    "description": "51st year: four blocks of 20th Street with two stages of R&B, food and kids' activities.",
+    "confidence": "high"
+  },
+  {
+    "title": "Bearrison Street Fair",
+    "genre": "party",
+    "venue": "11th St & Harrison St",
+    "address": "11th St & Harrison St, San Francisco, CA 94103",
+    "lat": 37.7704,
+    "lon": -122.4122,
+    "schedule": {
+      "date": "2026-10-17",
+      "start": "12:00",
+      "end": "18:00"
+    },
+    "price": "Free (donation at gate)",
+    "organizer": "Bearrison Street Fair",
+    "url": "https://sf.funcheap.com/sfs-inaugural-bearrison-street-fair-soma/",
+    "description": "SoMa street fair for the bear and queer communities: wrestling, a deadlift contest, DJs.",
+    "confidence": "high"
+  },
+  {
+    "title": "Market Street Arts & Theater Festival",
+    "genre": "music",
+    "venue": "Market St (5th St to Van Ness), kicking off at UN Plaza",
+    "address": "UN Plaza, Market St at 7th St, San Francisco, CA 94102",
+    "lat": 37.7799,
+    "lon": -122.4139,
+    "schedule": {
+      "date": "2026-10-17",
+      "start": "16:00",
+      "end": "22:00"
+    },
+    "price": "Free (RSVP recommended; a few paid shows)",
+    "organizer": "Market Street Arts / Mid-Market Business Association",
+    "url": "https://sf.funcheap.com/onenight-market-street-arts-theater-festival-50-experiences-sf/",
+    "description": "One night of 50+ free performances along six blocks of Market, from circus to DJs.",
+    "confidence": "high"
+  },
+  {
+    "title": "Sunday Streets Excelsior",
+    "genre": "move",
+    "venue": "Mission St (Excelsior)",
+    "address": "Mission St & Excelsior Ave, San Francisco, CA 94112",
+    "lat": 37.7265,
+    "lon": -122.4333,
+    "schedule": {
+      "date": "2026-10-18",
+      "start": "11:00",
+      "end": "16:00"
+    },
+    "price": "Free",
+    "organizer": "Sunday Streets SF (Livable City)",
+    "url": "https://sf.funcheap.com/sunday-streets-sfs-free-street-festival-block-party-excelsior-2/",
+    "description": "Excelsior streets go car-free for walking, biking, games and live music; recent route was Mission St.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Lower Polk Live!",
+    "genre": "music",
+    "venue": "Polk St (Bush to Sutter)",
+    "address": "Polk St between Bush St & Sutter St, San Francisco, CA 94109",
+    "lat": 37.7882,
+    "lon": -122.4202,
+    "schedule": {
+      "date": "2026-10-23",
+      "start": "16:00",
+      "end": "21:00"
+    },
+    "price": "Free",
+    "organizer": "Lower Polk Community Benefit District",
+    "url": "https://sf.funcheap.com/polk-live-2026-free-music-art-street-festival-sf/",
+    "description": "Street party with live bands, DJs, turntable sessions and soul line dancing you can join.",
+    "confidence": "high"
+  },
+  {
+    "title": "From the E Fall Festival Night Market",
+    "genre": "food",
+    "venue": "Ocean Ave & Mission St",
+    "address": "Ocean Ave & Mission St, San Francisco, CA 94112",
+    "lat": 37.7238,
+    "lon": -122.4357,
+    "schedule": {
+      "date": "2026-10-23",
+      "start": "16:30",
+      "end": "20:30"
+    },
+    "price": "Free (RSVP)",
+    "organizer": "From the E (Excelsior)",
+    "url": "https://sf.funcheap.com/from-the-e-fall-festival-night-market-sf/",
+    "description": "Monthly Excelsior night market with food, crafts and live music; next one is Nov 20.",
+    "confidence": "high"
+  },
+  {
+    "title": "Sandcastle Classic",
+    "genre": "party",
+    "venue": "Ocean Beach at Balboa St",
+    "address": "Great Hwy & Balboa St, San Francisco, CA 94121",
+    "lat": 37.7754,
+    "lon": -122.5106,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "11:00",
+      "end": "15:30"
+    },
+    "price": "Free",
+    "organizer": "Leap Arts in Education",
+    "url": "https://sf.funcheap.com/44th-annual-sandcastle-classic-100-teams-build-giant-sculptures-ocean-beach/",
+    "description": "100+ teams build giant sand sculptures; food trucks and live music on the beach.",
+    "confidence": "high"
+  },
+  {
+    "title": "BYOP pumpkin carving in Duboce Park",
+    "genre": "party",
+    "venue": "Duboce Park Upper Lawn",
+    "address": "Duboce Ave & Scott St, San Francisco, CA 94117",
+    "lat": 37.7697,
+    "lon": -122.433,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "11:00",
+      "end": "13:00"
+    },
+    "price": "Free (bring your own pumpkin)",
+    "organizer": "Friends of Duboce Park",
+    "url": "https://sf.funcheap.com/sfs-byop-pumpkin-carving-party-2026-duboce-park/",
+    "description": "Neighbors carve pumpkins together on the lawn; bring a pumpkin and a knife.",
+    "confidence": "high"
+  },
+  {
+    "title": "Undiscovered SF Golden Hour Night Market",
+    "genre": "food",
+    "venue": "Victory Hall & Ritch Street Alley",
+    "address": "330 Ritch St, San Francisco, CA 94107",
+    "lat": 37.7789,
+    "lon": -122.3941,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "16:00",
+      "end": "22:00"
+    },
+    "price": "Free (RSVP; donations welcome)",
+    "organizer": "Undiscovered SF",
+    "url": "https://sf.funcheap.com/undiscovered-sf-2026/",
+    "description": "Filipino American night market in SoMa Pilipinas: food, music and makers in an alley.",
+    "confidence": "high"
+  },
+  {
+    "title": "Lit Crawl SF",
+    "genre": "party",
+    "venue": "Mission District bars, shops and galleries",
+    "address": "Valencia St & 21st St, San Francisco, CA 94110",
+    "lat": 37.7569,
+    "lon": -122.4211,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "17:00",
+      "end": "21:00"
+    },
+    "price": "Free",
+    "organizer": "Litquake",
+    "url": "https://sf.funcheap.com/lit-crawl-sf-epic-4hour-roaming-literature-festival-mission/",
+    "description": "250+ authors read in bars and bookstores across the Mission; hop between venues.",
+    "confidence": "high"
+  },
+  {
+    "title": "Try lawn bowling day",
+    "genre": "play",
+    "venue": "San Francisco Lawn Bowling Club",
+    "address": "320 Bowling Green Dr, Golden Gate Park, San Francisco, CA 94122",
+    "lat": 37.7686,
+    "lon": -122.459,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "10:00",
+      "end": "14:00"
+    },
+    "price": "Free",
+    "organizer": "San Francisco Lawn Bowling Club",
+    "url": "https://sf.funcheap.com/lawn-bowling-sfs-historic-125yearold-club-gg-park-sf/",
+    "description": "125th-anniversary open day: try bowling on the greens, tour the clubhouse, games and snacks.",
+    "confidence": "high"
+  },
+  {
+    "title": "Football Sundays at Thrive City",
+    "genre": "party",
+    "venue": "Thrive City",
+    "address": "1 Warriors Way, San Francisco, CA 94158",
+    "lat": 37.768,
+    "lon": -122.3878,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "10:00",
+      "end": "16:00"
+    },
+    "price": "Free",
+    "organizer": "Thrive City (Chase Center)",
+    "url": "https://sf.funcheap.com/football-sundays-outdoor-big-screen-nfl-games-lawn-fun-thrive-city/",
+    "description": "Watch the 49ers at Atlanta (10am) and the afternoon games on the outdoor big screen.",
+    "confidence": "high"
+  },
+  {
+    "title": "World of Dumplings festival",
+    "genre": "food",
+    "venue": "Ferry Building",
+    "address": "1 Ferry Building, San Francisco, CA 94111",
+    "lat": 37.7955,
+    "lon": -122.3935,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "11:00",
+      "end": "17:00"
+    },
+    "price": "Free entry; food for purchase",
+    "organizer": "Asians Are Strong",
+    "url": "https://sf.funcheap.com/world-of-dumplings-festival/",
+    "description": "25+ restaurants serve dumplings from around the world, plus eating contests and live music.",
+    "confidence": "high"
+  },
+  {
+    "title": "SF Music Day",
+    "genre": "music",
+    "venue": "War Memorial & Performing Arts Center",
+    "address": "401 Van Ness Ave, San Francisco, CA 94102",
+    "lat": 37.7795,
+    "lon": -122.421,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "12:00",
+      "end": "18:00"
+    },
+    "price": "Free (donation suggested)",
+    "organizer": "InterMusic SF",
+    "url": "https://sf.funcheap.com/sf-music-day-2026-20-free-live-concerts-san-francisco-war-memorial/",
+    "description": "20+ Bay Area ensembles, classical to jazz to global, across the Herbst Theatre and other rooms.",
+    "confidence": "high"
+  },
+  {
+    "title": "Wiggle Fest",
+    "genre": "party",
+    "venue": "Wiggle Plaza",
+    "address": "Steiner St & Hermann St, San Francisco, CA 94117",
+    "lat": 37.77,
+    "lon": -122.4317,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "12:00",
+      "end": "16:00"
+    },
+    "price": "Free",
+    "organizer": "Community Streets",
+    "url": "https://sf.funcheap.com/wiggle-fest-fall-2026-free-bbq-grilled-cheese-block-party-sf/",
+    "description": "Neighborhood block party with free BBQ and grilled cheese, live music and games.",
+    "confidence": "high"
+  },
+  {
+    "title": "Sundays at the Beach yoga",
+    "genre": "move",
+    "venue": "Great Highway Park at Judah",
+    "address": "Judah St & Great Hwy, San Francisco, CA 94122",
+    "lat": 37.7602,
+    "lon": -122.5094,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "12:00",
+      "end": null
+    },
+    "price": "Free",
+    "organizer": "Great Highway Park",
+    "url": "https://sf.funcheap.com/sfs-sundays-at-the-beach-free-yoga-day-great-highway-39/",
+    "description": "Community yoga by the ocean every 4th Sunday; bring a mat and mug for free coffee.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Noe Valley Night Market",
+    "genre": "food",
+    "venue": "Noe Valley Town Square",
+    "address": "3861 24th St, San Francisco, CA 94114",
+    "lat": 37.7514,
+    "lon": -122.429,
+    "schedule": {
+      "date": "2026-10-27",
+      "start": "17:00",
+      "end": "20:00"
+    },
+    "price": "Free",
+    "organizer": "Noe Valley Merchants",
+    "url": "https://sf.funcheap.com/sfs-noe-valley-night-market-2026-6/",
+    "description": "Last-Tuesday evening market with food vendors, local shops and live music.",
+    "confidence": "high"
+  },
+  {
+    "title": "Hayes Valley Halloween Trick-or-Treat Trail",
+    "genre": "party",
+    "venue": "Hayes Valley & Hayes Promenade",
+    "address": "Hayes St & Laguna St, San Francisco, CA 94102",
+    "lat": 37.7765,
+    "lon": -122.4261,
+    "schedule": {
+      "date": "2026-10-30",
+      "start": "16:00",
+      "end": "22:00"
+    },
+    "price": "Free",
+    "organizer": "Hayes Valley Merchants & Neighborhood Associations",
+    "url": "https://sf.funcheap.com/hayes-valleys-glowing-halloween-trickortreat-trail-free-outdoor-movie-2026/",
+    "description": "Merchant trick-or-treating, glowing sculptures, a 21+ sip-and-stroll and a free movie at PROXY.",
+    "confidence": "high"
+  },
+  {
+    "title": "SF Critical Mass",
+    "genre": "move",
+    "venue": "Embarcadero Plaza",
+    "address": "1 Market St, San Francisco, CA 94105",
+    "lat": 37.7949,
+    "lon": -122.3949,
+    "schedule": {
+      "date": "2026-10-30",
+      "start": "18:00",
+      "end": "21:00"
+    },
+    "price": "Free",
+    "organizer": "No one (leaderless)",
+    "url": "https://sf.funcheap.com/san-francisco-critical-mass-last-friday-of-the-month-17/",
+    "description": "Huge leaderless group ride on the last Friday; meet 6, ride 6:30. Expect Halloween costumes.",
+    "confidence": "high"
+  },
+  {
+    "title": "Chinatown Halloween Festival",
+    "genre": "party",
+    "venue": "Waverly Place",
+    "address": "Waverly Pl between Sacramento St & Washington St, San Francisco, CA 94108",
+    "lat": 37.7937,
+    "lon": -122.4067,
+    "schedule": {
+      "date": "2026-10-31",
+      "start": "11:00",
+      "end": "15:00"
+    },
+    "price": "Free",
+    "organizer": "Community Youth Center (CYC)",
+    "url": "https://sf.funcheap.com/12th-annual-chinatown-halloween-festival-sf/",
+    "description": "Pumpkin patch, crafts and games in a Chinatown alley; very kid-friendly.",
+    "confidence": "high"
+  },
+  {
+    "title": "BalBOOa Fright Fest",
+    "genre": "party",
+    "venue": "Balboa St (33rd to 41st Ave)",
+    "address": "Balboa St & 37th Ave, San Francisco, CA 94121",
+    "lat": 37.7758,
+    "lon": -122.4972,
+    "schedule": {
+      "date": "2026-10-31",
+      "start": "11:00",
+      "end": "16:00"
+    },
+    "price": "Free",
+    "organizer": "Balboa Village Merchants Association",
+    "url": "https://sf.funcheap.com/sfs-12th-annual-balboa-street-fright-fest-trickortreat-halloween-crawl-2026/",
+    "description": "Trick-or-treat crawl and scavenger hunt along Balboa Street's shops in the Outer Richmond.",
+    "confidence": "high"
+  },
+  {
+    "title": "Castro Art Mart",
+    "genre": "party",
+    "venue": "Noe St (Market to Beaver)",
+    "address": "Noe St between Market St & Beaver St, San Francisco, CA 94114",
+    "lat": 37.7647,
+    "lon": -122.4331,
+    "schedule": {
+      "date": "2026-11-01",
+      "start": "14:00",
+      "end": "20:00"
+    },
+    "price": "Free",
+    "organizer": "Artyhood",
+    "url": "https://sf.funcheap.com/castro-art-mart-2026-drag-music-art-1st-sundays-7/",
+    "description": "First-Sunday street market of local artists with drag performances and live music.",
+    "confidence": "high"
+  },
+  {
+    "title": "Downtown First Thursdays",
+    "genre": "music",
+    "venue": "2nd St (Market to Howard)",
+    "address": "2nd St between Market St & Howard St, San Francisco, CA 94105",
+    "lat": 37.7878,
+    "lon": -122.3999,
+    "schedule": {
+      "date": "2026-11-05",
+      "start": "17:00",
+      "end": "22:00"
+    },
+    "price": "Free (RSVP)",
+    "organizer": "Into The Streets",
+    "url": "https://sf.funcheap.com/sfs-free-dft-monthly-block-party-downtown-first-thursdays-2026-10/",
+    "description": "Monthly downtown block party: DJs, dancing, drag, food trucks. This edition is a Carnaval SF cumbia takeover.",
+    "confidence": "high"
+  },
+  {
+    "title": "North Beach First Fridays art crawl",
+    "genre": "party",
+    "venue": "North Beach galleries",
+    "address": "Grant Ave & Vallejo St, San Francisco, CA 94133",
+    "lat": 37.7988,
+    "lon": -122.4074,
+    "schedule": {
+      "date": "2026-11-06",
+      "start": "17:00",
+      "end": "21:00"
+    },
+    "price": "Free",
+    "organizer": "North Beach First Fridays",
+    "url": "https://sf.funcheap.com/north-beach-first-fridays-art-crawl-sf-140/",
+    "description": "A dozen-plus galleries, bars and shops stay open late for a self-guided art walk.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Fort Mason Night Market",
+    "genre": "food",
+    "venue": "Fort Mason Center",
+    "address": "2 Marina Blvd, San Francisco, CA 94123",
+    "lat": 37.8067,
+    "lon": -122.4314,
+    "schedule": {
+      "date": "2026-11-06",
+      "start": "17:00",
+      "end": "22:00"
+    },
+    "price": "Free entry",
+    "organizer": "Off the Grid, West Coast Craft & Fort Mason Center",
+    "url": "https://www.westcoastcraft.com/fort-mason-night-market-attend",
+    "description": "100+ food trucks and makers with live music by the bay; next and last one is Dec 18.",
+    "confidence": "high"
+  },
+  {
+    "title": "SF Coffee Festival",
+    "genre": "food",
+    "venue": "Festival Pavilion, Fort Mason Center",
+    "address": "2 Marina Blvd, San Francisco, CA 94123",
+    "lat": 37.8072,
+    "lon": -122.4316,
+    "schedule": {
+      "date": "2026-11-07",
+      "start": "10:00",
+      "end": "16:30"
+    },
+    "price": "From about $32",
+    "organizer": "Craft Hospitality",
+    "url": "https://sf.funcheap.com/san-francisco-coffee-festival-2026-10th-annual-celebration-fort-mason/",
+    "description": "10th annual tasting fest with dozens of roasters; also runs Sunday Nov 8.",
+    "confidence": "high"
+  },
+  {
+    "title": "Día de los Muertos & Diwali at Tunnel Tops",
+    "genre": "party",
+    "venue": "Presidio Tunnel Tops (Crissy Field Center)",
+    "address": "603 Mason St, San Francisco, CA 94129",
+    "lat": 37.8029,
+    "lon": -122.4559,
+    "schedule": {
+      "date": "2026-11-07",
+      "start": "10:00",
+      "end": "15:00"
+    },
+    "price": "Free",
+    "organizer": "Presidio Trust",
+    "url": "https://sf.funcheap.com/sfs-free-da-de-los-muertos-diwali-celebration-fire-ceremony-presido-tunnel-tops/",
+    "description": "Family festival in the park with crafts, dance, music and a fire ceremony honoring both traditions.",
+    "confidence": "high"
+  },
+  {
+    "title": "Inner Sunset Flea Market",
+    "genre": "party",
+    "venue": "Irving St (9th to 11th Ave)",
+    "address": "Irving St & 10th Ave, San Francisco, CA 94122",
+    "lat": 37.764,
+    "lon": -122.4674,
+    "schedule": {
+      "date": "2026-11-08",
+      "start": "10:00",
+      "end": "16:00"
+    },
+    "price": "Free",
+    "organizer": "Sunset Mercantile & Inner Sunset Park Neighbors",
+    "url": "https://sf.funcheap.com/sfs-inner-sunset-flea-market-2026-w-sunset-mercantile-every-2nd-sunday-7/",
+    "description": "Season finale: two blocks of vintage, makers and live music on Irving Street.",
+    "confidence": "high"
+  },
+  {
+    "title": "San Francisco Diwali Festival",
+    "genre": "music",
+    "venue": "Great Lawn, Yerba Buena Gardens",
+    "address": "Mission St between 3rd St & 4th St, San Francisco, CA 94103",
+    "lat": 37.7847,
+    "lon": -122.4023,
+    "schedule": {
+      "date": "2026-11-08",
+      "start": "13:00",
+      "end": "17:00"
+    },
+    "price": "Free (RSVP encouraged)",
+    "organizer": "Yerba Buena Gardens Conservancy & Creative Collective SF",
+    "url": "https://sf.funcheap.com/san-francisco-diwali-festival-yerba-buena-gardens-2026/",
+    "description": "Outdoor South Asian music and dance, Bollywood troupe and dhol, plus food and makers.",
+    "confidence": "high"
+  }
+]

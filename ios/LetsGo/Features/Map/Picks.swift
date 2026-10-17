@@ -27,7 +27,8 @@ struct Candidate: Identifiable, Hashable, Sendable {
 
     var spotsLeft: Int? { capacity > 0 ? max(0, capacity - going) : nil }
     var walkMinutes: Int { Walk.minutes(meters) }
-    var isFree: Bool { kind == .gathering }
+    var priceText: String = ""
+    var isFree: Bool { kind == .gathering && (priceText.isEmpty || priceText.lowercased().hasPrefix("free")) }
 }
 
 extension Candidate {
@@ -37,8 +38,9 @@ extension Candidate {
             start: g.start, end: g.end, meters: here.distance(to: g.coordinate),
             capacity: g.capacity, going: g.going, isJoined: g.isJoined, isSample: g.isSample,
             place: g.placeName,
-            searchText: [g.title, g.details, g.placeName, g.hostName, g.bring, g.category.label, g.category.noun]
-                .joined(separator: " ").lowercased()
+            searchText: [g.title, g.details, g.placeName, g.address, g.hostName, g.bring, g.priceText, g.category.label, g.category.noun]
+                .joined(separator: " ").lowercased(),
+            priceText: g.priceText
         )
     }
 
@@ -124,6 +126,7 @@ enum Picks {
             parts.append("\(c.going) going")
         }
         if let price = c.priceFromCents { parts.append("from \(Pricing.format(price))") }
+        else if !c.priceText.isEmpty { parts.append(c.priceText) }
         parts.append(Walk.label(c.meters))
         return parts.joined(separator: " · ")
     }

@@ -52,6 +52,12 @@ struct MapHomeView: View {
             .sheet(isPresented: $hostingBlank) { NewGatheringView(draft: nil) }
             .onChange(of: searching) { _, on in if on { detent = .full; selected = nil } }
             .onChange(of: location.center.roundedKey) { if walking { followInWorld() } }
+            .onAppear {
+                // In the city, the listings are spread out: start wide enough to see a few neighborhoods.
+                if CityListings.covers(location.center) {
+                    position = .camera(MapCamera(centerCoordinate: location.center, distance: 9000))
+                }
+            }
         }
     }
 

@@ -24,11 +24,16 @@ struct RootView: View {
         // Fill in the sample neighborhood and pull from the server when the
         // neighborhood changes, and whenever the app comes back.
         .task(id: location.center.roundedKey) {
+            if CityListings.covers(location.center) { CityListings.refresh(context: context) }
             await SampleNeighborhood.refreshIfNeeded(around: location.center, context: context)
             await pull()
         }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .active { Task { await pull() } }
+            if phase == .active {
+                // Weekly listings roll forward, so refresh them when the app comes back.
+                if CityListings.covers(location.center) { CityListings.refresh(context: context) }
+                Task { await pull() }
+            }
         }
     }
 

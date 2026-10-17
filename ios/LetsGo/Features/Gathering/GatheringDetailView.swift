@@ -31,6 +31,7 @@ struct GatheringDetailView: View {
                             Text(gathering.details).font(.system(size: 15)).foregroundStyle(Palette.ink.opacity(0.9))
                         }
                         hostLine
+                        if gathering.isListing { listingLinks }
                         checkInHint(now: now)
                         if gathering.isSample { SampleNote() }
                         if gathering.isMine {
@@ -94,7 +95,9 @@ struct GatheringDetailView: View {
             .init(label: live ? "On" : "Starts", value: live ? "Now" : gathering.start.formatted(.dateTime.hour().minute()),
                   detail: live ? "until \(gathering.end.formatted(date: .omitted, time: .shortened))" : When.relative(gathering.start, now: now)),
             .init(label: "Walk", value: "\(Walk.minutes(location.center.distance(to: gathering.coordinate)))", detail: "minutes"),
-            .init(label: "Going", value: "\(gathering.going)", detail: gathering.capacity > 0 ? "of \(gathering.capacity)" : "so far"),
+            gathering.isListing
+                ? .init(label: "Price", value: priceValue, detail: priceDetail)
+                : .init(label: "Going", value: "\(gathering.going)", detail: gathering.capacity > 0 ? "of \(gathering.capacity)" : "so far"),
         ]
     }
 
@@ -121,6 +124,47 @@ struct GatheringDetailView: View {
         .card()
     }
 
+    /// "Free" → "Free"; "$10–20" → "$10–20"; long text gets cut to its first part.
+    private var priceValue: String {
+        let p = gathering.priceText.trimmingCharacters(in: .whitespaces)
+        if p.isEmpty { return "—" }
+        let first = p.split(whereSeparator: { $0 == "(" || $0 == "," || $0 == ";" }).first.map(String.init) ?? p
+        return first.trimmingCharacters(in: .whitespaces).count <= 9 ? first.trimmingCharacters(in: .whitespaces) : "See site"
+    }
+
+    private var priceDetail: String {
+        priceValue.lowercased().hasPrefix("free") ? "just show up" : "per person"
+    }
+
+    private var listingLinks: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            if !gathering.address.isEmpty {
+                Text(gathering.address).font(.system(size: 14)).foregroundStyle(Palette.muted).textSelection(.enabled)
+            }
+            HStack(spacing: 10) {
+                if let s = gathering.sourceURL, let url = URL(string: s) {
+                    Link(destination: url) { Label("Website", systemImage: "safari") }
+                        .buttonStyle(SecondaryButtonStyle())
+                }
+                if let maps = mapsURL {
+                    Link(destination: maps) { Label("Directions", systemImage: "arrow.triangle.turn.up.right.diamond") }
+                        .buttonStyle(SecondaryButtonStyle())
+                }
+            }
+        }
+    }
+
+    /// Opens Apple Maps walking directions to the spot.
+    private var mapsURL: URL? {
+        var c = URLComponents(string: "https://maps.apple.com/")
+        c?.queryItems = [
+            URLQueryItem(name: "daddr", value: "\(gathering.latitude),\(gathering.longitude)"),
+            URLQueryItem(name: "q", value: gathering.placeName),
+            URLQueryItem(name: "dirflg", value: "w"),
+        ]
+        return c?.url
+    }
+
     private var hostLine: some View {
         HStack(spacing: 10) {
             Text(initials(gathering.hostName))
@@ -129,8 +173,12 @@ struct GatheringDetailView: View {
                 .frame(width: 38, height: 38)
                 .background(Palette.raise, in: .circle)
             VStack(alignment: .leading, spacing: 1) {
-                Text(gathering.isMine ? "You're hosting" : "\(gathering.hostName) runs this").font(.system(size: 14, weight: .semibold))
-                if !gathering.recurring.isEmpty {
+                Text(gathering.isMine ? "You're hosting" : gathering.isListing ? "Run by \(gathering.hostName)" : "\(gathering.hostName) runs this")
+                    .font(.system(size: 14, weight: .semibold))
+                if let host = gathering.sourceURL.flatMap({ URL(string: $0)?.host() }) {
+                    Text("Listed from \(host.replacingOccurrences(of: "www.", with: ""))\(gathering.recurring.isEmpty ? "" : " · \(gathering.recurring)")")
+                        .font(.system(size: 12)).foregroundStyle(Palette.muted)
+                } else if !gathering.recurring.isEmpty {
                     Text(gathering.recurring).font(.system(size: 12)).foregroundStyle(Palette.muted)
                 }
             }
@@ -178,7 +226,7 @@ struct GatheringDetailView: View {
                         .card()
                 }
             } else {
-                Button(gathering.isFull ? "Full" : "I'm in") {
+                Button(gathering.isFull ? "Full" : gathering.isListing ? "I'm going" : "I'm in") {
                     run { () throws(APIError) in try await Sync.join(gathering, context: context) }
                 }
                 .buttonStyle(PrimaryButtonStyle())
