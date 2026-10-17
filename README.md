@@ -33,6 +33,7 @@ ios/
 scripts/
   ship.sh              bump build → archive → upload to TestFlight
   asc.py               App Store Connect API: app record, testers, build status
+  setup-signing.sh     rebuild the prompt-free signing keychain on a new Mac
 ```
 
 ## Run
@@ -49,7 +50,7 @@ xcodebuild test -project ios/LetsGo.xcodeproj -scheme LetsGo \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' CODE_SIGNING_ALLOWED=NO
 ```
 
-Ship a TestFlight build (needs the App Store Connect key at `~/.appstoreconnect/letsgo_asc_api_key.json`):
+Ship a TestFlight build. Needs, outside the repo: the App Store Connect key at `~/.appstoreconnect/letsgo_asc_api_key.json` (+ `private_keys/AuthKey_*.p8`), and the signing bundle in `~/.appstoreconnect/letsgo-signing/` (Let's Go's own Apple Distribution cert, its keychain password and the App Store profile). On a new Mac run `scripts/setup-signing.sh` once.
 
 ```bash
 scripts/ship.sh
