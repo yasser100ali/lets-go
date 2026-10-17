@@ -18,6 +18,7 @@ struct WrenQuery: Equatable, Sendable {
 
     static func parse(_ raw: String, now: Date = .now, calendar: Calendar = .current) -> WrenQuery {
         let text = raw.lowercased()
+        let words = Set(text.split { !$0.isLetter && !$0.isNumber }.map(String.init))
         var q = WrenQuery(text: raw)
         q.wantsToCreate = createWords.contains { text.hasPrefix($0) || text.contains(" \($0) ") || text.contains("\($0) a") }
         q.wantsQuiet = quietWords.contains { text.contains($0) }
@@ -38,9 +39,9 @@ struct WrenQuery: Equatable, Sendable {
             } else {
                 q.day = .on(d)
             }
-        } else if text.contains("tonight") || text.contains("now") || text.contains("today") {
+        } else if !words.isDisjoint(with: ["tonight", "now", "today", "rn"]) {
             q.day = .today
-        } else if text.contains("tomorrow") {
+        } else if words.contains("tomorrow") {
             q.day = .tomorrow
         }
         return q

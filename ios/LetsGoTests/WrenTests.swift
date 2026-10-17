@@ -87,6 +87,11 @@ struct WrenQueryTests {
         #expect(!q.categories.contains(.play))
     }
 
+    @Test func knowIsNotNow() {
+        #expect(WrenQuery.parse("do you know any runs", now: now).day == .any)
+        #expect(WrenQuery.parse("anything now?", now: now).day == .today)
+    }
+
     @Test func foodWords() {
         #expect(WrenQuery.parse("who's selling pizza", now: now).categories == [.food])
     }
