@@ -55,7 +55,7 @@ struct NewGatheringView: View {
                 }
             }
             .scrollContentBackground(.hidden)
-            .background(Lamp.bg)
+            .background(Palette.bg)
             .navigationTitle("Host something")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -79,7 +79,7 @@ struct NewGatheringView: View {
             Map(initialPosition: .camera(MapCamera(centerCoordinate: pin ?? location.center, distance: 1500))) {
                 UserAnnotation()
                 if let pin {
-                    Annotation("", coordinate: pin) { GlowPin(category: category, badge: nil, live: false) }
+                    Annotation("", coordinate: pin) { MapMarker(genre: category, caption: placeName.isEmpty ? "Here" : placeName, selected: true) }
                 }
             }
             .mapStyle(.standard(elevation: .flat, emphasis: .muted, pointsOfInterest: .excludingAll))

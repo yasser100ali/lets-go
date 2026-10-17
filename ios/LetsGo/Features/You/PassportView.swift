@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-/// Your passport: stamps for places you showed up, and what Wren believes about you.
+/// Your passport: stamps for places you showed up, and what you're into.
 struct PassportView: View {
     @Environment(\.modelContext) private var context
     @Environment(LocationService.self) private var location
@@ -15,6 +15,7 @@ struct PassportView: View {
     @AppStorage(SampleNeighborhood.enabledKey) private var samplesOn = true
     @AppStorage(APIClient.nameKey) private var displayName = ""
     @AppStorage(APIConfig.overrideKey) private var serverURL = ""
+    @AppStorage(Appearance.storageKey) private var appearance: Appearance = .system
 
     /// Stamps you can work toward, shown locked until earned.
     private let goals: [(key: String, title: String, symbol: String, category: Genre)] = [
@@ -31,17 +32,18 @@ struct PassportView: View {
                 VStack(alignment: .leading, spacing: 22) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Your passport").eyebrow()
-                        Text("Around here").font(.display(28))
+                        Text("Around here").display(28)
                     }
                     counts
                     stampGrid
                     knows
+                    appearancePicker
                     sampleSettings
                     serverSettings
                 }
                 .padding(18)
             }
-            .background(Lamp.bg)
+            .background(Palette.bg)
         }
     }
 
@@ -58,8 +60,8 @@ struct PassportView: View {
 
     private func count(_ v: String, _ label: String) -> some View {
         VStack(alignment: .leading, spacing: 1) {
-            Text(v).font(.display(22)).monospacedDigit()
-            Text(label).font(.system(size: 11, weight: .semibold)).foregroundStyle(Lamp.muted)
+            Text(v).display(22).monospacedDigit()
+            Text(label).font(.system(size: 11, weight: .semibold)).foregroundStyle(Palette.muted)
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -73,7 +75,7 @@ struct PassportView: View {
             Text("Stamps").eyebrow()
             if stamps.isEmpty {
                 Text("Show up to something on the map and check in when you're there. Stamps only count in person.")
-                    .font(.system(size: 14)).foregroundStyle(Lamp.muted)
+                    .font(.system(size: 14)).foregroundStyle(Palette.muted)
             }
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: 4), spacing: 14) {
                 ForEach(stamps) { s in
@@ -93,17 +95,17 @@ struct PassportView: View {
                 .font(.system(size: 10.5, weight: .semibold))
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
-                .foregroundStyle(dim ? Lamp.muted : Lamp.ink)
+                .foregroundStyle(dim ? Palette.muted : Palette.ink)
         }
     }
 
     private var knows: some View {
         let visible = notes.filter { !$0.isHidden }
         return VStack(alignment: .leading, spacing: 10) {
-            Text("What Wren knows about you").eyebrow()
+            Text("What you're into").eyebrow()
             if visible.isEmpty {
-                Text("Nothing yet. Wren learns from what you join, show up to and order. You can also just tell it.")
-                    .font(.system(size: 14)).foregroundStyle(Lamp.muted)
+                Text("Nothing yet. This fills in from what you join, show up to and order, and it shapes what the map shows first.")
+                    .font(.system(size: 14)).foregroundStyle(Palette.muted)
             }
             FlowLayout(spacing: 7) {
                 ForEach(visible) { n in
@@ -114,8 +116,8 @@ struct PassportView: View {
                             n.isHidden = true
                             Ledger.save(context, "forget note")
                         } label: {
-                            Image(systemName: "xmark").font(.system(size: 9, weight: .bold)).foregroundStyle(Lamp.muted)
-                                .frame(width: 18, height: 18).background(Lamp.raise, in: .circle)
+                            Image(systemName: "xmark").font(.system(size: 9, weight: .bold)).foregroundStyle(Palette.muted)
+                                .frame(width: 18, height: 18).background(Palette.raise, in: .circle)
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel("Forget \(n.text)")
@@ -125,7 +127,7 @@ struct PassportView: View {
                 }
             }
             HStack {
-                TextField("Tell Wren something, like \"no early mornings\"", text: $newNote)
+                TextField("Add one, like \"pickup basketball\"", text: $newNote)
                     .font(.system(size: 14))
                     .onSubmit(addNote)
                 Button("Add", action: addNote).disabled(newNote.trimmingCharacters(in: .whitespaces).isEmpty)
@@ -135,6 +137,20 @@ struct PassportView: View {
         }
     }
 
+    private var appearancePicker: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Appearance").eyebrow()
+            Picker("Appearance", selection: $appearance) {
+                ForEach(Appearance.allCases) { Text($0.label).tag($0) }
+            }
+            .pickerStyle(.segmented)
+            Text("Glass is the dark look, Paper the light one. Match phone follows your phone's setting.")
+                .font(.system(size: 12)).foregroundStyle(Palette.muted)
+        }
+        .padding(14)
+        .card()
+    }
+
     private var sampleSettings: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Sample neighborhood").eyebrow()
@@ -142,15 +158,19 @@ struct PassportView: View {
                 .font(.system(size: 15))
                 .onChange(of: samplesOn) { _, on in
                     if on {
-                        SampleNeighborhood.seed(around: location.center, context: context)
+                        let center = location.center
+                        Task { await SampleNeighborhood.seed(around: center, context: context) }
                     } else {
                         SampleNeighborhood.clear(context: context)
                     }
                 }
-            Text("Until neighbors post for real, example games and kitchens are placed around you so the map isn't empty. Each one is marked Sample.")
-                .font(.system(size: 12)).foregroundStyle(Lamp.muted)
+            Text("Until neighbors post for real, example games and kitchens are placed around you so the map isn't empty. They're placed at real parks, courts and cafés near you, and each page says it's a sample.")
+                .font(.system(size: 12)).foregroundStyle(Palette.muted)
             if samplesOn {
-                Button("Refresh samples around me") { SampleNeighborhood.seed(around: location.center, context: context) }
+                Button("Refresh samples around me") {
+                    let center = location.center
+                    Task { await SampleNeighborhood.seed(around: center, context: context) }
+                }
                     .font(.system(size: 14, weight: .semibold))
             }
         }
@@ -176,7 +196,7 @@ struct PassportView: View {
                 .autocorrectionDisabled()
             Text(serverLine)
                 .font(.system(size: 12))
-                .foregroundStyle(sync.problem == nil ? Lamp.muted : Genre.food.color)
+                .foregroundStyle(sync.problem == nil ? Palette.muted : Genre.food.color)
             if APIConfig.isConfigured {
                 Button(sync.syncing ? "Syncing…" : "Sync now") {
                     let center = location.center
@@ -200,7 +220,7 @@ struct PassportView: View {
     private func addNote() {
         let text = newNote.trimmingCharacters(in: .whitespaces)
         guard !text.isEmpty else { return }
-        let q = WrenQuery.parse(text)
+        let q = SearchQuery.parse(text)
         context.insert(TasteNote(key: "said:\(text.lowercased())", text: text, category: q.categories.first))
         Ledger.save(context, "add note")
         newNote = ""

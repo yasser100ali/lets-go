@@ -1,7 +1,7 @@
 import Foundation
 import CoreLocation
 
-/// Turns what's in the database into what Wren and the map reason about.
+/// Turns what's in the database into what the map and search reason about.
 enum Nearby {
     static func candidates(
         gatherings: [Gathering], kitchens: [Kitchen],

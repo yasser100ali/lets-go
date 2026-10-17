@@ -24,7 +24,7 @@ final class Stamp {
     var category: Genre { Genre(rawValue: categoryRaw) ?? .party }
 }
 
-/// Something Wren believes about you. You can see every one and delete any of them.
+/// Something the app has learned you're into. You can see every one and delete any of them.
 @Model
 final class TasteNote {
     var id: UUID
@@ -32,7 +32,7 @@ final class TasteNote {
     var text: String
     var categoryRaw: String?
     var createdAt: Date
-    /// Deleted by you. Kept (hidden) so Wren doesn't learn it straight back.
+    /// Deleted by you. Kept (hidden) so it isn't learned straight back.
     var isHidden: Bool
 
     init(key: String, text: String, category: Genre?) {

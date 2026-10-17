@@ -28,7 +28,7 @@ struct OrderView: View {
                     form
                 }
             }
-            .background(Lamp.bg)
+            .background(Palette.bg)
             .navigationTitle(placed == nil ? "Your order" : "")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -37,24 +37,24 @@ struct OrderView: View {
                 }
             }
         }
-        .presentationBackground(Lamp.bg)
+        .presentationBackground(Palette.bg)
     }
 
     private var form: some View {
         let now = Date.now
         return ScrollView {
             VStack(alignment: .leading, spacing: 18) {
-                Text(kitchen.name).font(.display(22))
+                Text(kitchen.name).display(22)
                 VStack(spacing: 0) {
                     ForEach(lines, id: \.name) { line in
                         HStack {
-                            Text("\(line.quantity)×").font(.system(size: 14, weight: .bold, design: .monospaced)).foregroundStyle(Lamp.muted)
+                            Text("\(line.quantity)×").font(.system(size: 14, weight: .bold, design: .monospaced)).foregroundStyle(Palette.muted)
                             Text(line.name).font(.system(size: 15, weight: .semibold))
                             Spacer()
                             Text(Pricing.format(line.priceCents * line.quantity)).font(.system(size: 14, design: .monospaced))
                         }
                         .padding(.vertical, 10)
-                        Divider().overlay(Lamp.line)
+                        Divider().overlay(Palette.line)
                     }
                 }
                 VStack(alignment: .leading, spacing: 8) {
@@ -69,9 +69,9 @@ struct OrderView: View {
                                     .strikethrough(full || past)
                                     .frame(maxWidth: .infinity)
                                     .padding(.vertical, 10)
-                                    .foregroundStyle(slot == s ? Lamp.accent : (full || past ? Lamp.muted : Lamp.ink))
-                                    .background(slot == s ? Lamp.accent.opacity(0.12) : Lamp.surface, in: .rect(cornerRadius: 12))
-                                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(slot == s ? Lamp.accent : Lamp.line, lineWidth: slot == s ? 2 : 1))
+                                    .foregroundStyle(slot == s ? Palette.accent : (full || past ? Palette.muted : Palette.ink))
+                                    .background(slot == s ? Palette.accent.opacity(0.12) : Palette.surface, in: .rect(cornerRadius: 12))
+                                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(slot == s ? Palette.accent : Palette.line, lineWidth: slot == s ? 2 : 1))
                             }
                             .buttonStyle(.plain)
                             .disabled(full || past)
@@ -79,14 +79,14 @@ struct OrderView: View {
                     }
                     if let firstFull = drop.slots.first(where: isFull) {
                         Text("\(firstFull.formatted(date: .omitted, time: .shortened)) is full. \(kitchen.cookName) hands out \(drop.perSlot) orders per slot.")
-                            .font(.system(size: 12)).foregroundStyle(Lamp.muted)
+                            .font(.system(size: 12)).foregroundStyle(Palette.muted)
                     }
                 }
                 if kitchen.porchTables > 0 {
                     Toggle(isOn: $porch) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Eat on the porch").font(.system(size: 15, weight: .semibold))
-                            Text("\(kitchen.porchTables) tables, first come").font(.system(size: 12)).foregroundStyle(Lamp.muted)
+                            Text("\(kitchen.porchTables) tables, first come").font(.system(size: 12)).foregroundStyle(Palette.muted)
                         }
                     }
                     .tint(Genre.play.color)
@@ -94,13 +94,13 @@ struct OrderView: View {
                     .card()
                 }
                 Label("The exact pickup spot shows after you reserve.", systemImage: "lock.fill")
-                    .font(.system(size: 13)).foregroundStyle(Lamp.muted)
+                    .font(.system(size: 13)).foregroundStyle(Palette.muted)
                 VStack(spacing: 6) {
                     row("Food", Pricing.format(subtotal))
                     row("Service", Pricing.format(Pricing.serviceFee(for: subtotal)))
                     row("Total", Pricing.format(subtotal + Pricing.serviceFee(for: subtotal)), bold: true)
                     Text("Pay \(kitchen.cookName) at pickup. In-app payment comes later.")
-                        .font(.system(size: 12)).foregroundStyle(Lamp.muted)
+                        .font(.system(size: 12)).foregroundStyle(Palette.muted)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
@@ -112,7 +112,7 @@ struct OrderView: View {
                 .disabled(slot == nil || lines.isEmpty || reserving)
                 .padding(.horizontal, 18)
                 .padding(.vertical, 8)
-                .background(Lamp.bg)
+                .background(Palette.bg)
         }
         .errorAlert($problem)
         .onAppear {
@@ -175,12 +175,12 @@ struct ReservedView: View {
                 .font(.system(size: 54))
                 .foregroundStyle(Genre.play.color)
                 .padding(.top, 20)
-            Text("Reserved").font(.display(30))
+            Text("Reserved").display(30)
             Text("Pick up at \(order.pickupAt.formatted(date: .omitted, time: .shortened)) from \(order.kitchen?.cookName ?? "the cook").")
                 .font(.system(size: 17))
             if let note = order.kitchen?.pickupNote, !note.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
-                    Label("Where to go", systemImage: "lock.open.fill").eyebrow(Lamp.accent)
+                    Label("Where to go", systemImage: "lock.open.fill").eyebrow(Palette.accent)
                     Text(note).font(.system(size: 16, weight: .semibold))
                 }
                 .padding(14)
@@ -189,10 +189,10 @@ struct ReservedView: View {
             }
             if order.eatOnPorch {
                 Label("A porch seat's yours if one's open when you get there.", systemImage: "chair.lounge")
-                    .font(.system(size: 14)).foregroundStyle(Lamp.muted)
+                    .font(.system(size: 14)).foregroundStyle(Palette.muted)
             }
             Text("It's in Kitchens → Your orders. Mark it picked up there and leave a review.")
-                .font(.system(size: 14)).foregroundStyle(Lamp.muted)
+                .font(.system(size: 14)).foregroundStyle(Palette.muted)
             Spacer()
             Button("Done", action: done).buttonStyle(PrimaryButtonStyle())
         }

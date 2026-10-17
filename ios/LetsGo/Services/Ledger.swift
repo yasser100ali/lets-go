@@ -4,7 +4,7 @@ import OSLog
 
 /// The things you do that change what the app knows about you:
 /// joining, checking in, ordering, reviewing, hosting. Each one saves,
-/// awards any stamp it earned, and teaches Wren a little.
+/// awards any stamp it earned, and learns a little about what you like.
 enum Ledger {
     private static let log = Logger(subsystem: "com.yasser100ali.letsgo", category: "ledger")
 
@@ -102,7 +102,7 @@ enum Ledger {
         return stamp
     }
 
-    /// Adds a note Wren believes about you, unless you deleted it before.
+    /// Adds something you're into, unless you deleted it before.
     static func learn(_ key: String, _ text: String, _ category: Genre?, context: ModelContext) {
         let existing = count(context, FetchDescriptor<TasteNote>(predicate: #Predicate { $0.key == key }))
         guard existing == 0 else { return }

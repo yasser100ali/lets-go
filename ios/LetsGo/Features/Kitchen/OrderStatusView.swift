@@ -11,15 +11,15 @@ struct OrderStatusView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                Text(order.kitchen?.name ?? "Order").font(.display(26))
+                Text(order.kitchen?.name ?? "Order").display(26)
                 Text(order.status == .reserved
                      ? "Pickup at \(order.pickupAt.formatted(date: .omitted, time: .shortened))"
                      : "Picked up")
                     .font(.system(size: 17, weight: .semibold))
-                    .foregroundStyle(order.status == .reserved ? Lamp.ink : Genre.play.color)
+                    .foregroundStyle(order.status == .reserved ? Palette.ink : Genre.play.color)
                 if let note = order.kitchen?.pickupNote, !note.isEmpty {
                     VStack(alignment: .leading, spacing: 6) {
-                        Label("Where to go", systemImage: "mappin.and.ellipse").eyebrow(Lamp.accent)
+                        Label("Where to go", systemImage: "mappin.and.ellipse").eyebrow(Palette.accent)
                         Text(note).font(.system(size: 16, weight: .semibold))
                     }
                     .padding(14)
@@ -34,7 +34,7 @@ struct OrderStatusView: View {
                             Text(Pricing.format(line.priceCents * line.quantity)).font(.system(size: 14, design: .monospaced))
                         }
                         .padding(.vertical, 9)
-                        Divider().overlay(Lamp.line)
+                        Divider().overlay(Palette.line)
                     }
                     HStack {
                         Text("Total, paid at pickup").fontWeight(.bold)
@@ -46,7 +46,7 @@ struct OrderStatusView: View {
             }
             .padding(18)
         }
-        .background(Lamp.bg)
+        .background(Palette.bg)
         .safeAreaInset(edge: .bottom) {
             Group {
                 switch order.status {
@@ -68,7 +68,7 @@ struct OrderStatusView: View {
             .buttonStyle(PrimaryButtonStyle())
             .padding(.horizontal, 18)
             .padding(.vertical, 8)
-            .background(Lamp.bg)
+            .background(Palette.bg)
         }
         .sheet(isPresented: $reviewing) {
             ReviewView(order: order) { stamp in earned = stamp }
@@ -96,13 +96,13 @@ struct ReviewView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 18) {
-                    Text("How was \(order.kitchen?.cookName ?? "it")'s?").font(.display(24)).multilineTextAlignment(.center)
+                    Text("How was \(order.kitchen?.cookName ?? "it")'s?").display(24).multilineTextAlignment(.center)
                     HStack(spacing: 8) {
                         ForEach(1...5, id: \.self) { i in
                             Button { stars = i } label: {
                                 Image(systemName: i <= stars ? "star.fill" : "star")
                                     .font(.system(size: 34))
-                                    .foregroundStyle(Lamp.star)
+                                    .foregroundStyle(Palette.star)
                             }
                             .buttonStyle(.plain)
                             .accessibilityLabel("\(i) stars")
@@ -116,9 +116,9 @@ struct ReviewView: View {
                             } label: {
                                 Text(t).font(.system(size: 14, weight: .semibold))
                                     .padding(.horizontal, 12).padding(.vertical, 8)
-                                    .foregroundStyle(on ? Lamp.accentInk : Lamp.ink)
-                                    .background(on ? Lamp.accent : Lamp.surface, in: .capsule)
-                                    .overlay(Capsule().stroke(on ? .clear : Lamp.line))
+                                    .foregroundStyle(on ? Palette.accentInk : Palette.ink)
+                                    .background(on ? Palette.accent : Palette.surface, in: .capsule)
+                                    .overlay(Capsule().stroke(on ? .clear : Palette.line))
                             }
                             .buttonStyle(.plain)
                         }
@@ -130,7 +130,7 @@ struct ReviewView: View {
                 }
                 .padding(20)
             }
-            .background(Lamp.bg)
+            .background(Palette.bg)
             .safeAreaInset(edge: .bottom) {
                 Button("Post review") { post() }
                     .buttonStyle(PrimaryButtonStyle())
@@ -143,7 +143,7 @@ struct ReviewView: View {
             }
             .errorAlert($problem)
         }
-        .presentationBackground(Lamp.bg)
+        .presentationBackground(Palette.bg)
     }
 
     private func post() {

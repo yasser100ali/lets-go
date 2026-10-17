@@ -16,7 +16,18 @@ enum Genre: String, CaseIterable, Codable, Identifiable, Sendable {
         }
     }
 
-    /// How Wren talks about it: "you're into pickup games".
+    /// The chip on the map: "Sports", "Runs".
+    var plural: String {
+        switch self {
+        case .play: "Sports"
+        case .move: "Runs"
+        case .music: "Music"
+        case .party: "Hangs"
+        case .food: "Food"
+        }
+    }
+
+    /// How the app talks about it: "you're into pickup games".
     var noun: String {
         switch self {
         case .play: "pickup games"
@@ -39,15 +50,15 @@ enum Genre: String, CaseIterable, Codable, Identifiable, Sendable {
 
     var color: Color {
         switch self {
-        case .play: Color(hex: 0x4FE0A0)
-        case .move: Color(hex: 0x5CCBFF)
-        case .music: Color(hex: 0xC8A2FF)
-        case .party: Color(hex: 0xFF6FA8)
-        case .food: Color(hex: 0xFF8C5E)
+        case .play: Color(hex: 0x3FA772)
+        case .move: Color(hex: 0x3A9BD9)
+        case .music: Color(hex: 0x9C7BE0)
+        case .party: Color(hex: 0xD46A9A)
+        case .food: Color(hex: 0xE07B4C)
         }
     }
 
-    /// Words that point at this category, for Wren's plain-text matching.
+    /// Words that point at this category, for search.
     var keywords: [String] {
         switch self {
         case .play: ["soccer", "football", "basketball", "hoops", "pickup", "volleyball", "tennis", "frisbee", "game", "sport", "play"]
