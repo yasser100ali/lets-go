@@ -3,7 +3,7 @@
 # The build number is one more than the highest Apple has (or $BUILD_NUMBER), so builds
 # from this Mac and from GitHub Actions never collide and nothing gets committed.
 #
-# Signing uses Let's Go's own Apple Distribution certificate, kept in a dedicated
+# Signing (archive and export) uses Let's Go's own Apple Distribution certificate, kept in a dedicated
 # keychain (~/Library/Keychains/letsgo-signing.keychain-db) whose password lives in
 # ~/.appstoreconnect/letsgo-signing/. That keychain never prompts, so this runs
 # unattended. scripts/setup-signing.sh rebuilds it on a new machine.
@@ -25,10 +25,14 @@ OUT="build/$BUILD"
 rm -rf "$OUT"; mkdir -p "$OUT"
 
 echo "Archiving build $BUILD"
+# Sign the archive with the distribution cert straight from its own keychain. Automatic
+# signing would reach for the login keychain, which a background runner can't open.
+KEYCHAIN="$HOME/Library/Keychains/letsgo-signing.keychain-db"
 xcodebuild archive -project ios/LetsGo.xcodeproj -scheme LetsGo -configuration Release \
-  -destination 'generic/platform=iOS' -archivePath "$OUT/LetsGo.xcarchive" CURRENT_PROJECT_VERSION="$BUILD" \
-  -allowProvisioningUpdates -authenticationKeyPath "$KEY_P8" \
-  -authenticationKeyID "$KEY_ID" -authenticationKeyIssuerID "$ISSUER" -quiet
+  -destination 'generic/platform=iOS' -archivePath "$OUT/LetsGo.xcarchive" \
+  CURRENT_PROJECT_VERSION="$BUILD" DEVELOPMENT_TEAM=X3HMA23KKN \
+  CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="$CERT_SHA1" PROVISIONING_PROFILE_SPECIFIER="LetsGo AppStore" \
+  OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN" -quiet
 
 cat > "$OUT/ExportOptions.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
