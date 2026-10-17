@@ -1,3 +1,4 @@
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -11,6 +12,15 @@ class Settings(BaseSettings):
     check_in_early_min: int = 30
     # The default "near you" radius for the map.
     nearby_radius_m: float = 2500
+
+    @field_validator("database_url")
+    @classmethod
+    def _async_driver(cls, url: str) -> str:
+        """Railway hands out postgresql:// (or postgres://); SQLAlchemy async needs the asyncpg driver."""
+        for prefix in ("postgres://", "postgresql://"):
+            if url.startswith(prefix):
+                return "postgresql+asyncpg://" + url[len(prefix) :]
+        return url
 
 
 settings = Settings()

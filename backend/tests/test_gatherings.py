@@ -123,3 +123,12 @@ async def test_food_is_not_a_gathering(client):
         },
     )
     assert r.status_code == 422
+
+
+def test_railway_database_url_gets_the_async_driver():
+    from app.config import Settings
+
+    assert (
+        Settings(database_url="postgresql://u:p@h:5432/d").database_url == "postgresql+asyncpg://u:p@h:5432/d"
+    )
+    assert Settings(database_url="postgres://u:p@h/d").database_url == "postgresql+asyncpg://u:p@h/d"
