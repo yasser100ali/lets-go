@@ -1,0 +1,32 @@
+# Local backend: api on :8100, Postgres on :5433 (Pulse already uses 8000/5432).
+services:
+  api:
+    build:
+      context: ./backend
+      args:
+        DEV: "1"
+    ports: ["8100:8000"]
+    environment:
+      DATABASE_URL: postgresql+asyncpg://letsgo:letsgo_dev@db:5432/letsgo
+      TEST_DATABASE_URL: postgresql+asyncpg://letsgo:letsgo_dev@db:5432/letsgo_test
+    volumes: ["./backend:/app"]
+    command: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: letsgo
+      POSTGRES_PASSWORD: letsgo_dev
+      POSTGRES_DB: letsgo
+    ports: ["5433:5432"]
+    volumes:
+      - letsgo_db:/var/lib/postgresql/data
+      - ./backend/scripts/init-test-db.sql:/docker-entrypoint-initdb.d/init-test-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U letsgo"]
+      interval: 2s
+      retries: 20
+volumes:
+  letsgo_db:

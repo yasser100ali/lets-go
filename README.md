@@ -15,11 +15,22 @@ Working name. The mocks this was built from: https://claude.ai/artifact/WxbnSewL
 
 Everything is on-device (SwiftData) for now. Until real neighbors post, a **sample neighborhood** is placed around you, every item tagged *Sample*; turn it off under You.
 
+## Backend (built, not deployed, not wired to the app yet)
+
+`backend/` is a FastAPI + Postgres API for the shared version: device accounts with bearer tokens, `/v1/nearby` (gatherings and kitchens around a point), hosting, joining and **server-checked check-ins** (within 200 m, from 30 min before start), kitchens with menus and drops, and **orders that can't oversell** (the drop row is locked while stock and the 15-minute slot are checked; a retried request with the same `client_id` returns the same order). Pickup notes only go to the cook and to people with an order. Reviews only after pickup, one per order.
+
+```bash
+docker compose up                                   # api on :8100, Postgres on :5433
+docker compose run --rm --no-deps api pytest -q     # 20 tests
+```
+
+Schema changes go through Alembic (`alembic revision --autogenerate`, then read it). CI runs lint, `alembic check` and the tests.
+
 ## Not yet
 
-- A backend, so what you post reaches other people. (Next.)
+- Deploying the backend and switching the app from on-device data to it.
 - Payments — you pay the cook at pickup.
-- Accounts, push notifications, Live Activities.
+- Sign in with Apple, push notifications, Live Activities.
 
 ## Layout
 
@@ -30,6 +41,8 @@ ios/
   Config.xcconfig      bundle id, team, version, build number
   LetsGo/              app sources (synced folder: new files are picked up automatically)
   LetsGoTests/         Swift Testing
+backend/               FastAPI + SQLAlchemy async + Alembic
+docker-compose.yml     local api (:8100) + Postgres (:5433)
 scripts/
   ship.sh              bump build → archive → upload to TestFlight
   asc.py               App Store Connect API: app record, testers, build status
