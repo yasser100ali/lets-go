@@ -20,6 +20,8 @@ struct NewGatheringView: View {
     @State private var details = ""
     @State private var pin: CLLocationCoordinate2D?
     @State private var loaded = false
+    @State private var posting = false
+    @State private var problem: String?
 
     var body: some View {
         NavigationStack {
@@ -61,10 +63,11 @@ struct NewGatheringView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Post") { post() }
                         .fontWeight(.bold)
-                        .disabled(!canPost)
+                        .disabled(!canPost || posting)
                 }
             }
             .onAppear(perform: load)
+            .errorAlert($problem)
             .onChange(of: start) { _, new in
                 if end <= new { end = new.addingTimeInterval(2 * 3600) }
             }
@@ -121,7 +124,13 @@ struct NewGatheringView: View {
             bring: bring,
             isMine: true
         )
-        Ledger.host(g, context: context)
-        dismiss()
+        posting = true
+        Task {
+            await attempt($problem) { () throws(APIError) in
+                try await Sync.host(g, context: context)
+                dismiss()
+            }
+            posting = false
+        }
     }
 }

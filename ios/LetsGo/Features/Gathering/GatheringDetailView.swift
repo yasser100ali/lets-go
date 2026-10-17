@@ -10,6 +10,8 @@ struct GatheringDetailView: View {
     @Query private var allGatherings: [Gathering]
     @State private var earned: Stamp?
     @State private var confirmDelete = false
+    @State private var busy = false
+    @State private var problem: String?
 
     /// Close enough to count as being there.
     private let checkInRadius: CLLocationDistance = 200
@@ -44,11 +46,13 @@ struct GatheringDetailView: View {
         }
         .ignoresSafeArea(edges: .top)
         .sheet(item: $earned) { StampEarnedView(stamp: $0) }
+        .errorAlert($problem)
         .confirmationDialog("Cancel \(gathering.title)?", isPresented: $confirmDelete, titleVisibility: .visible) {
             Button("Cancel it", role: .destructive) {
-                context.delete(gathering)
-                Ledger.save(context, "cancel gathering")
-                dismiss()
+                run { () throws(APIError) in
+                    try await Sync.cancel(gathering, context: context)
+                    dismiss()
+                }
             }
         } message: {
             Text("It comes off the map for everyone.")
@@ -149,7 +153,10 @@ struct GatheringDetailView: View {
                 Button("You're here") {}.buttonStyle(PrimaryButtonStyle(color: gathering.category.color)).disabled(true)
             } else if canCheckIn {
                 Button("Check in") {
-                    earned = Ledger.checkIn(gathering, context: context, now: now)
+                    let here = location.center
+                    run { () throws(APIError) in
+                        earned = try await Sync.checkIn(gathering, at: here, context: context)
+                    }
                 }
                 .buttonStyle(PrimaryButtonStyle(color: gathering.category.color))
             } else if gathering.isJoined {
@@ -157,22 +164,35 @@ struct GatheringDetailView: View {
                     .buttonStyle(PrimaryButtonStyle(color: Lamp.raise))
                     .disabled(true)
                 if !gathering.isMine {
-                    Button("Leave") { Ledger.leave(gathering, context: context) }
+                    Button("Leave") {
+                        run { () throws(APIError) in try await Sync.leave(gathering, context: context) }
+                    }
                         .font(.system(size: 15, weight: .semibold))
                         .padding(.horizontal, 18)
                         .padding(.vertical, 15)
                         .card()
                 }
             } else {
-                Button(gathering.isFull ? "Full" : "I'm in") { Ledger.join(gathering, context: context) }
-                    .buttonStyle(PrimaryButtonStyle())
-                    .disabled(gathering.isFull)
+                Button(gathering.isFull ? "Full" : "I'm in") {
+                    run { () throws(APIError) in try await Sync.join(gathering, context: context) }
+                }
+                .buttonStyle(PrimaryButtonStyle())
+                .disabled(gathering.isFull)
             }
         }
+        .disabled(busy)
         .padding(.horizontal, 18)
         .padding(.top, 10)
         .padding(.bottom, 6)
         .background(Lamp.bg)
+    }
+
+    private func run(_ work: @escaping () async throws(APIError) -> Void) {
+        busy = true
+        Task {
+            await attempt($problem, work)
+            busy = false
+        }
     }
 
     private func wrenNote(now: Date) -> String? {

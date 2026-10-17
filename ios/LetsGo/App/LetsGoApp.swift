@@ -4,11 +4,13 @@ import SwiftData
 @main
 struct LetsGoApp: App {
     @State private var location = LocationService()
+    @State private var sync = SyncStatus()
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environment(location)
+                .environment(sync)
                 .preferredColorScheme(.dark)
                 .tint(Lamp.accent)
         }

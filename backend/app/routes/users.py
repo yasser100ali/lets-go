@@ -21,3 +21,12 @@ async def create_user(body: UserCreate, session: AsyncSession = Depends(get_sess
 @router.get("/me", response_model=UserOut)
 async def me(user: User = Depends(current_user)) -> User:
     return user
+
+
+@router.patch("/me", response_model=UserOut)
+async def rename(
+    body: UserCreate, user: User = Depends(current_user), session: AsyncSession = Depends(get_session)
+) -> User:
+    user.display_name = body.display_name.strip()
+    await session.commit()
+    return user

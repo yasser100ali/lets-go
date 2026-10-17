@@ -10,8 +10,11 @@ struct PassportView: View {
     @Query private var gatherings: [Gathering]
     @Query private var orders: [Order]
 
+    @Environment(SyncStatus.self) private var sync
     @State private var newNote = ""
     @AppStorage(SampleNeighborhood.enabledKey) private var samplesOn = true
+    @AppStorage(APIClient.nameKey) private var displayName = ""
+    @AppStorage(APIConfig.overrideKey) private var serverURL = ""
 
     /// Stamps you can work toward, shown locked until earned.
     private let goals: [(key: String, title: String, symbol: String, category: Genre)] = [
@@ -34,6 +37,7 @@ struct PassportView: View {
                     stampGrid
                     knows
                     sampleSettings
+                    serverSettings
                 }
                 .padding(18)
             }
@@ -152,6 +156,45 @@ struct PassportView: View {
         }
         .padding(14)
         .card()
+    }
+
+    private var serverSettings: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Server").eyebrow()
+            TextField("Your name, as neighbors see it", text: $displayName)
+                .font(.system(size: 15))
+                .textContentType(.givenName)
+                .submitLabel(.done)
+                .onSubmit {
+                    let name = displayName
+                    Task { await sync.run { () throws(APIError) in try await Sync.saveName(name) } }
+                }
+            TextField("Server address, like https://….ngrok.app", text: $serverURL)
+                .font(.system(size: 14, design: .monospaced))
+                .keyboardType(.URL)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+            Text(serverLine)
+                .font(.system(size: 12))
+                .foregroundStyle(sync.problem == nil ? Lamp.muted : Genre.food.color)
+            if APIConfig.isConfigured {
+                Button(sync.syncing ? "Syncing…" : "Sync now") {
+                    let center = location.center
+                    Task { await sync.run { () throws(APIError) in try await Sync.refresh(around: center, context: context) } }
+                }
+                .font(.system(size: 14, weight: .semibold))
+                .disabled(sync.syncing)
+            }
+        }
+        .padding(14)
+        .card()
+    }
+
+    private var serverLine: String {
+        if !APIConfig.isConfigured { return "No server: everything stays on this phone, and only you see what you post." }
+        if let problem = sync.problem { return problem }
+        if let at = sync.lastSynced { return "Synced \(at.formatted(date: .omitted, time: .shortened)). What you post reaches people nearby." }
+        return "Not synced yet."
     }
 
     private func addNote() {
