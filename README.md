@@ -15,7 +15,7 @@ Working name. The mocks this was built from: https://claude.ai/artifact/WxbnSewL
 
 Everything is on-device (SwiftData) for now. Until real neighbors post, a **sample neighborhood** is placed around you, every item tagged *Sample*; turn it off under You.
 
-## Backend (built, not deployed)
+## Backend
 
 `backend/` is a FastAPI + Postgres API for the shared version: device accounts with bearer tokens, `/v1/nearby` (gatherings and kitchens around a point), hosting, joining and **server-checked check-ins** (within 200 m, from 30 min before start), kitchens with menus and drops, and **orders that can't oversell** (the drop row is locked while stock and the 15-minute slot are checked; a retried request with the same `client_id` returns the same order). Pickup notes only go to the cook and to people with an order. Reviews only after pickup, one per order.
 
@@ -35,9 +35,10 @@ TEST_RUNNER_LETSGO_API=http://localhost:8100 xcodebuild test -project ios/LetsGo
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
+Deployed on Railway: project **lets-go**, services `api` (this Dockerfile; runs `alembic upgrade head` on start) and `Postgres`, at https://api-production-658b9.up.railway.app. Deploy from `backend/` with `railway up --service api`. The app uses it by default (`APIConfig.deployed`); You → Server overrides it.
+
 ## Not yet
 
-- Deploying the backend (and putting its URL in `APIConfig.deployed`).
 - Payments — you pay the cook at pickup.
 - Sign in with Apple, push notifications, Live Activities.
 

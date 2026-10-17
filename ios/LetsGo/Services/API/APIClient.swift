@@ -6,8 +6,8 @@ nonisolated enum APIConfig {
     /// Set under You → Server (for a dev server or an ngrok tunnel), or with the
     /// LETSGO_API environment variable when running from Xcode.
     static let overrideKey = "api.baseURL"
-    /// The deployed backend. Nil until there is one.
-    static let deployed: URL? = nil
+    /// The deployed backend (Railway project "lets-go", service "api").
+    static let deployed: URL? = URL(string: "https://api-production-658b9.up.railway.app")
 
     static var baseURL: URL? {
         if let s = ProcessInfo.processInfo.environment["LETSGO_API"], let url = URL(string: s) { return url }
