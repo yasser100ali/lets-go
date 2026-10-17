@@ -25,6 +25,8 @@ final class Kitchen {
     var isSample: Bool
     /// Reviews shown on a sample kitchen's page. Already counted in the base rating.
     var sampleReviews: [SampleReview] = []
+    /// The backend's id. Its reviews are kept in `sampleReviews` too, as shown text.
+    var remoteID: UUID?
 
     @Relationship(deleteRule: .cascade, inverse: \MenuItem.kitchen) var menu: [MenuItem] = []
     @Relationship(deleteRule: .cascade, inverse: \Drop.kitchen) var drops: [Drop] = []
@@ -84,6 +86,7 @@ final class MenuItem {
     var priceCents: Int
     var sortIndex: Int
     var kitchen: Kitchen?
+    var remoteID: UUID?
 
     init(name: String, note: String = "", priceCents: Int, sortIndex: Int) {
         self.id = UUID()
@@ -105,6 +108,7 @@ final class Drop {
     /// How many orders the cook can hand out per 15-minute pickup slot.
     var perSlot: Int
     var kitchen: Kitchen?
+    var remoteID: UUID?
 
     init(start: Date, end: Date, total: Int, sold: Int = 0, perSlot: Int = 4) {
         self.id = UUID()
@@ -155,6 +159,7 @@ final class Order {
     var eatOnPorch: Bool
     var statusRaw: String
     var kitchen: Kitchen?
+    var remoteID: UUID?
 
     init(pickupAt: Date, lines: [OrderLine], eatOnPorch: Bool) {
         self.id = UUID()

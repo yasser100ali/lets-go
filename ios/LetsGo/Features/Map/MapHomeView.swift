@@ -6,6 +6,7 @@ import MapKit
 /// one line and the top picks on the panel at the bottom.
 struct MapHomeView: View {
     @Environment(LocationService.self) private var location
+    @Environment(SyncStatus.self) private var sync
     @Query(sort: \Gathering.start) private var gatherings: [Gathering]
     @Query private var kitchens: [Kitchen]
     @Query private var notes: [TasteNote]
@@ -120,6 +121,12 @@ struct MapHomeView: View {
                     Text(location.isUsingFallback ? "Sample neighborhood · SF" : "Within a 10-min walk")
                         .font(.system(size: 14, weight: .semibold))
                     Spacer(minLength: 0)
+                    if APIConfig.isConfigured && sync.problem != nil {
+                        Label("Offline", systemImage: "wifi.slash")
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundStyle(Lamp.muted)
+                            .labelStyle(.titleAndIcon)
+                    }
                 }
                 .padding(.horizontal, 14)
                 .padding(.vertical, 11)

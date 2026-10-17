@@ -14,3 +14,8 @@ ios/fastlane/test_output/
 *.p8
 asc_api_key.json
 .env
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/

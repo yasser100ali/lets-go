@@ -15,7 +15,7 @@ Working name. The mocks this was built from: https://claude.ai/artifact/WxbnSewL
 
 Everything is on-device (SwiftData) for now. Until real neighbors post, a **sample neighborhood** is placed around you, every item tagged *Sample*; turn it off under You.
 
-## Backend (built, not deployed, not wired to the app yet)
+## Backend (built, not deployed)
 
 `backend/` is a FastAPI + Postgres API for the shared version: device accounts with bearer tokens, `/v1/nearby` (gatherings and kitchens around a point), hosting, joining and **server-checked check-ins** (within 200 m, from 30 min before start), kitchens with menus and drops, and **orders that can't oversell** (the drop row is locked while stock and the 15-minute slot are checked; a retried request with the same `client_id` returns the same order). Pickup notes only go to the cook and to people with an order. Reviews only after pickup, one per order.
 
@@ -26,9 +26,18 @@ docker compose run --rm --no-deps api pytest -q     # 20 tests
 
 Schema changes go through Alembic (`alembic revision --autogenerate`, then read it). CI runs lint, `alembic check` and the tests.
 
+The app talks to it when it has a server address: under **You → Server** (an ngrok URL to your Mac works), `LETSGO_API` in the Xcode scheme, or `APIConfig.deployed` once there's a real deployment. With no address it runs on the phone's own data, as before. Things from the server are pulled into the on-phone store on launch, on returning to the app and when you move; joining, check-ins, hosting, kitchens, drops, orders and reviews go to the server first when the thing lives there.
+
+iOS integration tests against a running backend:
+
+```bash
+TEST_RUNNER_LETSGO_API=http://localhost:8100 xcodebuild test -project ios/LetsGo.xcodeproj -scheme LetsGo \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
+```
+
 ## Not yet
 
-- Deploying the backend and switching the app from on-device data to it.
+- Deploying the backend (and putting its URL in `APIConfig.deployed`).
 - Payments — you pay the cook at pickup.
 - Sign in with Apple, push notifications, Live Activities.
 

@@ -27,6 +27,8 @@ private struct OpenKitchenForm: View {
     @State private var porchTables = 0
     @State private var permit = false
     @State private var handlerCard = false
+    @State private var opening = false
+    @State private var problem: String?
 
     var body: some View {
         Form {
@@ -58,11 +60,12 @@ private struct OpenKitchenForm: View {
             Section {
                 Button("Open my kitchen") { open() }
                     .fontWeight(.bold)
-                    .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty || cuisine.trimmingCharacters(in: .whitespaces).isEmpty)
+                    .disabled(opening || name.trimmingCharacters(in: .whitespaces).isEmpty || cuisine.trimmingCharacters(in: .whitespaces).isEmpty)
             }
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("Open your kitchen")
+        .errorAlert($problem)
     }
 
     private func open() {
@@ -78,7 +81,11 @@ private struct OpenKitchenForm: View {
         )
         k.permitConfirmed = permit
         k.handlerCardConfirmed = handlerCard
-        Ledger.openKitchen(k, context: context)
+        opening = true
+        Task {
+            await attempt($problem) { () throws(APIError) in try await Sync.open(k, context: context) }
+            opening = false
+        }
     }
 }
 
@@ -87,6 +94,7 @@ private struct KitchenDashboard: View {
     @Environment(\.modelContext) private var context
     @State private var addingItem = false
     @State private var postingDrop = false
+    @State private var problem: String?
 
     var body: some View {
         let now = Date.now
@@ -110,6 +118,8 @@ private struct KitchenDashboard: View {
         }
         .sheet(isPresented: $addingItem) { AddMenuItemView(kitchen: kitchen) }
         .sheet(isPresented: $postingDrop) { PostDropView(kitchen: kitchen) }
+        .errorAlert($problem)
+        .task { try? await Sync.refresh(kitchen, context: context) }
     }
 
     private var stats: some View {
@@ -187,8 +197,7 @@ private struct KitchenDashboard: View {
                 .padding(.vertical, 10)
                 .contextMenu {
                     Button("Remove", role: .destructive) {
-                        context.delete(item)
-                        Ledger.save(context, "remove menu item")
+                        Task { await attempt($problem) { () throws(APIError) in try await Sync.remove(item, context: context) } }
                     }
                 }
                 Divider().overlay(Lamp.line)
@@ -199,8 +208,8 @@ private struct KitchenDashboard: View {
     private var checklist: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Checklist").eyebrow()
-            check("Home kitchen permit", kitchen.permitConfirmed) { kitchen.permitConfirmed.toggle(); Ledger.save(context, "permit") }
-            check("Food handler card", kitchen.handlerCardConfirmed) { kitchen.handlerCardConfirmed.toggle(); Ledger.save(context, "handler card") }
+            check("Home kitchen permit", kitchen.permitConfirmed) { kitchen.permitConfirmed.toggle(); savePermits() }
+            check("Food handler card", kitchen.handlerCardConfirmed) { kitchen.handlerCardConfirmed.toggle(); savePermits() }
             check("Something on the menu", !kitchen.menu.isEmpty, action: nil)
         }
     }
@@ -216,6 +225,10 @@ private struct KitchenDashboard: View {
         }
         .buttonStyle(.plain)
         .disabled(action == nil)
+    }
+
+    private func savePermits() {
+        Task { await attempt($problem) { () throws(APIError) in try await Sync.savePermits(kitchen, context: context) } }
     }
 
     /// One suggestion from how the last finished drop went.
@@ -240,6 +253,7 @@ private struct AddMenuItemView: View {
     @State private var name = ""
     @State private var note = ""
     @State private var price = 10.0
+    @State private var problem: String?
 
     var body: some View {
         NavigationStack {
@@ -257,14 +271,17 @@ private struct AddMenuItemView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
                         let item = MenuItem(name: name.trimmingCharacters(in: .whitespaces), note: note, priceCents: Int(price * 100), sortIndex: kitchen.menu.count)
-                        context.insert(item)
-                        item.kitchen = kitchen
-                        Ledger.save(context, "add menu item")
-                        dismiss()
+                        Task {
+                            await attempt($problem) { () throws(APIError) in
+                                try await Sync.add(item, to: kitchen, context: context)
+                                dismiss()
+                            }
+                        }
                     }
                     .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
             }
+            .errorAlert($problem)
         }
         .presentationDetents([.medium])
     }
@@ -278,6 +295,7 @@ private struct PostDropView: View {
     @State private var hours = 1.5
     @State private var total = 12
     @State private var perSlot = 4
+    @State private var problem: String?
 
     var body: some View {
         NavigationStack {
@@ -296,13 +314,16 @@ private struct PostDropView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Post") {
                         let d = Drop(start: start, end: start.addingTimeInterval(hours * 3600), total: total, perSlot: perSlot)
-                        context.insert(d)
-                        d.kitchen = kitchen
-                        Ledger.save(context, "post drop")
-                        dismiss()
+                        Task {
+                            await attempt($problem) { () throws(APIError) in
+                                try await Sync.post(d, to: kitchen, context: context)
+                                dismiss()
+                            }
+                        }
                     }
                 }
             }
+            .errorAlert($problem)
         }
         .presentationDetents([.medium])
     }

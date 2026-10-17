@@ -23,6 +23,13 @@ async def test_unauthenticated_is_rejected(client):
     assert r.status_code == 401
 
 
+async def test_rename_shows_on_hosted_things(client):
+    sam = await make_user(client, "Neighbor")
+    await client.patch("/v1/me", json={"display_name": "Sam O."}, headers=sam)
+    g = await host_game(client, sam)
+    assert g["host_name"] == "Sam O."
+
+
 async def test_host_is_going_and_shows_up_nearby(client):
     sam = await make_user(client, "Sam O.")
     g = await host_game(client, sam)

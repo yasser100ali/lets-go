@@ -25,6 +25,8 @@ final class Gathering {
     var checkedInAt: Date?
     var isMine: Bool
     var isSample: Bool
+    /// The backend's id, for things that came from (or were posted to) the server.
+    var remoteID: UUID?
 
     init(
         title: String, category: Genre, details: String = "", placeName: String,

@@ -13,6 +13,11 @@ struct OrderView: View {
     @State private var slot: Date?
     @State private var porch = false
     @State private var placed: Order?
+    @State private var reserving = false
+    @State private var problem: String?
+    /// Kept across taps, so retrying after a timeout sends the same order id
+    /// and the server returns the first order instead of making a second.
+    @State private var pendingID: UUID?
 
     var body: some View {
         NavigationStack {
@@ -102,13 +107,14 @@ struct OrderView: View {
             .padding(18)
         }
         .safeAreaInset(edge: .bottom) {
-            Button("Reserve") { reserve() }
+            Button(reserving ? "Reserving…" : "Reserve") { reserve() }
                 .buttonStyle(PrimaryButtonStyle())
-                .disabled(slot == nil || lines.isEmpty)
+                .disabled(slot == nil || lines.isEmpty || reserving)
                 .padding(.horizontal, 18)
                 .padding(.vertical, 8)
                 .background(Lamp.bg)
         }
+        .errorAlert($problem)
         .onAppear {
             if slot == nil { slot = drop.slots.first { !isFull($0) && $0.addingTimeInterval(15 * 60) >= now } }
         }
@@ -142,9 +148,20 @@ struct OrderView: View {
     private func reserve() {
         guard let slot else { return }
         let order = Order(pickupAt: slot, lines: lines, eatOnPorch: porch)
-        Ledger.reserve(order, at: kitchen, drop: drop, context: context)
-        bag = [:]
-        withAnimation { placed = order }
+        if let pendingID { order.id = pendingID } else { pendingID = order.id }
+        let picked = kitchen.sortedMenu.compactMap { item in
+            bag[item.id].flatMap { $0 > 0 ? (item: item, quantity: $0) : nil }
+        }
+        reserving = true
+        Task {
+            await attempt($problem) { () throws(APIError) in
+                try await Sync.reserve(order, picked: picked, at: kitchen, drop: drop, context: context)
+                bag = [:]
+                pendingID = nil
+                withAnimation { placed = order }
+            }
+            reserving = false
+        }
     }
 }
 

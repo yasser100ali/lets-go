@@ -6,6 +6,7 @@ struct OrderStatusView: View {
     @Environment(\.modelContext) private var context
     @State private var reviewing = false
     @State private var earned: Stamp?
+    @State private var problem: String?
 
     var body: some View {
         ScrollView {
@@ -51,9 +52,12 @@ struct OrderStatusView: View {
                 switch order.status {
                 case .reserved:
                     Button("I picked it up") {
-                        order.status = .pickedUp
-                        Ledger.save(context, "picked up")
-                        reviewing = true
+                        Task {
+                            await attempt($problem) { () throws(APIError) in
+                                try await Sync.pickedUp(order, context: context)
+                                reviewing = true
+                            }
+                        }
                     }
                 case .pickedUp:
                     Button("Leave a review") { reviewing = true }
@@ -70,6 +74,7 @@ struct OrderStatusView: View {
             ReviewView(order: order) { stamp in earned = stamp }
         }
         .sheet(item: $earned) { StampEarnedView(stamp: $0) }
+        .errorAlert($problem)
     }
 }
 
@@ -82,6 +87,8 @@ struct ReviewView: View {
     @State private var stars = 5
     @State private var tags: Set<String> = []
     @State private var text = ""
+    @State private var posting = false
+    @State private var problem: String?
 
     private let tagOptions = ["Generous", "On time", "Would reorder", "Porch was fun", "Great value", "Friendly"]
 
@@ -127,21 +134,29 @@ struct ReviewView: View {
             .safeAreaInset(edge: .bottom) {
                 Button("Post review") { post() }
                     .buttonStyle(PrimaryButtonStyle())
+                    .disabled(posting)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 8)
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Later") { dismiss() } }
             }
+            .errorAlert($problem)
         }
         .presentationBackground(Lamp.bg)
     }
 
     private func post() {
         let review = Review(stars: stars, tags: Array(tags).sorted(), text: text.trimmingCharacters(in: .whitespacesAndNewlines), author: "You", isMine: true)
-        let stamp = Ledger.review(review, for: order, context: context)
-        dismiss()
-        onPosted(stamp)
+        posting = true
+        Task {
+            await attempt($problem) { () throws(APIError) in
+                let stamp = try await Sync.review(review, for: order, context: context)
+                dismiss()
+                onPosted(stamp)
+            }
+            posting = false
+        }
     }
 }
 

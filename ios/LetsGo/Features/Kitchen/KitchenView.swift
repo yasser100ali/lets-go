@@ -5,6 +5,7 @@ import SwiftData
 struct KitchenView: View {
     @Bindable var kitchen: Kitchen
     @Environment(LocationService.self) private var location
+    @Environment(\.modelContext) private var context
     @State private var bag: [UUID: Int] = [:]
     @State private var ordering = false
 
@@ -40,6 +41,7 @@ struct KitchenView: View {
             }
         }
         .ignoresSafeArea(edges: .top)
+        .task { try? await Sync.refresh(kitchen, context: context) }
     }
 
     private var titleBlock: some View {
@@ -121,7 +123,8 @@ struct KitchenView: View {
 
     @ViewBuilder
     private var reviews: some View {
-        let mine = kitchen.reviews.sorted { $0.createdAt > $1.createdAt }
+        // A server kitchen's list already includes anything you posted.
+        let mine = kitchen.remoteID == nil ? kitchen.reviews.sorted { $0.createdAt > $1.createdAt } : []
         if !mine.isEmpty || !kitchen.sampleReviews.isEmpty {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Reviews").eyebrow()
