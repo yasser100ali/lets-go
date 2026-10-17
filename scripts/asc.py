@@ -6,6 +6,7 @@ Reads the team API key from ~/.appstoreconnect/letsgo_asc_api_key.json (never th
   scripts/asc.py app                       # the app record, if it exists yet
   scripts/asc.py setup-testers EMAIL...    # Internal group with every build, testers added
   scripts/asc.py wait-build BUILD          # wait for a build to finish processing
+  scripts/asc.py next-build                # one more than the highest build Apple has
 """
 import base64, json, os, sys, time
 
@@ -80,6 +81,21 @@ def setup_testers(emails):
         print(f"{email} is in {group['attributes']['name']}")
 
 
+def next_build():
+    """Highest build number App Store Connect has for the app, plus one."""
+    a = app()
+    if not a:
+        raise SystemExit("No app record.")
+    numbers = []
+    url, params = f"/v1/builds", {"filter[app]": a["id"], "limit": 200, "fields[builds]": "version"}
+    while url:
+        page = call("GET", url, params=params)
+        numbers += [int(b["attributes"]["version"]) for b in page["data"] if b["attributes"]["version"].isdigit()]
+        nxt = page.get("links", {}).get("next")
+        url, params = (nxt.replace(BASE, ""), None) if nxt else (None, None)
+    return max(numbers, default=0) + 1
+
+
 def wait_build(number, timeout=3600):
     a = app()
     if not a:
@@ -110,5 +126,7 @@ if __name__ == "__main__":
         setup_testers(sys.argv[2:])
     elif cmd == "wait-build":
         wait_build(sys.argv[2])
+    elif cmd == "next-build":
+        print(next_build())
     else:
         raise SystemExit(__doc__)

@@ -54,7 +54,7 @@ ios/
 backend/               FastAPI + SQLAlchemy async + Alembic
 docker-compose.yml     local api (:8100) + Postgres (:5433)
 scripts/
-  ship.sh              bump build → archive → upload to TestFlight
+  ship.sh              archive → sign → upload to TestFlight (build number from App Store Connect)
   asc.py               App Store Connect API: app record, testers, build status
   setup-signing.sh     rebuild the prompt-free signing keychain on a new Mac
 ```
@@ -73,8 +73,12 @@ xcodebuild test -project ios/LetsGo.xcodeproj -scheme LetsGo \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' CODE_SIGNING_ALLOWED=NO
 ```
 
-Ship a TestFlight build. Needs, outside the repo: the App Store Connect key at `~/.appstoreconnect/letsgo_asc_api_key.json` (+ `private_keys/AuthKey_*.p8`), and the signing bundle in `~/.appstoreconnect/letsgo-signing/` (Let's Go's own Apple Distribution cert, its keychain password and the App Store profile). On a new Mac run `scripts/setup-signing.sh` once.
+Ship a TestFlight build from GitHub: **Actions → "iOS CD — TestFlight" → Run workflow** (or `gh workflow run ios-cd.yml -R yasser100ali/lets-go`). It runs the tests, then archives, signs and uploads on the Mac mini's Let's Go runner (`~/actions-runner-letsgo`, label `letsgo`, next to Pulse's), and waits for Apple to finish processing. Internal testers get it automatically.
+
+From this Mac directly:
 
 ```bash
 scripts/ship.sh
 ```
+
+Both need, outside the repo: the App Store Connect key at `~/.appstoreconnect/letsgo_asc_api_key.json` (+ `private_keys/AuthKey_*.p8`), and the signing bundle in `~/.appstoreconnect/letsgo-signing/` (Let's Go's own Apple Distribution cert, its keychain password and the App Store profile). On a new Mac run `scripts/setup-signing.sh` once.

@@ -1,5 +1,7 @@
 #!/bin/bash
-# Bump the build number, archive Release, sign for the App Store, upload to TestFlight.
+# Archive Release, sign for the App Store, upload to TestFlight.
+# The build number is one more than the highest Apple has (or $BUILD_NUMBER), so builds
+# from this Mac and from GitHub Actions never collide and nothing gets committed.
 #
 # Signing uses Let's Go's own Apple Distribution certificate, kept in a dedicated
 # keychain (~/Library/Keychains/letsgo-signing.keychain-db) whose password lives in
@@ -18,14 +20,13 @@ CERT_SHA1=$(openssl x509 -in "$SIGN/dist.pem" -noout -fingerprint -sha1 | sed 's
 python3 scripts/asc.py app >/dev/null || { echo "No App Store Connect app for com.yasser100ali.letsgo yet."; exit 1; }
 security unlock-keychain -p "$(cat "$SIGN/keychain_password")" "$HOME/Library/Keychains/letsgo-signing.keychain-db"
 
-if [ "${SKIP_BUMP:-0}" != "1" ]; then scripts/bump-build.sh; fi
-BUILD=$(sed -n 's/^CURRENT_PROJECT_VERSION = //p' ios/Config.xcconfig)
+BUILD=${BUILD_NUMBER:-$(python3 scripts/asc.py next-build)}
 OUT="build/$BUILD"
 rm -rf "$OUT"; mkdir -p "$OUT"
 
 echo "Archiving build $BUILD"
 xcodebuild archive -project ios/LetsGo.xcodeproj -scheme LetsGo -configuration Release \
-  -destination 'generic/platform=iOS' -archivePath "$OUT/LetsGo.xcarchive" \
+  -destination 'generic/platform=iOS' -archivePath "$OUT/LetsGo.xcarchive" CURRENT_PROJECT_VERSION="$BUILD" \
   -allowProvisioningUpdates -authenticationKeyPath "$KEY_P8" \
   -authenticationKeyID "$KEY_ID" -authenticationKeyIssuerID "$ISSUER" -quiet
 

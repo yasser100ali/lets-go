@@ -16,4 +16,4 @@ iOS app: a live map of things to do within walking distance, home kitchens selli
 - Never commit the App Store Connect key (`*.p8`, `asc_api_key.json`).
 
 ## Ship
-`scripts/ship.sh` bumps `CURRENT_PROJECT_VERSION`, archives Release, uploads to TestFlight with the API key, and adds the build to the Internal group. Only run it when asked for a build.
+From GitHub: `gh workflow run ios-cd.yml -R yasser100ali/lets-go` (tests, archive, sign, upload, wait for processing) on the Mac mini's `letsgo` runner. Locally: `scripts/ship.sh`. Either way the build number is App Store Connect's highest + 1, so nothing is committed. Internal testers get every build. Only ship when asked for a build.

@@ -1,0 +1,65 @@
+name: iOS CD — TestFlight
+# Run it from GitHub: Actions → "iOS CD — TestFlight" → Run workflow
+# (or `gh workflow run ios-cd.yml`). Builds main by default.
+#
+# Runs on the Mac mini's Let's Go runner (label "letsgo"), which signs with the
+# prompt-free keychain and App Store Connect key in ~/.appstoreconnect on that Mac.
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch, tag or commit to build
+        default: main
+      run_tests:
+        description: Run the unit tests first
+        type: boolean
+        default: true
+
+concurrency:
+  group: ios-cd
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  testflight:
+    runs-on: [self-hosted, macOS, ARM64, letsgo]
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Put Homebrew and pyenv on PATH
+        run: |
+          echo "/opt/homebrew/bin" >> "$GITHUB_PATH"
+          echo "$HOME/.pyenv/shims" >> "$GITHUB_PATH"
+
+      - name: Pick the build number
+        id: build
+        run: echo "number=$(python3 scripts/asc.py next-build)" >> "$GITHUB_OUTPUT"
+
+      - name: Tests
+        if: ${{ inputs.run_tests }}
+        run: |
+          xcodebuild test -project ios/LetsGo.xcodeproj -scheme LetsGo \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+            -derivedDataPath "$RUNNER_TEMP/dd-test" CODE_SIGNING_ALLOWED=NO -quiet
+
+      - name: Archive, sign and upload
+        env:
+          BUILD_NUMBER: ${{ steps.build.outputs.number }}
+        run: scripts/ship.sh
+
+      - name: Wait for Apple to process it
+        run: python3 scripts/asc.py wait-build "${{ steps.build.outputs.number }}"
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### Build ${{ steps.build.outputs.number }}"
+            echo "Ref: \`${{ inputs.ref }}\` at \`$(git rev-parse --short HEAD)\`"
+            echo "Internal testers get it in TestFlight once processing is done."
+          } >> "$GITHUB_STEP_SUMMARY"
