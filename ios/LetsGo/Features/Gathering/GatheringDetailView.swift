@@ -21,11 +21,10 @@ struct GatheringDetailView: View {
             let now = timeline.date
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    header
                     VStack(alignment: .leading, spacing: 14) {
                         titleBlock(now: now)
                         InfoStrip(items: facts(now: now))
-                        capacityCard
+                        if !gathering.isListing { capacityCard }
                         if let note = tipNote(now: now) { TipNote(text: note) }
                         if !gathering.details.isEmpty {
                             Text(gathering.details).font(.system(size: 15)).foregroundStyle(Palette.ink.opacity(0.9))
@@ -41,12 +40,12 @@ struct GatheringDetailView: View {
                         }
                     }
                     .padding(.horizontal, 18)
+                    .padding(.top, 6)
                 }
                 .padding(.bottom, 24)
             }
             .scrollIndicators(.hidden)
             .background(Palette.bg)
-            .ignoresSafeArea(edges: .top)
             .safeAreaInset(edge: .bottom) { actions(now: now) }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -61,20 +60,6 @@ struct GatheringDetailView: View {
             }
         } message: {
             Text("It comes off the map for everyone.")
-        }
-    }
-
-    private var header: some View {
-        Map(initialPosition: .camera(MapCamera(centerCoordinate: gathering.coordinate, distance: 900)), interactionModes: []) {
-            UserAnnotation()
-            Annotation("", coordinate: gathering.coordinate) {
-                MapMarker(genre: gathering.category, caption: gathering.placeName, selected: true)
-            }
-        }
-        .mapStyle(.standard(elevation: .flat, emphasis: .muted, pointsOfInterest: .excludingAll))
-        .frame(height: 260)
-        .overlay(alignment: .bottom) {
-            LinearGradient(colors: [.clear, Palette.bg], startPoint: .top, endPoint: .bottom).frame(height: 70)
         }
     }
 
