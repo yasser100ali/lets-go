@@ -2,18 +2,21 @@ import SwiftUI
 import MapKit
 import Observation
 
-/// What the map and its sheet share: the filters, the search, where the sheet is,
-/// what's open in it, and where the map should look.
+/// What the tabs, the now bar, the map and the list sheet share: the filters, the
+/// search, whether the list is open and how tall, what's open in it, and where the
+/// map should look.
 @Observable
 final class HomeModel {
-    static let peek = PresentationDetent.height(148)
-    static let mid = PresentationDetent.fraction(0.46)
+    static let half = PresentationDetent.fraction(0.5)
 
-    var section: HomeSection = .nearby
+    var tab: AppTab = .map
     var window: TimeWindow = .now
     var genre: Genre?
     var query = ""
-    var detent: PresentationDetent = HomeModel.mid
+    var listOpen = false
+    var detent: PresentationDetent = HomeModel.half
+    /// Set when the list should open with the search field focused.
+    var wantsSearch = false
     var path = NavigationPath()
     var selectedID: UUID?
     var walking = false
@@ -27,7 +30,7 @@ final class HomeModel {
         var coordinate: CLLocationCoordinate2D { .init(latitude: latitude, longitude: longitude) }
     }
 
-    /// What the map pins and the Nearby list show, best first.
+    /// What the map pins and the list show, best first.
     func visible(_ all: [Candidate], now: Date, taste: Taste) -> [Candidate] {
         let inWindow = all.filter { c in
             window.contains(start: c.start, end: c.end, now: now) && (genre.map { c.category == $0 } ?? true)
@@ -36,30 +39,32 @@ final class HomeModel {
         return inWindow.sorted { $0.start < $1.start }
     }
 
-    /// Opens something's page in the sheet and points the map at it.
+    /// The now bar: open the list from wherever you are.
+    func showList() {
+        tab = .map
+        path = NavigationPath()
+        detent = Self.half
+        listOpen = true
+    }
+
+    func startSearch() {
+        tab = .map
+        wantsSearch = true
+        detent = .large
+        listOpen = true
+    }
+
+    /// Opens something's page in the list sheet and points the map at it.
     func open(_ value: some Hashable, id: UUID, at coordinate: CLLocationCoordinate2D) {
         path = NavigationPath()
         path.append(value)
         selectedID = id
         focus = Focus(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        if detent == Self.peek { detent = Self.mid }
-    }
-
-    func closeDetail() {
-        selectedID = nil
+        if !listOpen { detent = Self.half }
+        listOpen = true
     }
 }
 
-enum HomeSection: String, CaseIterable, Identifiable {
-    case nearby, kitchens, you
-
-    var id: String { rawValue }
-
-    var label: String {
-        switch self {
-        case .nearby: "Nearby"
-        case .kitchens: "Kitchens"
-        case .you: "You"
-        }
-    }
+enum AppTab: Hashable {
+    case map, kitchens, you
 }
