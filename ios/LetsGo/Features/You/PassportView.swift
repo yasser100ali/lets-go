@@ -27,8 +27,6 @@ struct PassportView: View {
     ]
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Your passport").eyebrow()
@@ -41,10 +39,8 @@ struct PassportView: View {
                     sampleSettings
                     serverSettings
                 }
-                .padding(18)
-            }
-            .background(Palette.bg)
-        }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
     }
 
     private var counts: some View {

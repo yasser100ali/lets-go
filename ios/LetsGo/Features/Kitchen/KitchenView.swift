@@ -15,10 +15,9 @@ struct KitchenView: View {
             let drop = kitchen.nextDrop(after: now)
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
-                    PhotoHero(kitchen: kitchen, height: 260)
-                        .overlay(alignment: .bottom) {
-                            LinearGradient(colors: [.clear, Palette.bg], startPoint: .top, endPoint: .bottom).frame(height: 70)
-                        }
+                    PhotoHero(kitchen: kitchen, height: 170, radius: 20)
+                        .padding(.horizontal, 16)
+                        .padding(.top, 4)
                     VStack(alignment: .leading, spacing: 18) {
                         titleBlock
                         InfoStrip(items: facts(drop: drop, now: now))
@@ -28,13 +27,12 @@ struct KitchenView: View {
                         if kitchen.isSample { SampleNote() }
                     }
                     .padding(.horizontal, 18)
-                    .padding(.top, -18)
+                    .padding(.top, 14)
                 }
                 .padding(.bottom, 24)
             }
             .scrollIndicators(.hidden)
             .background(Palette.bg)
-            .ignoresSafeArea(edges: .top)
             .safeAreaInset(edge: .bottom) {
                 if let drop, !drop.isSoldOut, !kitchen.isMine {
                     Button(bagCount > 0 ? "Reserve \(bagCount) · \(Pricing.format(bagSubtotal))" : "Add something to reserve") { ordering = true }

@@ -1,17 +1,15 @@
 import SwiftUI
 import SwiftData
 
-/// The Kitchens tab: tonight's drops, your orders, and your own kitchen.
+/// The Kitchens section of the home sheet: drops near you, your orders, your own kitchen.
 struct KitchensView: View {
     @Environment(LocationService.self) private var location
     @Query private var kitchens: [Kitchen]
     @Query(sort: \Order.pickupAt, order: .reverse) private var orders: [Order]
 
     var body: some View {
-        NavigationStack {
             TimelineView(.periodic(from: .now, by: 60)) { timeline in
                 let now = timeline.date
-                ScrollView {
                     VStack(alignment: .leading, spacing: 22) {
                         let open = openOrders
                         if !open.isEmpty {
@@ -29,15 +27,9 @@ struct KitchensView: View {
                         }
                         myKitchenCard
                     }
-                    .padding(16)
-                }
-                .background(Palette.bg)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
             }
-            .navigationTitle("Kitchens")
-            .navigationDestination(for: Kitchen.self) { KitchenView(kitchen: $0) }
-            .navigationDestination(for: Order.self) { OrderStatusView(order: $0) }
-            .navigationDestination(for: MyKitchenRoute.self) { _ in MyKitchenView() }
-        }
     }
 
     private var openOrders: [Order] { orders.filter { $0.status != .reviewed } }

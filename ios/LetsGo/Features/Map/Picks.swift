@@ -28,6 +28,8 @@ struct Candidate: Identifiable, Hashable, Sendable {
     var spotsLeft: Int? { capacity > 0 ? max(0, capacity - going) : nil }
     var walkMinutes: Int { Walk.minutes(meters) }
     var priceText: String = ""
+    var lat: Double = 0
+    var lon: Double = 0
     var isFree: Bool { kind == .gathering && (priceText.isEmpty || priceText.lowercased().hasPrefix("free")) }
 }
 
@@ -40,7 +42,7 @@ extension Candidate {
             place: g.placeName,
             searchText: [g.title, g.details, g.placeName, g.address, g.hostName, g.bring, g.priceText, g.category.label, g.category.noun]
                 .joined(separator: " ").lowercased(),
-            priceText: g.priceText
+            priceText: g.priceText, lat: g.latitude, lon: g.longitude
         )
     }
 
@@ -53,7 +55,8 @@ extension Candidate {
             priceFromCents: k.menu.map(\.priceCents).min(), isSample: k.isSample,
             place: k.cuisine,
             searchText: ([k.name, k.cookName, k.cuisine, k.story, "food home cooking kitchen"] + k.menu.map { "\($0.name) \($0.note)" })
-                .joined(separator: " ").lowercased()
+                .joined(separator: " ").lowercased(),
+            lat: k.latitude, lon: k.longitude
         )
     }
 }

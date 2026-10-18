@@ -6,20 +6,9 @@ struct RootView: View {
     @Environment(SyncStatus.self) private var sync
     @Environment(\.modelContext) private var context
     @Environment(\.scenePhase) private var scenePhase
-    @State private var tab: AppTab = .map
 
     var body: some View {
-        TabView(selection: $tab) {
-            Tab("Map", systemImage: "map.fill", value: AppTab.map) {
-                MapHomeView()
-            }
-            Tab("Kitchens", systemImage: "takeoutbag.and.cup.and.straw.fill", value: AppTab.kitchens) {
-                KitchensView()
-            }
-            Tab("You", systemImage: "person.crop.circle", value: AppTab.you) {
-                PassportView()
-            }
-        }
+        HomeView()
         .task { location.start() }
         // Fill in the sample neighborhood and pull from the server when the
         // neighborhood changes, and whenever the app comes back.
@@ -43,8 +32,4 @@ struct RootView: View {
             try await Sync.refresh(around: center, context: context)
         }
     }
-}
-
-enum AppTab: Hashable {
-    case map, kitchens, you
 }
