@@ -2,9 +2,9 @@ import SwiftUI
 import SwiftData
 import MapKit
 
-/// The sheet over the map. Root: search, then Nearby / Kitchens / You. Places'
+/// The list over the map: search, filters and what's on, grouped by when. Places'
 /// pages push inside it, so going back lands you on the list where you were.
-struct HomeSheet: View {
+struct NearbySheet: View {
     @Environment(HomeModel.self) private var model
     @Environment(LocationService.self) private var location
     @Query(sort: \Gathering.start) private var gatherings: [Gathering]
@@ -27,17 +27,7 @@ struct HomeSheet: View {
                         if searching || !model.query.isEmpty {
                             searchContent(now: now)
                         } else {
-                            Picker("Section", selection: $model.section) {
-                                ForEach(HomeSection.allCases) { Text($0.label).tag($0) }
-                            }
-                            .pickerStyle(.segmented)
-                            .padding(.horizontal, 16)
-                            .padding(.top, 12)
-                            switch model.section {
-                            case .nearby: nearby(now: now)
-                            case .kitchens: KitchensView().padding(.top, 8)
-                            case .you: PassportView().padding(.top, 4)
-                            }
+                            nearby(now: now)
                         }
                     }
                     .padding(.bottom, 30)
@@ -53,7 +43,15 @@ struct HomeSheet: View {
             .navigationDestination(for: MyKitchenRoute.self) { _ in MyKitchenView() }
         }
         .onChange(of: searching) { _, on in if on { model.detent = .large } }
-        .onChange(of: model.path.count) { _, count in if count == 0 { model.closeDetail() } }
+        .onChange(of: model.path.count) { _, count in if count == 0 { model.selectedID = nil } }
+        .onAppear {
+            if model.wantsSearch {
+                model.wantsSearch = false
+                // Let the sheet finish presenting before the keyboard comes up.
+                Task { try? await Task.sleep(for: .milliseconds(350)); searching = true }
+            }
+        }
+        .onDisappear { model.selectedID = nil }
         .sheet(item: $hosting) { NewGatheringView(draft: $0) }
     }
 
@@ -83,7 +81,7 @@ struct HomeSheet: View {
                 Button("Cancel") {
                     model.query = ""
                     searching = false
-                    model.detent = HomeModel.mid
+                    model.detent = HomeModel.half
                 }
                 .font(.system(size: 17))
                 .foregroundStyle(Palette.accent)

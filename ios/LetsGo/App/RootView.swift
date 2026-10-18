@@ -1,14 +1,41 @@
 import SwiftUI
 import SwiftData
 
+/// Three tabs (Map, Kitchens, You) with the now bar above the tab bar.
 struct RootView: View {
     @Environment(LocationService.self) private var location
     @Environment(SyncStatus.self) private var sync
     @Environment(\.modelContext) private var context
     @Environment(\.scenePhase) private var scenePhase
+    @State private var model = HomeModel()
 
     var body: some View {
-        HomeView()
+        @Bindable var model = model
+        TabView(selection: $model.tab) {
+            Tab("Map", systemImage: "map.fill", value: AppTab.map) {
+                HomeView()
+            }
+            Tab("Kitchens", systemImage: "takeoutbag.and.cup.and.straw.fill", value: AppTab.kitchens) {
+                NavigationStack {
+                    ScrollView { KitchensView() }
+                        .scrollIndicators(.hidden)
+                        .background(Palette.bg)
+                        .navigationTitle("Kitchens")
+                        .navigationDestination(for: Kitchen.self) { KitchenView(kitchen: $0) }
+                        .navigationDestination(for: Order.self) { OrderStatusView(order: $0) }
+                        .navigationDestination(for: MyKitchenRoute.self) { _ in MyKitchenView() }
+                }
+            }
+            Tab("You", systemImage: "person.crop.circle", value: AppTab.you) {
+                NavigationStack {
+                    ScrollView { PassportView() }
+                        .scrollIndicators(.hidden)
+                        .background(Palette.bg)
+                }
+            }
+        }
+        .tabViewBottomAccessory { NowBar() }
+        .environment(model)
         .task { location.start() }
         // Fill in the sample neighborhood and pull from the server when the
         // neighborhood changes, and whenever the app comes back.

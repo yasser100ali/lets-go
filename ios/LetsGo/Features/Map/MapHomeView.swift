@@ -2,9 +2,8 @@ import SwiftUI
 import SwiftData
 import MapKit
 
-/// Home: the map, full screen, with the native sheet over it (Apple Maps' pattern).
-/// The sheet holds search, the Nearby list, Kitchens and You, and opens places'
-/// pages; the map follows what's open.
+/// The Map tab: the map, a search pill and filters over it, and the list sheet that
+/// the now bar, the search pill and the pins open. The map follows what's open.
 struct HomeView: View {
     @Environment(LocationService.self) private var location
     @Environment(SyncStatus.self) private var sync
@@ -12,7 +11,7 @@ struct HomeView: View {
     @Query private var kitchens: [Kitchen]
     @Query private var notes: [TasteNote]
 
-    @State private var model = HomeModel()
+    @Environment(HomeModel.self) private var model
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
     @State private var hostingBlank = false
 
@@ -23,24 +22,29 @@ struct HomeView: View {
             let all = Nearby.candidates(gatherings: gatherings, kitchens: kitchens, from: location.center, now: now)
             let taste = Nearby.taste(notes: notes, gatherings: gatherings, kitchens: kitchens)
             let shown = model.query.isEmpty ? model.visible(all, now: now, taste: taste) : Search.results(model.query, in: all, now: now)
-            ZStack(alignment: .topLeading) {
+            ZStack(alignment: .top) {
                 map(shown: shown, now: now)
                 if model.walking { SkyBand(now: now).allowsHitTesting(false) }
-                floatingButtons
+                VStack(alignment: .leading, spacing: 10) {
+                    searchPill
+                    if !model.walking { chips }
+                    floatingButtons
+                }
+                .padding(.top, 4)
             }
         }
-        .sheet(isPresented: .constant(true)) {
-            HomeSheet()
+        .sheet(isPresented: $model.listOpen) {
+            NearbySheet()
                 .environment(model)
                 .environment(location)
                 .environment(sync)
-                .presentationDetents([HomeModel.peek, HomeModel.mid, .large], selection: $model.detent)
-                .presentationBackgroundInteraction(.enabled(upThrough: HomeModel.mid))
-                .presentationContentInteraction(.scrolls)
+                .presentationDetents([HomeModel.half, .large], selection: $model.detent)
+                .presentationBackgroundInteraction(.enabled(upThrough: HomeModel.half))
+                // Dragging the content moves the sheet first, then scrolls once it's all the way up.
+                .presentationContentInteraction(.resizes)
                 .presentationDragIndicator(.visible)
-                .interactiveDismissDisabled()
-                .sheet(isPresented: $hostingBlank) { NewGatheringView(draft: nil) }
         }
+        .sheet(isPresented: $hostingBlank) { NewGatheringView(draft: nil) }
         .onChange(of: model.focus) { _, focus in
             guard let focus, !model.walking else { return }
             withAnimation(.smooth(duration: 0.6)) {
@@ -114,7 +118,42 @@ struct HomeView: View {
         return c.start.formatted(date: .omitted, time: .shortened)
     }
 
-    // MARK: Buttons over the map
+    // MARK: Over the map
+
+    private var searchPill: some View {
+        Button { model.startSearch() } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "magnifyingglass").foregroundStyle(Palette.muted)
+                Text(model.query.isEmpty ? (CityListings.covers(location.center) ? "Search San Francisco" : "Search nearby") : model.query)
+                    .foregroundStyle(model.query.isEmpty ? Palette.muted : Palette.ink)
+                    .lineLimit(1)
+                Spacer()
+            }
+            .font(.system(size: 16))
+            .padding(.horizontal, 16)
+            .frame(height: 46)
+            .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .glassEffect(.regular.interactive(), in: .capsule)
+        .padding(.horizontal, 14)
+    }
+
+    private var chips: some View {
+        @Bindable var model = model
+        return ScrollView(.horizontal) {
+            HStack(spacing: 6) {
+                ForEach(TimeWindow.allCases) { w in
+                    FilterChip(title: w.label, on: model.window == w) { model.window = w }
+                }
+                ForEach([Genre.play, .food, .music, .move, .party]) { g in
+                    FilterChip(title: g.plural, on: model.genre == g) { model.genre = model.genre == g ? nil : g }
+                }
+            }
+            .padding(.horizontal, 14)
+        }
+        .scrollIndicators(.hidden)
+    }
 
     private var floatingButtons: some View {
         VStack(spacing: 10) {
@@ -124,7 +163,6 @@ struct HomeView: View {
             circleButton("plus", label: "Host something", on: false) { hostingBlank = true }
         }
         .padding(.leading, 14)
-        .padding(.top, 8)
     }
 
     private func circleButton(_ symbol: String, label: String, on: Bool, action: @escaping () -> Void) -> some View {
@@ -141,10 +179,9 @@ struct HomeView: View {
     private func toggleWalk() {
         model.walking.toggle()
         if model.walking {
-            model.detent = HomeModel.peek
+            model.listOpen = false
             followInWorld()
         } else {
-            model.detent = HomeModel.mid
             withAnimation(.smooth(duration: 0.8)) { position = .userLocation(fallback: .automatic) }
         }
     }
