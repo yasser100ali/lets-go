@@ -21,8 +21,17 @@ Everything is on-device (SwiftData) for now. Until real neighbors post, a **samp
 
 ```bash
 docker compose up                                   # api on :8100, Postgres on :5433
-docker compose run --rm --no-deps api pytest -q     # 20 tests
+docker compose run --rm --no-deps api pytest -q
 ```
+
+**Listings** (`/v1/listings?city=sf`, no account needed) are the real city: shows, markets, weekly regulars, in the same shape as the app's `sf_happenings.json`. The phone fetches them on launch and when it comes back, keeps the last copy for offline, and falls back to the bundled file before its first fetch. Load or refresh them with:
+
+```bash
+cd backend && python -m app.listings_import ../ios/LetsGo/Resources/sf_happenings.json              # local
+DATABASE_URL=<Railway Postgres public URL> python -m app.listings_import ../ios/LetsGo/Resources/sf_happenings.json  # deployed
+```
+
+Rows match on city, title and venue; ones the file no longer has are marked gone. This is where the nightly scout will write.
 
 Schema changes go through Alembic (`alembic revision --autogenerate`, then read it). CI runs lint, `alembic check` and the tests.
 
