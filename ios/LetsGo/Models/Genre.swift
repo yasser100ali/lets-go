@@ -63,8 +63,8 @@ enum Genre: String, CaseIterable, Codable, Identifiable, Sendable {
         switch self {
         case .play: ["soccer", "football", "basketball", "hoops", "pickup", "volleyball", "tennis", "frisbee", "game", "sport", "play"]
         case .move: ["run", "jog", "walk", "hike", "bike", "ride", "yoga", "5k", "workout", "move"]
-        case .music: ["music", "dj", "band", "jam", "set", "concert", "open mic", "sing"]
-        case .party: ["party", "hang", "board game", "game night", "trivia", "drinks", "chill", "bbq", "cookout"]
+        case .music: ["music", "dj", "band", "jam", "set", "concert", "open mic", "sing", "jazz", "symphony"]
+        case .party: ["party", "hang", "board game", "game night", "trivia", "drinks", "chill", "bbq", "cookout", "comedy", "stand-up", "standup", "improv"]
         case .food: ["food", "eat", "pizza", "ice cream", "tacos", "tamales", "curry", "dinner", "lunch", "dessert", "hungry", "bake"]
         }
     }

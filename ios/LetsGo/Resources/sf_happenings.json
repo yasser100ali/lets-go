@@ -1097,5 +1097,2180 @@
     "url": "https://sf.funcheap.com/san-francisco-diwali-festival-yerba-buena-gardens-2026/",
     "description": "Outdoor South Asian music and dance, Bollywood troupe and dhol, plus food and makers.",
     "confidence": "high"
+  },
+  {
+    "title": "Allah-Las",
+    "genre": "music",
+    "venue": "Great American Music Hall",
+    "address": "859 O'Farrell St, San Francisco, CA 94109",
+    "lat": 37.785,
+    "lon": -122.4189,
+    "schedule": {
+      "date": "2026-10-20",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "$39.50–44",
+    "organizer": "Great American Music Hall",
+    "url": "https://gamh.com/",
+    "description": "LA's jangly surf-psych band in one of SF's most ornate old music halls.",
+    "confidence": "high"
+  },
+  {
+    "title": "The Devil Makes Three with Two Runner",
+    "genre": "music",
+    "venue": "The Chapel",
+    "address": "777 Valencia St, San Francisco, CA 94110",
+    "lat": 37.7605,
+    "lon": -122.4213,
+    "schedule": {
+      "date": "2026-10-20",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "$40–46",
+    "organizer": "The Chapel",
+    "url": "https://www.thechapelsf.com/music/",
+    "description": "Rowdy acoustic punk-bluegrass trio in a converted Mission mortuary chapel.",
+    "confidence": "high"
+  },
+  {
+    "title": "DIIV",
+    "genre": "music",
+    "venue": "Great American Music Hall",
+    "address": "859 O'Farrell St, San Francisco, CA 94109",
+    "lat": 37.785,
+    "lon": -122.4189,
+    "schedule": {
+      "date": "2026-10-21",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "$47–50",
+    "organizer": "Great American Music Hall",
+    "url": "https://gamh.com/",
+    "description": "Shoegaze guitars at full volume under GAMH's gilded balconies.",
+    "confidence": "high"
+  },
+  {
+    "title": "Frankie Cosmos with Gabby's World",
+    "genre": "music",
+    "venue": "The Independent",
+    "address": "628 Divisadero St, San Francisco, CA 94117",
+    "lat": 37.7755,
+    "lon": -122.4377,
+    "schedule": {
+      "date": "2026-10-22",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Another Planet Entertainment",
+    "url": "https://www.theindependentsf.com/tm-event/frankie-cosmos-celebrating-10-years-of-next-thing/",
+    "description": "Ten-year anniversary set for the indie-pop favorite Next Thing. All ages.",
+    "confidence": "high"
+  },
+  {
+    "title": "K.Flay with Yogurt",
+    "genre": "music",
+    "venue": "Bottom of the Hill",
+    "address": "1233 17th St, San Francisco, CA 94107",
+    "lat": 37.765,
+    "lon": -122.3961,
+    "schedule": {
+      "date": "2026-10-23",
+      "start": "20:30",
+      "end": null
+    },
+    "price": "$30 (sold out)",
+    "organizer": "Bottom of the Hill",
+    "url": "http://www.bottomofthehill.com/20261023.html",
+    "description": "Arena-size alt-rapper in a tiny Potrero Hill club. Sold out, so try for resale.",
+    "confidence": "high"
+  },
+  {
+    "title": "Hisaishi Conducts Hisaishi",
+    "genre": "music",
+    "venue": "Davies Symphony Hall",
+    "address": "201 Van Ness Ave, San Francisco, CA 94102",
+    "lat": 37.7777,
+    "lon": -122.4206,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "19:30",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "San Francisco Symphony",
+    "url": "https://www.jambase.com/show/joe-hisaishi-davies-symphony-hall-20261024",
+    "description": "Joe Hisaishi conducts his Studio Ghibli scores with the SF Symphony.",
+    "confidence": "high"
+  },
+  {
+    "title": "Everclear with American Hi-Fi",
+    "genre": "music",
+    "venue": "The Independent",
+    "address": "628 Divisadero St, San Francisco, CA 94117",
+    "lat": 37.7755,
+    "lon": -122.4377,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "21:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Another Planet Entertainment",
+    "url": "https://www.theindependentsf.com/tm-event/everclear/",
+    "description": "Peak '90s alt-rock singalongs in an intimate 500-cap room. 21+.",
+    "confidence": "high"
+  },
+  {
+    "title": "Protomartyr",
+    "genre": "music",
+    "venue": "August Hall",
+    "address": "420 Mason St, San Francisco, CA 94102",
+    "lat": 37.7874,
+    "lon": -122.4098,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "August Hall",
+    "url": "https://www.augusthallsf.com/tm-event/protomartyr/",
+    "description": "Detroit post-punk with a sharp-tongued frontman. All ages.",
+    "confidence": "high"
+  },
+  {
+    "title": "Bay Beats Launch Party",
+    "genre": "music",
+    "venue": "Golden Gate Park Bandshell",
+    "address": "Music Concourse Dr, Golden Gate Park, San Francisco, CA 94118",
+    "lat": 37.7703,
+    "lon": -122.4683,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "14:00",
+      "end": "18:00"
+    },
+    "price": "Free",
+    "organizer": "Illuminate LIVE",
+    "url": "https://www.goldengate.org/events/illuminate-live---golden-gate-park-bandshell-concerts/?F_m=10",
+    "description": "Free afternoon of local bands at the park bandshell, incl. William Johnston's Extravagant Superband.",
+    "confidence": "high"
+  },
+  {
+    "title": "Soji Sai & The Afrobeat Explosion",
+    "genre": "music",
+    "venue": "Boom Boom Room",
+    "address": "1601 Fillmore St, San Francisco, CA 94115",
+    "lat": 37.7845,
+    "lon": -122.4325,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "21:30",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Boom Boom Room",
+    "url": "https://boomboomroom.com/event/soji-sai-of-fela-kuti-the-afrobeat-explosion-w-special-guests/client-club-demo/san-francisco-california/",
+    "description": "Fela Kuti alum leads a sweaty Afrobeat dance night on Fillmore St. 21+.",
+    "confidence": "high"
+  },
+  {
+    "title": "Kishi Bashi with Geographer",
+    "genre": "music",
+    "venue": "The Fillmore",
+    "address": "1805 Geary Blvd, San Francisco, CA 94115",
+    "lat": 37.7841,
+    "lon": -122.433,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Live Nation",
+    "url": "https://www.livenation.com/venue/KovZpZAE6eeA/the-fillmore-events",
+    "description": "Looping violin-pop for Sonderlust's 10th anniversary at the historic Fillmore.",
+    "confidence": "high"
+  },
+  {
+    "title": "The War and Treaty",
+    "genre": "music",
+    "venue": "The Chapel",
+    "address": "777 Valencia St, San Francisco, CA 94110",
+    "lat": 37.7605,
+    "lon": -122.4213,
+    "schedule": {
+      "date": "2026-10-26",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "$33–35",
+    "organizer": "The Chapel",
+    "url": "https://www.thechapelsf.com/music/",
+    "description": "Husband-and-wife Americana soul duo with huge gospel-fired vocals.",
+    "confidence": "high"
+  },
+  {
+    "title": "Phoebe Bridgers with Alex G",
+    "genre": "music",
+    "venue": "Chase Center",
+    "address": "1 Warriors Way, San Francisco, CA 94158",
+    "lat": 37.768,
+    "lon": -122.3877,
+    "schedule": {
+      "date": "2026-10-27",
+      "start": "19:30",
+      "end": null
+    },
+    "price": "$88–196.50",
+    "organizer": "Chase Center",
+    "url": "https://www.jambase.com/show/phoebe-bridgers-chase-center-20261027",
+    "description": "Phoebe Bridgers' arena tour stop with Alex G opening, in Mission Bay.",
+    "confidence": "high"
+  },
+  {
+    "title": "Violet Grohl with Suzy Clue",
+    "genre": "music",
+    "venue": "Rickshaw Stop",
+    "address": "155 Fell St, San Francisco, CA 94102",
+    "lat": 37.7761,
+    "lon": -122.4199,
+    "schedule": {
+      "date": "2026-10-27",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "$25–30",
+    "organizer": "Rickshaw Stop",
+    "url": "https://rickshawstop.com/",
+    "description": "Rising rock singer in a scrappy Hayes Valley club.",
+    "confidence": "high"
+  },
+  {
+    "title": "Great Lake Swimmers",
+    "genre": "music",
+    "venue": "Cafe du Nord",
+    "address": "2170 Market St, San Francisco, CA 94114",
+    "lat": 37.7666,
+    "lon": -122.4307,
+    "schedule": {
+      "date": "2026-10-28",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Cafe du Nord",
+    "url": "https://www.ticketweb.com/event/great-lake-swimmers-with-jesse-cafe-du-nord-tickets/14195574",
+    "description": "Hushed Canadian folk in a basement supper-club room. 21+.",
+    "confidence": "high"
+  },
+  {
+    "title": "The Chicks",
+    "genre": "music",
+    "venue": "The Masonic",
+    "address": "1111 California St, San Francisco, CA 94108",
+    "lat": 37.7914,
+    "lon": -122.4131,
+    "schedule": {
+      "date": "2026-10-29",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Live Nation",
+    "url": "https://www.livenation.com/venue/KovZpZAJ6nlA/the-masonic-events",
+    "description": "The Chicks play Taking the Long Way, up close in a 3,300-seat Nob Hill hall.",
+    "confidence": "high"
+  },
+  {
+    "title": "Galactic",
+    "genre": "music",
+    "venue": "The Fillmore",
+    "address": "1805 Geary Blvd, San Francisco, CA 94115",
+    "lat": 37.7841,
+    "lon": -122.433,
+    "schedule": {
+      "date": "2026-10-30",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Live Nation",
+    "url": "https://www.livenation.com/venue/KovZpZAE6eeA/the-fillmore-events",
+    "description": "New Orleans funk heavyweights kick off Halloween weekend at the Fillmore.",
+    "confidence": "high"
+  },
+  {
+    "title": "John Scofield with Oteil Burbridge, Larry Goldings & Adam Deitch",
+    "genre": "music",
+    "venue": "SFJAZZ Center (Miner Auditorium)",
+    "address": "201 Franklin St, San Francisco, CA 94102",
+    "lat": 37.7763,
+    "lon": -122.4216,
+    "schedule": {
+      "date": "2026-10-31",
+      "start": "19:30",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "SFJAZZ",
+    "url": "https://www.jambase.com/show/john-scofield-miner-auditorium-sfjazz-center-20261031",
+    "description": "Jazz guitar great with a funk-heavy all-star band. Also plays Oct 30 and Nov 1.",
+    "confidence": "high"
+  },
+  {
+    "title": "Ghoul's Night Out: The Jean Genies & The Cramp-ons",
+    "genre": "music",
+    "venue": "Make-Out Room",
+    "address": "3225 22nd St, San Francisco, CA 94110",
+    "lat": 37.7553,
+    "lon": -122.4195,
+    "schedule": {
+      "date": "2026-10-31",
+      "start": "19:00",
+      "end": "21:30"
+    },
+    "price": "$15",
+    "organizer": "Make-Out Room",
+    "url": "https://www.makeoutroom.com/events/saturday-october-312069498",
+    "description": "Bowie and Cramps tribute bands plus a 9:30 costume contest in the Mission.",
+    "confidence": "high"
+  },
+  {
+    "title": "Tom Jones",
+    "genre": "music",
+    "venue": "The Masonic",
+    "address": "1111 California St, San Francisco, CA 94108",
+    "lat": 37.7914,
+    "lon": -122.4131,
+    "schedule": {
+      "date": "2026-11-01",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Live Nation",
+    "url": "https://www.livenation.com/venue/KovZpZAJ6nlA/the-masonic-events",
+    "description": "Sir Tom's Come Gather Round tour. A living legend in a mid-size room.",
+    "confidence": "high"
+  },
+  {
+    "title": "SF Civic Music: Civic Strings",
+    "genre": "music",
+    "venue": "First Baptist Church",
+    "address": "22 Waller St, San Francisco, CA 94102",
+    "lat": 37.7718,
+    "lon": -122.4231,
+    "schedule": {
+      "date": "2026-11-01",
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "price": "Free (RSVP, $20 donation suggested)",
+    "organizer": "SF Civic Music Association",
+    "url": "https://sf.funcheap.com/sfs-civic-music-free-concerts-2026-3/",
+    "description": "Free Sunday string orchestra: Mozart, Florence Price, Joplin and a singalong.",
+    "confidence": "high"
+  },
+  {
+    "title": "Gilla Band",
+    "genre": "music",
+    "venue": "The Independent",
+    "address": "628 Divisadero St, San Francisco, CA 94117",
+    "lat": 37.7755,
+    "lon": -122.4377,
+    "schedule": {
+      "date": "2026-11-03",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Another Planet Entertainment",
+    "url": "https://www.theindependentsf.com/tm-event/gilla-band/",
+    "description": "Dublin noise-rock that's thrillingly loud and strange.",
+    "confidence": "high"
+  },
+  {
+    "title": "Team Dresch",
+    "genre": "music",
+    "venue": "Bottom of the Hill",
+    "address": "1233 17th St, San Francisco, CA 94107",
+    "lat": 37.765,
+    "lon": -122.3961,
+    "schedule": {
+      "date": "2026-11-04",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "$20–25",
+    "organizer": "Bottom of the Hill",
+    "url": "http://www.bottomofthehill.com/20261104.html",
+    "description": "Queercore pioneers play the first of two nights at Bottom of the Hill.",
+    "confidence": "high"
+  },
+  {
+    "title": "Moby",
+    "genre": "music",
+    "venue": "Bill Graham Civic Auditorium",
+    "address": "99 Grove St, San Francisco, CA 94102",
+    "lat": 37.7783,
+    "lon": -122.4174,
+    "schedule": {
+      "date": "2026-11-05",
+      "start": "19:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Another Planet Entertainment",
+    "url": "https://billgrahamcivic.com/events/moby-261105",
+    "description": "Moby live at the big Civic Center hall. 18+.",
+    "confidence": "high"
+  },
+  {
+    "title": "The Black Angels with Ghostwoman",
+    "genre": "music",
+    "venue": "The Regency Ballroom",
+    "address": "1300 Van Ness Ave, San Francisco, CA 94109",
+    "lat": 37.7878,
+    "lon": -122.4215,
+    "schedule": {
+      "date": "2026-11-05",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Goldenvoice",
+    "url": "https://www.jambase.com/show/the-black-angels-the-regency-ballroom-20261105",
+    "description": "Austin psych-rock drone in the Regency's grand old ballroom.",
+    "confidence": "high"
+  },
+  {
+    "title": "Mystery Skulls & Fox Stevenson",
+    "genre": "music",
+    "venue": "Bimbo's 365 Club",
+    "address": "1025 Columbus Ave, San Francisco, CA 94133",
+    "lat": 37.8037,
+    "lon": -122.4155,
+    "schedule": {
+      "date": "2026-11-05",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Bimbo's 365 Club",
+    "url": "https://bimbos365club.com/tm-event/mystery-skulls-fox-stevenson/",
+    "description": "Electro-funk double bill at North Beach's retro supper club. 21+.",
+    "confidence": "high"
+  },
+  {
+    "title": "Buena Vista Orchestra",
+    "genre": "music",
+    "venue": "The Warfield",
+    "address": "982 Market St, San Francisco, CA 94102",
+    "lat": 37.7827,
+    "lon": -122.4101,
+    "schedule": {
+      "date": "2026-11-06",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Goldenvoice",
+    "url": "https://www.thewarfieldtheatre.com/events/detail/1428072",
+    "description": "Cuban son and bolero from the Buena Vista Social Club lineage.",
+    "confidence": "high"
+  },
+  {
+    "title": "Pinhead Gunpowder",
+    "genre": "music",
+    "venue": "August Hall",
+    "address": "420 Mason St, San Francisco, CA 94102",
+    "lat": 37.7874,
+    "lon": -122.4098,
+    "schedule": {
+      "date": "2026-11-07",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "August Hall",
+    "url": "https://www.augusthallsf.com/tm-event/pinhead-gunpowder/",
+    "description": "Rare show from the East Bay punk band with Billie Joe Armstrong. All ages.",
+    "confidence": "high"
+  },
+  {
+    "title": "SF Symphony: Día de los Muertos",
+    "genre": "music",
+    "venue": "Davies Symphony Hall",
+    "address": "201 Van Ness Ave, San Francisco, CA 94102",
+    "lat": 37.7777,
+    "lon": -122.4206,
+    "schedule": {
+      "date": "2026-11-07",
+      "start": "15:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "San Francisco Symphony",
+    "url": "https://www.broadwayworld.com/article/San-Francisco-Symphony-Reveals-November-2026-Programming-20261002",
+    "description": "19th annual Día de los Muertos concert: Márquez, Moncayo, Chávez.",
+    "confidence": "high"
+  },
+  {
+    "title": "Southern Culture on the Skids with Van Goat",
+    "genre": "music",
+    "venue": "Bottom of the Hill",
+    "address": "1233 17th St, San Francisco, CA 94107",
+    "lat": 37.765,
+    "lon": -122.3961,
+    "schedule": {
+      "date": "2026-11-07",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "$25",
+    "organizer": "Bottom of the Hill",
+    "url": "http://www.bottomofthehill.com/20261107.html",
+    "description": "Fried-chicken-flinging garage rockabilly. A legendarily fun live band.",
+    "confidence": "high"
+  },
+  {
+    "title": "Teddy Swims with Natasha Bedingfield",
+    "genre": "music",
+    "venue": "Chase Center",
+    "address": "1 Warriors Way, San Francisco, CA 94158",
+    "lat": 37.768,
+    "lon": -122.3877,
+    "schedule": {
+      "date": "2026-11-10",
+      "start": "19:00",
+      "end": null
+    },
+    "price": "$67.50+",
+    "organizer": "Chase Center",
+    "url": "https://www.jambase.com/show/teddy-swims-chase-center-20261110",
+    "description": "Big-voiced soul-pop singer's arena show, Natasha Bedingfield opening.",
+    "confidence": "high"
+  },
+  {
+    "title": "The Damned",
+    "genre": "music",
+    "venue": "The Fillmore",
+    "address": "1805 Geary Blvd, San Francisco, CA 94115",
+    "lat": 37.7841,
+    "lon": -122.433,
+    "schedule": {
+      "date": "2026-11-11",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Live Nation",
+    "url": "https://www.livenation.com/venue/KovZpZAE6eeA/the-fillmore-events",
+    "description": "UK punk originals on their Final Damnation 50 tour.",
+    "confidence": "high"
+  },
+  {
+    "title": "Brand New",
+    "genre": "music",
+    "venue": "Bill Graham Civic Auditorium",
+    "address": "99 Grove St, San Francisco, CA 94102",
+    "lat": 37.7783,
+    "lon": -122.4174,
+    "schedule": {
+      "date": "2026-11-11",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Another Planet Entertainment",
+    "url": "https://billgrahamcivic.com/events/brand-new-261111",
+    "description": "Cult emo-rock band's return, at Bill Graham Civic.",
+    "confidence": "high"
+  },
+  {
+    "title": "Ezra Collective",
+    "genre": "music",
+    "venue": "Bimbo's 365 Club",
+    "address": "1025 Columbus Ave, San Francisco, CA 94133",
+    "lat": 37.8037,
+    "lon": -122.4155,
+    "schedule": {
+      "date": "2026-11-12",
+      "start": "21:00",
+      "end": null
+    },
+    "price": "See tickets (sold out)",
+    "organizer": "Bimbo's 365 Club",
+    "url": "https://bimbos365club.com/tm-event/ezra-collective-here-because-of-hope-tour/",
+    "description": "Mercury Prize-winning London jazz collective. Pure dance energy. 21+.",
+    "confidence": "high"
+  },
+  {
+    "title": "Band of Horses",
+    "genre": "music",
+    "venue": "The Regency Ballroom",
+    "address": "1300 Van Ness Ave, San Francisco, CA 94109",
+    "lat": 37.7878,
+    "lon": -122.4215,
+    "schedule": {
+      "date": "2026-11-12",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Goldenvoice",
+    "url": "https://www.jambase.com/show/band-of-horses-the-regency-ballroom-20261112",
+    "description": "Everything All The Time 20th-anniversary tour. \"The Funeral\" live.",
+    "confidence": "high"
+  },
+  {
+    "title": "Tank and The Bangas",
+    "genre": "music",
+    "venue": "August Hall",
+    "address": "420 Mason St, San Francisco, CA 94102",
+    "lat": 37.7874,
+    "lon": -122.4098,
+    "schedule": {
+      "date": "2026-11-13",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "August Hall",
+    "url": "https://www.augusthallsf.com/tm-event/tank-and-the-bangas-the-last-balloon-tour/",
+    "description": "Joyous New Orleans soul-funk-spoken-word on The Last Balloon Tour.",
+    "confidence": "high"
+  },
+  {
+    "title": "Rhye",
+    "genre": "music",
+    "venue": "The Warfield",
+    "address": "982 Market St, San Francisco, CA 94102",
+    "lat": 37.7827,
+    "lon": -122.4101,
+    "schedule": {
+      "date": "2026-11-14",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Goldenvoice",
+    "url": "https://www.thewarfieldtheatre.com/events/detail/1468105",
+    "description": "Silky, slow-burn R&B in a gorgeous 1922 Market St theater.",
+    "confidence": "high"
+  },
+  {
+    "title": "The Avengers with Pansy Division",
+    "genre": "music",
+    "venue": "Bottom of the Hill",
+    "address": "1233 17th St, San Francisco, CA 94107",
+    "lat": 37.765,
+    "lon": -122.3961,
+    "schedule": {
+      "date": "2026-11-14",
+      "start": "21:30",
+      "end": null
+    },
+    "price": "$25",
+    "organizer": "Bottom of the Hill",
+    "url": "http://www.bottomofthehill.com/20261114.html",
+    "description": "Two SF punk institutions on one bill: '77 originals and queer pop-punk heroes.",
+    "confidence": "high"
+  },
+  {
+    "title": "Joel Harrison Quintet: In a Silent Way",
+    "genre": "music",
+    "venue": "Bird & Beckett Books and Records",
+    "address": "653 Chenery St, San Francisco, CA 94131",
+    "lat": 37.7339,
+    "lon": -122.4339,
+    "schedule": {
+      "date": "2026-11-14",
+      "start": "19:30",
+      "end": null
+    },
+    "price": "$25",
+    "organizer": "Bird & Beckett",
+    "url": "https://www.birdbeckett.com/events-calendar/",
+    "description": "Miles Davis's electric era, played live in a cozy Glen Park bookshop.",
+    "confidence": "high"
+  },
+  {
+    "title": "Vince Staples with Glare",
+    "genre": "music",
+    "venue": "The Warfield",
+    "address": "982 Market St, San Francisco, CA 94102",
+    "lat": 37.7827,
+    "lon": -122.4101,
+    "schedule": {
+      "date": "2026-11-15",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Goldenvoice",
+    "url": "https://www.thewarfieldtheatre.com/events/detail/1486743",
+    "description": "One of rap's sharpest writers at the Warfield.",
+    "confidence": "high"
+  },
+  {
+    "title": "Kate Nash",
+    "genre": "music",
+    "venue": "Swedish American Hall",
+    "address": "2174 Market St, San Francisco, CA 94114",
+    "lat": 37.7666,
+    "lon": -122.4308,
+    "schedule": {
+      "date": "2026-11-15",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Cafe du Nord / Swedish American Hall",
+    "url": "https://www.ticketweb.com/event/kate-nash-swedish-american-hall-tickets/14313314",
+    "description": "Kate Nash in the wood-paneled Swedish American Hall. All ages.",
+    "confidence": "high"
+  },
+  {
+    "title": "The Mountain Goats",
+    "genre": "music",
+    "venue": "The Fillmore",
+    "address": "1805 Geary Blvd, San Francisco, CA 94115",
+    "lat": 37.7841,
+    "lon": -122.433,
+    "schedule": {
+      "date": "2026-11-15",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "See tickets",
+    "organizer": "Live Nation",
+    "url": "https://www.livenation.com/venue/KovZpZAE6eeA/the-fillmore-events",
+    "description": "Night one of a six-night Fillmore run by John Darnielle's band.",
+    "confidence": "high"
+  },
+  {
+    "title": "San Francisco Invitational Jam",
+    "genre": "music",
+    "venue": "Tupelo",
+    "address": "1337 Grant Ave, San Francisco, CA 94133",
+    "lat": 37.7994,
+    "lon": -122.4073,
+    "schedule": {
+      "weekday": "Monday",
+      "start": "21:00",
+      "end": "01:00"
+    },
+    "price": "Free",
+    "organizer": "Tupelo",
+    "url": "https://offbeatsf.com/venue/tupelo/",
+    "description": "Monday-night roots/soul/funk jam where working musicians sit in. No cover.",
+    "confidence": "high"
+  },
+  {
+    "title": "Noontime Concerts",
+    "genre": "music",
+    "venue": "Old St. Mary's Cathedral",
+    "address": "660 California St, San Francisco, CA 94108",
+    "lat": 37.7928,
+    "lon": -122.4057,
+    "schedule": {
+      "weekday": "Tuesday",
+      "start": "12:30",
+      "end": null
+    },
+    "price": "Free (donations welcome)",
+    "organizer": "Noontime Concerts",
+    "url": "https://noontimeconcerts.org/",
+    "description": "Free lunchtime chamber concert every Tuesday in a historic 1854 cathedral.",
+    "confidence": "high"
+  },
+  {
+    "title": "Midweek Jazz Jam with Ernest East & the SF Rainfall Band",
+    "genre": "music",
+    "venue": "African American Art & Culture Complex",
+    "address": "762 Fulton St, San Francisco, CA 94102",
+    "lat": 37.7787,
+    "lon": -122.4293,
+    "schedule": {
+      "weekday": "Wednesday",
+      "start": "17:30",
+      "end": "20:00"
+    },
+    "price": "Free",
+    "organizer": "AAACC",
+    "url": "https://ma.to/event/midweek-jazz-jam-05-aug-2026",
+    "description": "Free weekly jazz jam in the Fillmore district. Bring a horn or just listen.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Friday Happy Hour at the Bandshell",
+    "genre": "music",
+    "venue": "Golden Gate Park Bandshell",
+    "address": "Music Concourse Dr, Golden Gate Park, San Francisco, CA 94118",
+    "lat": 37.7703,
+    "lon": -122.4683,
+    "schedule": {
+      "weekday": "Friday",
+      "start": "16:30",
+      "end": "19:30"
+    },
+    "price": "Free",
+    "organizer": "Illuminate LIVE",
+    "url": "https://www.goldengate.org/events/illuminate-live---golden-gate-park-bandshell-concerts/?F_m=10",
+    "description": "Free outdoor shows in Golden Gate Park every Friday. Season runs to mid-November.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Sunday Jazz Happy Hour",
+    "genre": "music",
+    "venue": "Bird & Beckett Books and Records",
+    "address": "653 Chenery St, San Francisco, CA 94131",
+    "lat": 37.7339,
+    "lon": -122.4339,
+    "schedule": {
+      "weekday": "Sunday",
+      "start": "17:00",
+      "end": null
+    },
+    "price": "Sliding scale",
+    "organizer": "Bird & Beckett",
+    "url": "https://www.birdbeckett.com/events-calendar/",
+    "description": "Weekly Sunday 5pm jazz among the bookshelves. Rotating local bands.",
+    "confidence": "high"
+  },
+  {
+    "title": "Chelsea Peretti: Back to Work",
+    "genre": "party",
+    "venue": "Punch Line San Francisco",
+    "address": "444 Battery St, San Francisco, CA 94111",
+    "lat": 37.7951,
+    "lon": -122.4,
+    "schedule": {
+      "date": "2026-10-19",
+      "start": "19:00",
+      "end": "20:30"
+    },
+    "price": "From ~$49",
+    "organizer": "Punch Line",
+    "url": "https://www.ticketmaster.com/chelsea-peretti-live-back-to-work-san-francisco-california-10-19-2026/event/1C006549B723BC3E",
+    "description": "Brooklyn Nine-Nine's Gina workshops a new hour in an intimate club; 9:15pm show too.",
+    "confidence": "high"
+  },
+  {
+    "title": "Hannah Jones",
+    "genre": "party",
+    "venue": "Punch Line San Francisco",
+    "address": "444 Battery St, San Francisco, CA 94111",
+    "lat": 37.7951,
+    "lon": -122.4,
+    "schedule": {
+      "date": "2026-10-20",
+      "start": "19:30",
+      "end": "21:00"
+    },
+    "price": "From ~$29",
+    "organizer": "Punch Line",
+    "url": "https://www.ticketmaster.com/hannah-jones-san-francisco-california-10-20-2026/event/1C0064D7D37B67A0",
+    "description": "Rising stand-up with a weeknight set at SF's oldest comedy club.",
+    "confidence": "high"
+  },
+  {
+    "title": "Laurie Kilmartin",
+    "genre": "party",
+    "venue": "Punch Line San Francisco",
+    "address": "444 Battery St, San Francisco, CA 94111",
+    "lat": 37.7951,
+    "lon": -122.4,
+    "schedule": {
+      "date": "2026-10-21",
+      "start": "20:00",
+      "end": "21:30"
+    },
+    "price": "From ~$29",
+    "organizer": "Punch Line",
+    "url": "https://www.ticketmaster.com/laurie-kilmartin-san-francisco-california-10-21-2026/event/1C0064D3AA45F24E",
+    "description": "Conan writer and dark-humor veteran; runs through Oct 23 at Punch Line.",
+    "confidence": "high"
+  },
+  {
+    "title": "Phoebe Robinson: Feral & Fired Up!",
+    "genre": "party",
+    "venue": "Cobb's Comedy Club",
+    "address": "915 Columbus Ave, San Francisco, CA 94133",
+    "lat": 37.8036,
+    "lon": -122.4146,
+    "schedule": {
+      "date": "2026-10-23",
+      "start": "19:30",
+      "end": "21:00"
+    },
+    "price": "From ~$31",
+    "organizer": "Cobb's Comedy Club",
+    "url": "https://www.ticketmaster.com/phoebe-robinson-feral-fired-up-san-francisco-california-10-23-2026/event/1C006474FE7383FE",
+    "description": "2 Dope Queens co-creator brings her new tour to North Beach; more shows Oct 24.",
+    "confidence": "high"
+  },
+  {
+    "title": "Lucas Zelnick",
+    "genre": "party",
+    "venue": "Palace of Fine Arts",
+    "address": "3301 Lyon St, San Francisco, CA 94123",
+    "lat": 37.8029,
+    "lon": -122.4484,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "19:00",
+      "end": null
+    },
+    "price": "Tickets via Ticketmaster",
+    "organizer": "Palace of Fine Arts",
+    "url": "https://www.sfstation.com/lucas-zelnick-e2465762",
+    "description": "Gilded Lily podcast comic plays the Palace of Fine Arts theater; 9:30pm show too.",
+    "confidence": "high"
+  },
+  {
+    "title": "Kyle Gordon",
+    "genre": "party",
+    "venue": "Rickshaw Stop",
+    "address": "155 Fell St, San Francisco, CA 94102",
+    "lat": 37.7763,
+    "lon": -122.4202,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "Tickets via Eventim",
+    "organizer": "Rickshaw Stop",
+    "url": "https://www.sfstation.com/kyle-gordon-e15772161",
+    "description": "Viral parody-song comedian (Planet of the Bass) live in a small club.",
+    "confidence": "high"
+  },
+  {
+    "title": "Mo Welch",
+    "genre": "party",
+    "venue": "Punch Line San Francisco",
+    "address": "444 Battery St, San Francisco, CA 94111",
+    "lat": 37.7951,
+    "lon": -122.4,
+    "schedule": {
+      "date": "2026-10-28",
+      "start": "20:00",
+      "end": "21:30"
+    },
+    "price": "Tickets via Ticketmaster",
+    "organizer": "Punch Line",
+    "url": "https://www.ticketmaster.com/mo-welch-san-francisco-california-10-28-2026/event/1C006509C3002AE4",
+    "description": "Deadpan stand-up and cartoonist with a midweek Punch Line set.",
+    "confidence": "high"
+  },
+  {
+    "title": "Fahim Anwar",
+    "genre": "party",
+    "venue": "Cobb's Comedy Club",
+    "address": "915 Columbus Ave, San Francisco, CA 94133",
+    "lat": 37.8036,
+    "lon": -122.4146,
+    "schedule": {
+      "date": "2026-10-29",
+      "start": "19:00",
+      "end": "20:30"
+    },
+    "price": "Tickets via Ticketmaster",
+    "organizer": "Cobb's Comedy Club",
+    "url": "https://www.ticketmaster.com/fahim-anwar-san-francisco-california-10-29-2026/event/1C0064A519C4481D",
+    "description": "Netflix special comic known for sharp act-outs; headlining Cobb's.",
+    "confidence": "high"
+  },
+  {
+    "title": "JT Parr",
+    "genre": "party",
+    "venue": "Cobb's Comedy Club",
+    "address": "915 Columbus Ave, San Francisco, CA 94133",
+    "lat": 37.8036,
+    "lon": -122.4146,
+    "schedule": {
+      "date": "2026-10-30",
+      "start": "19:00",
+      "end": "20:30"
+    },
+    "price": "Tickets via Ticketmaster",
+    "organizer": "Cobb's Comedy Club",
+    "url": "https://www.ticketmaster.com/jt-parr-san-francisco-california-10-30-2026/event/1C0064E70281A126",
+    "description": "Chad Goes Deep podcast co-host does stand-up on Halloween weekend.",
+    "confidence": "high"
+  },
+  {
+    "title": "Luke Kidgell: Live in the USA",
+    "genre": "party",
+    "venue": "Cobb's Comedy Club",
+    "address": "915 Columbus Ave, San Francisco, CA 94133",
+    "lat": 37.8036,
+    "lon": -122.4146,
+    "schedule": {
+      "date": "2026-11-04",
+      "start": "19:30",
+      "end": "21:00"
+    },
+    "price": "From ~$34",
+    "organizer": "Cobb's Comedy Club",
+    "url": "https://www.ticketmaster.com/luke-kidgell-live-in-the-usa-san-francisco-california-11-04-2026/event/1C0064C9192A6999",
+    "description": "Australian crowd-work comic who blew up online, on his US run.",
+    "confidence": "high"
+  },
+  {
+    "title": "Jim Norton: Stupid Smile",
+    "genre": "party",
+    "venue": "Cobb's Comedy Club",
+    "address": "915 Columbus Ave, San Francisco, CA 94133",
+    "lat": 37.8036,
+    "lon": -122.4146,
+    "schedule": {
+      "date": "2026-11-05",
+      "start": "19:30",
+      "end": "21:00"
+    },
+    "price": "Tickets via Ticketmaster",
+    "organizer": "Cobb's Comedy Club",
+    "url": "https://www.ticketmaster.com/jim-norton-stupid-smile-san-francisco-california-11-05-2026/event/1C0064EEFB63D996",
+    "description": "Opie & Anthony alum and filthy-honest stand-up veteran on his new tour.",
+    "confidence": "high"
+  },
+  {
+    "title": "Jake Johannsen",
+    "genre": "party",
+    "venue": "Punch Line San Francisco",
+    "address": "444 Battery St, San Francisco, CA 94111",
+    "lat": 37.7951,
+    "lon": -122.4,
+    "schedule": {
+      "date": "2026-11-05",
+      "start": "19:30",
+      "end": "21:00"
+    },
+    "price": "From ~$37",
+    "organizer": "Punch Line",
+    "url": "https://www.ticketmaster.com/jake-johannsen-san-francisco-california-11-05-2026/event/1C0064ED0404FBE0",
+    "description": "Letterman favorite and Bay Area-beloved observational comic; through Nov 7.",
+    "confidence": "high"
+  },
+  {
+    "title": "Chelsea Handler: High and Mighty Tour",
+    "genre": "party",
+    "venue": "The Masonic",
+    "address": "1111 California St, San Francisco, CA 94108",
+    "lat": 37.7913,
+    "lon": -122.413,
+    "schedule": {
+      "date": "2026-11-07",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "From ~$85",
+    "organizer": "The Masonic",
+    "url": "https://www.sfstation.com/chelsea-handler-high-and-mighty-tour-e2428507",
+    "description": "Big-room stand-up from the talk-show host at the 3,000-seat Masonic.",
+    "confidence": "high"
+  },
+  {
+    "title": "Murray Hill: Showbiz! The Tour",
+    "genre": "party",
+    "venue": "Bimbo's 365 Club",
+    "address": "1025 Columbus Ave, San Francisco, CA 94133",
+    "lat": 37.8038,
+    "lon": -122.4156,
+    "schedule": {
+      "date": "2026-11-08",
+      "start": "19:00",
+      "end": null
+    },
+    "price": "Tickets via TicketWeb",
+    "organizer": "Another Planet Entertainment",
+    "url": "https://bimbos365club.com/tm-event/murray-hill/",
+    "description": "Somebody Somewhere star and 'hardest working middle-aged man' does seated showbiz comedy. 21+.",
+    "confidence": "high"
+  },
+  {
+    "title": "Roast Battle Bay Area",
+    "genre": "party",
+    "venue": "Cobb's Comedy Club",
+    "address": "915 Columbus Ave, San Francisco, CA 94133",
+    "lat": 37.8036,
+    "lon": -122.4146,
+    "schedule": {
+      "date": "2026-11-11",
+      "start": "19:30",
+      "end": "21:00"
+    },
+    "price": "Tickets via Ticketmaster",
+    "organizer": "Cobb's Comedy Club",
+    "url": "https://www.ticketmaster.com/roast-battle-bay-area-san-francisco-california-11-11-2026/event/1C00653D100DBD54",
+    "description": "Local comics trade brutal one-on-one roasts in front of judges.",
+    "confidence": "high"
+  },
+  {
+    "title": "Ricky Velez",
+    "genre": "party",
+    "venue": "Punch Line San Francisco",
+    "address": "444 Battery St, San Francisco, CA 94111",
+    "lat": 37.7951,
+    "lon": -122.4,
+    "schedule": {
+      "date": "2026-11-12",
+      "start": "20:00",
+      "end": "21:30"
+    },
+    "price": "Tickets via Ticketmaster",
+    "organizer": "Punch Line",
+    "url": "https://www.ticketmaster.com/ricky-velez-san-francisco-california-11-12-2026/event/1C0064F5CCD41105",
+    "description": "HBO special comic and actor (The King of Staten Island) headlines Punch Line.",
+    "confidence": "high"
+  },
+  {
+    "title": "National Park After Dark",
+    "genre": "party",
+    "venue": "Cobb's Comedy Club",
+    "address": "915 Columbus Ave, San Francisco, CA 94133",
+    "lat": 37.8036,
+    "lon": -122.4146,
+    "schedule": {
+      "date": "2026-11-12",
+      "start": "19:30",
+      "end": "21:00"
+    },
+    "price": "Tickets via Ticketmaster",
+    "organizer": "Cobb's Comedy Club",
+    "url": "https://www.ticketmaster.com/national-park-after-dark-your-neck-san-francisco-california-11-12-2026/event/1C0064FA1C7753B0",
+    "description": "Comedic true-crime-in-the-wilderness podcast live on its Your Neck of the Woods tour.",
+    "confidence": "high"
+  },
+  {
+    "title": "Mortified",
+    "genre": "party",
+    "venue": "DNA Lounge",
+    "address": "375 11th St, San Francisco, CA 94103",
+    "lat": 37.771,
+    "lon": -122.4128,
+    "schedule": {
+      "date": "2026-11-13",
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "price": "Tickets via DNA Lounge",
+    "organizer": "Mortified",
+    "url": "https://www.sfstation.com/mortified-e2464775",
+    "description": "Adults read their real teenage diaries and love letters on stage. Cringe-funny SF classic.",
+    "confidence": "high"
+  },
+  {
+    "title": "Amir K",
+    "genre": "party",
+    "venue": "Cobb's Comedy Club",
+    "address": "915 Columbus Ave, San Francisco, CA 94133",
+    "lat": 37.8036,
+    "lon": -122.4146,
+    "schedule": {
+      "date": "2026-11-13",
+      "start": "19:00",
+      "end": "20:30"
+    },
+    "price": "Tickets via Ticketmaster",
+    "organizer": "Cobb's Comedy Club",
+    "url": "https://www.ticketmaster.com/amir-k-san-francisco-california-11-13-2026/event/1C0065119B97A2F7",
+    "description": "Touring stand-up headlines a Friday early show at Cobb's in North Beach.",
+    "confidence": "high"
+  },
+  {
+    "title": "Cheaper Than Therapy",
+    "genre": "party",
+    "venue": "Shelton Theater",
+    "address": "533 Sutter St, San Francisco, CA 94102",
+    "lat": 37.7894,
+    "lon": -122.4093,
+    "schedule": [
+      {
+        "weekday": "Wednesday",
+        "start": "19:45",
+        "end": null
+      },
+      {
+        "weekday": "Thursday",
+        "start": "19:45",
+        "end": null
+      },
+      {
+        "weekday": "Friday",
+        "start": "19:45",
+        "end": null
+      },
+      {
+        "weekday": "Friday",
+        "start": "21:45",
+        "end": null
+      },
+      {
+        "weekday": "Saturday",
+        "start": "19:45",
+        "end": null
+      },
+      {
+        "weekday": "Saturday",
+        "start": "21:45",
+        "end": null
+      },
+      {
+        "weekday": "Sunday",
+        "start": "19:45",
+        "end": null
+      }
+    ],
+    "price": "~$25-40",
+    "organizer": "Cheaper Than Therapy",
+    "url": "https://www.sfstation.com/cheaper-than-therapy-stand-up-comedy-e2480621",
+    "description": "Long-running stand-up in a tiny historic theater: three hosts plus three guest comics. 18+.",
+    "confidence": "high"
+  },
+  {
+    "title": "SF Comedy Showcase",
+    "genre": "party",
+    "venue": "Punch Line San Francisco",
+    "address": "444 Battery St, San Francisco, CA 94111",
+    "lat": 37.7951,
+    "lon": -122.4,
+    "schedule": {
+      "weekday": "Sunday",
+      "start": "19:00",
+      "end": "20:30"
+    },
+    "price": "From ~$23",
+    "organizer": "Punch Line",
+    "url": "https://www.sfstation.com/san-francisco-comedy-showcase-e2188352",
+    "description": "Punch Line's Sunday lineup of the best local and touring stand-ups.",
+    "confidence": "high"
+  },
+  {
+    "title": "The Confessional",
+    "genre": "party",
+    "venue": "Endgames Improv Theater & Bar",
+    "address": "2965 Mission St, San Francisco, CA 94110",
+    "lat": 37.7484,
+    "lon": -122.4185,
+    "schedule": [
+      {
+        "weekday": "Friday",
+        "start": "20:00",
+        "end": null
+      },
+      {
+        "weekday": "Saturday",
+        "start": "20:00",
+        "end": null
+      }
+    ],
+    "price": "Tickets via Eventbrite",
+    "organizer": "Endgames Improv",
+    "url": "https://endgamesimprov.com/shows/",
+    "description": "Improvisers turn the audience's anonymous written confessions into a full show.",
+    "confidence": "high"
+  },
+  {
+    "title": "Your Fucked Up Relationship",
+    "genre": "party",
+    "venue": "Endgames Improv Theater & Bar",
+    "address": "2965 Mission St, San Francisco, CA 94110",
+    "lat": 37.7484,
+    "lon": -122.4185,
+    "schedule": [
+      {
+        "weekday": "Friday",
+        "start": "21:00",
+        "end": null
+      },
+      {
+        "weekday": "Saturday",
+        "start": "21:00",
+        "end": null
+      }
+    ],
+    "price": "Tickets via Eventbrite",
+    "organizer": "Endgames Improv",
+    "url": "https://endgamesimprov.com/shows/",
+    "description": "Improv scenes built from audience relationship disasters; running since 2011.",
+    "confidence": "high"
+  },
+  {
+    "title": "The Ritual: A Comedy Show",
+    "genre": "party",
+    "venue": "Endgames Improv Theater & Bar",
+    "address": "2965 Mission St, San Francisco, CA 94110",
+    "lat": 37.7484,
+    "lon": -122.4185,
+    "schedule": {
+      "weekday": "Friday",
+      "start": "22:15",
+      "end": null
+    },
+    "price": "Tickets via Eventbrite",
+    "organizer": "Endgames Improv",
+    "url": "https://www.sfstation.com/the-ritual-a-comedy-show-e2478059",
+    "description": "Late-night Friday comedy show at Endgames' Mission theater.",
+    "confidence": "high"
+  },
+  {
+    "title": "The ETC Jam",
+    "genre": "party",
+    "venue": "Endgames Improv Theater & Bar",
+    "address": "2965 Mission St, San Francisco, CA 94110",
+    "lat": 37.7484,
+    "lon": -122.4185,
+    "schedule": {
+      "weekday": "Sunday",
+      "start": "18:00",
+      "end": null
+    },
+    "price": "Free",
+    "organizer": "Endgames Improv",
+    "url": "https://endgamesimprov.com/shows/",
+    "description": "Free Sunday improv jam: watch or jump in with Endgames players.",
+    "confidence": "high"
+  },
+  {
+    "title": "BATS Improv Saturday Show",
+    "genre": "party",
+    "venue": "BATS Bayfront Theater",
+    "address": "Fort Mason Center, 2 Marina Blvd, Bldg B, 3rd Floor, San Francisco, CA 94123",
+    "lat": 37.8064,
+    "lon": -122.4318,
+    "schedule": {
+      "weekday": "Saturday",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "$10-25",
+    "organizer": "BATS Improv",
+    "url": "https://www.improv.org/",
+    "description": "SF's 40-year-old improv company at Fort Mason; Theatresports runs Saturdays in November.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Free HellaFunny Thursday Comedy Night",
+    "genre": "party",
+    "venue": "The Function",
+    "address": "1414 Market St, San Francisco, CA 94102",
+    "lat": 37.7754,
+    "lon": -122.4183,
+    "schedule": {
+      "weekday": "Thursday",
+      "start": "19:30",
+      "end": "21:00"
+    },
+    "price": "Free with RSVP ($20 door)",
+    "organizer": "HellaFunny",
+    "url": "https://sf.funcheap.com/free-hellafunny-thursday-comedy-night-downtown-sf-9/",
+    "description": "Free weekly stand-up showcase at a Market St comedy club. Two-drink minimum.",
+    "confidence": "high"
+  },
+  {
+    "title": "Clement St Comedy",
+    "genre": "party",
+    "venue": "Neck of the Woods",
+    "address": "406 Clement St, San Francisco, CA 94118",
+    "lat": 37.7831,
+    "lon": -122.4637,
+    "schedule": {
+      "weekday": "Thursday",
+      "start": "19:00",
+      "end": null
+    },
+    "price": "Free",
+    "organizer": "Neck of the Woods",
+    "url": "https://www.neckofthewoodssf.com/tm-event/clement-st-comedy-14/",
+    "description": "Free Thursday stand-up in the Inner Richmond at Neck of the Woods.",
+    "confidence": "high"
+  },
+  {
+    "title": "Mirthquake: Monday Live Comedy",
+    "genre": "party",
+    "venue": "The Abbey Tavern",
+    "address": "4100 Geary Blvd, San Francisco, CA 94118",
+    "lat": 37.781,
+    "lon": -122.4628,
+    "schedule": {
+      "weekday": "Monday",
+      "start": "20:00",
+      "end": null
+    },
+    "price": "Free with RSVP",
+    "organizer": "Mirthquake",
+    "url": "https://www.sfstation.com/mirthquake-monday-live-comedy-in-the-richmond-e15770229",
+    "description": "Free weekly Richmond stand-up with Sketchfest-linked hosts and cheap drinks. 21+.",
+    "confidence": "high"
+  },
+  {
+    "title": "Comedy Confessional",
+    "genre": "party",
+    "venue": "O'Reilly's Pub",
+    "address": "1840 Haight St, San Francisco, CA 94117",
+    "lat": 37.7694,
+    "lon": -122.4512,
+    "schedule": {
+      "weekday": "Tuesday",
+      "start": "20:00",
+      "end": "21:30"
+    },
+    "price": "Free",
+    "organizer": "Comedy Confessional",
+    "url": "https://www.sfstation.com/comedy-confessional-e2477814",
+    "description": "Free Tuesday show where comics riff on anonymous audience confessions. 21+.",
+    "confidence": "medium"
+  },
+  {
+    "title": "NightLife at the Academy",
+    "genre": "party",
+    "venue": "California Academy of Sciences",
+    "address": "55 Music Concourse Dr, San Francisco, CA 94118",
+    "lat": 37.7698,
+    "lon": -122.4661,
+    "schedule": {
+      "weekday": "Thursday",
+      "start": "18:00",
+      "end": "22:00"
+    },
+    "price": "$26",
+    "organizer": "California Academy of Sciences",
+    "url": "https://www.calacademy.org/nightlife",
+    "description": "21+ Thursday nights with the aquarium, rainforest, planetarium and a bar; usually one Thursday a month off.",
+    "confidence": "high"
+  },
+  {
+    "title": "Exploratorium After Dark",
+    "genre": "party",
+    "venue": "Exploratorium",
+    "address": "Pier 15, The Embarcadero at Green St, San Francisco, CA 94111",
+    "lat": 37.8016,
+    "lon": -122.3974,
+    "schedule": {
+      "weekday": "Thursday",
+      "start": "18:00",
+      "end": "22:00"
+    },
+    "price": "$20",
+    "organizer": "Exploratorium",
+    "url": "https://www.exploratorium.edu/visit/calendar/after-dark",
+    "description": "Adults-only (18+) Thursday nights: every exhibit, a bar, guest speakers, films and music on the bay.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Día de los Muertos Procession & Festival of Altars",
+    "genre": "party",
+    "venue": "Mission District (22nd & Bryant, Garfield Square)",
+    "address": "22nd St & Bryant St, San Francisco, CA 94110",
+    "lat": 37.7562,
+    "lon": -122.4094,
+    "schedule": {
+      "date": "2026-11-02",
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "price": "Free",
+    "organizer": "Marigold Project and Mission community",
+    "url": "https://www.stanfordcourt.com/events/da-de-los-muertos-procession-festival-of-altars-2026",
+    "description": "Candlelit procession with Aztec dancers and drums; altars fill Garfield Square. Bring flowers or a candle.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Warriors at Chase Center",
+    "genre": "play",
+    "venue": "Chase Center",
+    "address": "1 Warriors Way, San Francisco, CA 94158",
+    "lat": 37.7679,
+    "lon": -122.3874,
+    "schedule": [
+      {
+        "date": "2026-10-23",
+        "start": "19:00",
+        "end": null
+      },
+      {
+        "date": "2026-10-30",
+        "start": "19:00",
+        "end": null
+      },
+      {
+        "date": "2026-11-01",
+        "start": "17:30",
+        "end": null
+      },
+      {
+        "date": "2026-11-02",
+        "start": "19:00",
+        "end": null
+      },
+      {
+        "date": "2026-11-05",
+        "start": "19:00",
+        "end": null
+      },
+      {
+        "date": "2026-11-07",
+        "start": "17:30",
+        "end": null
+      },
+      {
+        "date": "2026-11-09",
+        "start": "19:00",
+        "end": null
+      }
+    ],
+    "price": "Tickets vary",
+    "organizer": "Golden State Warriors",
+    "url": "https://www.espn.com/nba/team/schedule/_/name/gs/golden-state-warriors",
+    "description": "Home opener vs Memphis Oct 23, Lakers Oct 30, then Clippers, Suns, Heat, Magic and Pelicans.",
+    "confidence": "high"
+  },
+  {
+    "title": "Spooky Garden Reverie",
+    "genre": "party",
+    "venue": "The Green Between",
+    "address": "2 Burrows St, San Francisco, CA 94134",
+    "lat": 37.729,
+    "lon": -122.4038,
+    "schedule": {
+      "date": "2026-10-31",
+      "start": "18:00",
+      "end": "22:00"
+    },
+    "price": "Free",
+    "organizer": "Portola Neighborhood Association & Family Connection Centers",
+    "url": "https://sf.funcheap.com/free-spooky-garden-reverie-ages-halloween-festival-portola-sf/",
+    "description": "All-ages Halloween night in the Portola: glowing garden paths, a DJ and food trucks.",
+    "confidence": "high"
+  },
+  {
+    "title": "Halloween Hoopla",
+    "genre": "party",
+    "venue": "Yerba Buena Gardens, Children's Garden",
+    "address": "750 Howard St, San Francisco, CA 94103",
+    "lat": 37.7832,
+    "lon": -122.4021,
+    "schedule": {
+      "date": "2026-10-31",
+      "start": "12:00",
+      "end": "15:00"
+    },
+    "price": "Free",
+    "organizer": "Yerba Buena Gardens Festival",
+    "url": "https://sf.funcheap.com/halloween-hoopla-kids-festival-in-the-park-costume-parade-sf/",
+    "description": "26th annual kids' Halloween festival and costume parade, aimed at under-10s and their grown-ups.",
+    "confidence": "high"
+  },
+  {
+    "title": "San Francisco Zombie Crawl",
+    "genre": "party",
+    "venue": "Savoy Tivoli (start), North Beach",
+    "address": "1434 Grant Ave, San Francisco, CA 94133",
+    "lat": 37.8003,
+    "lon": -122.4074,
+    "schedule": [
+      {
+        "date": "2026-10-30",
+        "start": "19:00",
+        "end": "02:00"
+      },
+      {
+        "date": "2026-10-31",
+        "start": "19:00",
+        "end": "02:00"
+      }
+    ],
+    "price": "Ticketed",
+    "organizer": "San Francisco Zombie Crawl",
+    "url": "https://www.goldengate.org/events/san-francisco-zombie-crawl-2026/",
+    "description": "Costumed Halloween bar crawl through North Beach with a map of participating bars.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Emporium Costume Contest Party",
+    "genre": "party",
+    "venue": "Emporium",
+    "address": "616 Divisadero St, San Francisco, CA 94117",
+    "lat": 37.7754,
+    "lon": -122.4375,
+    "schedule": {
+      "date": "2026-10-31",
+      "start": "21:00",
+      "end": "02:00"
+    },
+    "price": "Free",
+    "organizer": "Emporium",
+    "url": "https://www.emporiumarcadebar.com/event/8th-annual-emporium-costume-contest-party-w-dj-weapon-dj-aaron-the-era-103126/",
+    "description": "8th annual Halloween party in the old Harding Theater: DJs and $500 cash prizes for best costume.",
+    "confidence": "high"
+  },
+  {
+    "title": "Castro Farmers' Market",
+    "genre": "food",
+    "venue": "Castro Farmers' Market",
+    "address": "270 Noe St, San Francisco, CA 94114",
+    "lat": 37.7647,
+    "lon": -122.4334,
+    "schedule": {
+      "weekday": "Wednesday",
+      "start": "15:00",
+      "end": "19:00"
+    },
+    "price": "Free",
+    "organizer": "Pacific Coast Farmers' Market Association & Castro Merchants",
+    "url": "https://www.sf.gov/castro-farmers-market-111826",
+    "description": "Weekday after-work farmers market on Noe St just off Market.",
+    "confidence": "high"
+  },
+  {
+    "title": "Stonestown Farmers Market",
+    "genre": "food",
+    "venue": "Stonestown Galleria parking lot",
+    "address": "501 Buckingham Way, San Francisco, CA 94132",
+    "lat": 37.7297,
+    "lon": -122.4791,
+    "schedule": {
+      "weekday": "Sunday",
+      "start": "09:00",
+      "end": "13:00"
+    },
+    "price": "Free",
+    "organizer": "Agricultural Institute of Marin",
+    "url": "https://agriculturalinstitute.org/stonestown",
+    "description": "Year-round Sunday market near SF State, rain or shine.",
+    "confidence": "high"
+  },
+  {
+    "title": "Clement Street Farmers Market",
+    "genre": "food",
+    "venue": "Clement St (2nd–4th Ave)",
+    "address": "244 Clement St, San Francisco, CA 94118",
+    "lat": 37.7831,
+    "lon": -122.4618,
+    "schedule": {
+      "weekday": "Sunday",
+      "start": "09:00",
+      "end": "14:00"
+    },
+    "price": "Free",
+    "organizer": "Agricultural Institute of Marin",
+    "url": "https://agriculturalinstitute.org/clement-st",
+    "description": "Three blocks of Inner Richmond produce stalls; pair it with Clement St dumplings and bakeries.",
+    "confidence": "high"
+  },
+  {
+    "title": "Noe Valley Farmers Market",
+    "genre": "food",
+    "venue": "Noe Valley Town Square",
+    "address": "3861 24th St, San Francisco, CA 94114",
+    "lat": 37.7515,
+    "lon": -122.4289,
+    "schedule": {
+      "weekday": "Saturday",
+      "start": "08:00",
+      "end": "13:00"
+    },
+    "price": "Free",
+    "organizer": "Noe Valley Farmers Market",
+    "url": "https://sfplanning.org/node/3458",
+    "description": "Small, friendly Saturday market in the Town Square on 24th St, with music and kids running around.",
+    "confidence": "medium"
+  },
+  {
+    "title": "In Their Name: Día de los Muertos opening",
+    "genre": "party",
+    "venue": "SOMArts Cultural Center",
+    "address": "934 Brannan St, San Francisco, CA 94103",
+    "lat": 37.7708,
+    "lon": -122.4063,
+    "schedule": {
+      "date": "2026-10-23",
+      "start": "18:00",
+      "end": "21:00"
+    },
+    "price": "Free–$15",
+    "organizer": "SOMArts",
+    "url": "https://somarts.org/exhibition/intheirname/",
+    "description": "Opening night of SOMArts' annual Day of the Dead altar exhibition; show runs to Nov 20.",
+    "confidence": "high"
+  },
+  {
+    "title": "Thrill-O-Ween at Thrive City",
+    "genre": "party",
+    "venue": "Thrive City, Chase Center",
+    "address": "1 Warriors Way, San Francisco, CA 94158",
+    "lat": 37.7679,
+    "lon": -122.3874,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "12:00",
+      "end": "17:00"
+    },
+    "price": "Free (RSVP)",
+    "organizer": "Thrive City",
+    "url": "https://www.sfstation.com/thrill-o-ween-at-thrive-city-e2427021",
+    "description": "All-ages Halloween afternoon: costume contest, themed activities and an outdoor E.T. screening.",
+    "confidence": "high"
+  },
+  {
+    "title": "Terror Vault at the Old Mint",
+    "genre": "party",
+    "venue": "The Old San Francisco Mint",
+    "address": "88 5th St, San Francisco, CA 94103",
+    "lat": 37.7827,
+    "lon": -122.4073,
+    "schedule": [
+      {
+        "date": "2026-10-22",
+        "start": "18:00",
+        "end": "21:00"
+      },
+      {
+        "date": "2026-10-23",
+        "start": "18:00",
+        "end": "21:30"
+      },
+      {
+        "date": "2026-10-24",
+        "start": "17:30",
+        "end": "21:30"
+      },
+      {
+        "date": "2026-10-25",
+        "start": "17:30",
+        "end": "20:30"
+      },
+      {
+        "date": "2026-10-28",
+        "start": "18:00",
+        "end": "21:30"
+      },
+      {
+        "date": "2026-10-29",
+        "start": "18:00",
+        "end": "21:30"
+      },
+      {
+        "date": "2026-10-30",
+        "start": "18:00",
+        "end": "21:30"
+      },
+      {
+        "date": "2026-10-31",
+        "start": "17:30",
+        "end": "21:30"
+      }
+    ],
+    "price": "Ticketed",
+    "organizer": "Terror Vault",
+    "url": "https://www.terrorvault.com",
+    "description": "Immersive haunted attraction in the vaults of the 1874 Old Mint.",
+    "confidence": "high"
+  },
+  {
+    "title": "San Francisco Latino Film Festival",
+    "genre": "party",
+    "venue": "The Roxie (and other venues)",
+    "address": "3117 16th St, San Francisco, CA 94103",
+    "lat": 37.7647,
+    "lon": -122.4224,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "12:30",
+      "end": "18:30"
+    },
+    "price": "Ticketed",
+    "organizer": "Cine+Mas SF",
+    "url": "https://www.cinemassf.org/2026/09/18th-san-francisco-latino-film-festival-info-tickets-film-guide/",
+    "description": "18th annual festival, Oct 22–Nov 1 at the Roxie, ATA, New People and more; Roxie day of screenings Oct 24.",
+    "confidence": "high"
+  },
+  {
+    "title": "SF Dance Film Festival at Brava",
+    "genre": "party",
+    "venue": "Brava Theater Center",
+    "address": "2781 24th St, San Francisco, CA 94110",
+    "lat": 37.7527,
+    "lon": -122.4078,
+    "schedule": [
+      {
+        "date": "2026-11-06",
+        "start": "14:00",
+        "end": null
+      },
+      {
+        "date": "2026-11-07",
+        "start": "10:00",
+        "end": null
+      },
+      {
+        "date": "2026-11-08",
+        "start": "11:00",
+        "end": null
+      }
+    ],
+    "price": "Ticketed",
+    "organizer": "San Francisco Dance Film Festival",
+    "url": "https://sfdancefilmfest.org/fall-festival-2026/",
+    "description": "Closing weekend of the dance film festival: back-to-back screenings at Brava on 24th St.",
+    "confidence": "high"
+  },
+  {
+    "title": "SF Fall Cider Fest",
+    "genre": "food",
+    "venue": "Spark Social SF",
+    "address": "601 Mission Bay Blvd N, San Francisco, CA 94158",
+    "lat": 37.7707,
+    "lon": -122.3916,
+    "schedule": {
+      "date": "2026-11-07",
+      "start": "12:00",
+      "end": "16:00"
+    },
+    "price": "Ticketed",
+    "organizer": "Spark Social SF",
+    "url": "https://www.sfstation.com/the-san-francisco-fall-cider-fest-camp-spark-edition-e2474607",
+    "description": "Unlimited pours from 30+ craft ciders, food trucks, fire pits, s'mores and camp games.",
+    "confidence": "high"
+  },
+  {
+    "title": "SF International Hip Hop DanceFest",
+    "genre": "music",
+    "venue": "Palace of Fine Arts",
+    "address": "3301 Lyon St, San Francisco, CA 94123",
+    "lat": 37.8029,
+    "lon": -122.4484,
+    "schedule": [
+      {
+        "date": "2026-11-14",
+        "start": "19:00",
+        "end": null
+      },
+      {
+        "date": "2026-11-15",
+        "start": "12:00",
+        "end": null
+      },
+      {
+        "date": "2026-11-15",
+        "start": "17:00",
+        "end": null
+      }
+    ],
+    "price": "$64–$75",
+    "organizer": "SF International Hip Hop DanceFest (Micaya)",
+    "url": "https://www.sfhiphopdancefest.com",
+    "description": "28th annual showcase of hip hop dance crews from around the world.",
+    "confidence": "high"
+  },
+  {
+    "title": "Dear San Francisco",
+    "genre": "party",
+    "venue": "Club Fugazi",
+    "address": "678 Green St, San Francisco, CA 94133",
+    "lat": 37.7996,
+    "lon": -122.4103,
+    "schedule": [
+      {
+        "weekday": "Wednesday",
+        "start": "19:30",
+        "end": null
+      },
+      {
+        "weekday": "Thursday",
+        "start": "19:30",
+        "end": null
+      },
+      {
+        "weekday": "Friday",
+        "start": "19:30",
+        "end": null
+      },
+      {
+        "weekday": "Saturday",
+        "start": "14:00",
+        "end": null
+      },
+      {
+        "weekday": "Saturday",
+        "start": "19:30",
+        "end": null
+      },
+      {
+        "weekday": "Sunday",
+        "start": "13:00",
+        "end": null
+      },
+      {
+        "weekday": "Sunday",
+        "start": "18:00",
+        "end": null
+      }
+    ],
+    "price": "From $75",
+    "organizer": "The 7 Fingers / Club Fugazi",
+    "url": "https://www.clubfugazisf.com/dear-san-francisco",
+    "description": "Acrobatic love letter to SF's history in the old North Beach cabaret. Some dates differ; check calendar.",
+    "confidence": "high"
+  },
+  {
+    "title": "SF Transgender Film Festival",
+    "genre": "party",
+    "venue": "The Roxie",
+    "address": "3117 16th St, San Francisco, CA 94103",
+    "lat": 37.7647,
+    "lon": -122.4224,
+    "schedule": [
+      {
+        "date": "2026-11-12",
+        "start": "19:00",
+        "end": null
+      },
+      {
+        "date": "2026-11-13",
+        "start": "19:00",
+        "end": null
+      },
+      {
+        "date": "2026-11-14",
+        "start": "19:00",
+        "end": null
+      }
+    ],
+    "price": "Ticketed",
+    "organizer": "San Francisco Transgender Film Festival",
+    "url": "https://www.sf.gov/departments--city-administrator--office-transgender-initiatives/oti-november-2026-community-calendar-trans-film-festival",
+    "description": "North America's longest-running trans film fest: comedy, horror, sci-fi programs at 7 and 9pm.",
+    "confidence": "high"
+  },
+  {
+    "title": "Free First Sunday at the Asian Art Museum",
+    "genre": "party",
+    "venue": "Asian Art Museum",
+    "address": "200 Larkin St, San Francisco, CA 94102",
+    "lat": 37.7803,
+    "lon": -122.416,
+    "schedule": {
+      "date": "2026-11-01",
+      "start": "10:00",
+      "end": "17:00"
+    },
+    "price": "Free",
+    "organizer": "Asian Art Museum",
+    "url": "https://sf.funcheap.com/?p=1630554",
+    "description": "Free general admission on the first Sunday; reserve a timed ticket ahead.",
+    "confidence": "high"
+  },
+  {
+    "title": "Crucial Reggae Sundays",
+    "genre": "music",
+    "venue": "Golden Gate Park Bandshell",
+    "address": "Music Concourse Dr, Golden Gate Park, San Francisco, CA 94118",
+    "lat": 37.7699,
+    "lon": -122.4686,
+    "schedule": {
+      "weekday": "Sunday",
+      "start": "16:20",
+      "end": "19:30"
+    },
+    "price": "Free",
+    "organizer": "Illuminate LIVE & SF Rec and Park",
+    "url": "https://www.sfstation.com/crucial-reggae-sundays-free-music-in-golden-gate-park-e2478002",
+    "description": "Free family-friendly reggae sound system at the bandshell, Sundays through Nov 22.",
+    "confidence": "high"
+  },
+  {
+    "title": "HEAD WEST Marketplace",
+    "genre": "party",
+    "venue": "Ferry Building Back Plaza",
+    "address": "1 Ferry Building, San Francisco, CA 94111",
+    "lat": 37.7955,
+    "lon": -122.3935,
+    "schedule": {
+      "date": "2026-11-01",
+      "start": "11:00",
+      "end": "17:00"
+    },
+    "price": "Free",
+    "organizer": "HEAD WEST",
+    "url": "https://www.headwestmarketplace.com/ferrybuilding",
+    "description": "Local makers' market: ceramics, vintage and small brands behind the Ferry Building.",
+    "confidence": "high"
+  },
+  {
+    "title": "SF Street Food Festival",
+    "genre": "food",
+    "venue": "Ferry Building",
+    "address": "1 Ferry Building, San Francisco, CA 94111",
+    "lat": 37.7955,
+    "lon": -122.3935,
+    "schedule": [
+      {
+        "date": "2026-11-07",
+        "start": "19:00",
+        "end": "23:00"
+      },
+      {
+        "date": "2026-11-08",
+        "start": "11:00",
+        "end": "17:00"
+      }
+    ],
+    "price": "Ticketed",
+    "organizer": "La Cocina",
+    "url": "https://lacocinasf.org/events/sfstreetfoodfestival2026",
+    "description": "La Cocina's festival of 25 businesses born in its kitchen incubator, plus music and bars.",
+    "confidence": "medium"
+  },
+  {
+    "title": "The Black Cat Hotel: A Host of Vampires",
+    "genre": "party",
+    "venue": "The Palace Theater",
+    "address": "644 Broadway, San Francisco, CA 94133",
+    "lat": 37.798,
+    "lon": -122.4079,
+    "schedule": [
+      {
+        "date": "2026-10-20",
+        "start": "18:30",
+        "end": "22:00"
+      },
+      {
+        "date": "2026-10-21",
+        "start": "18:30",
+        "end": "22:00"
+      },
+      {
+        "date": "2026-10-22",
+        "start": "18:30",
+        "end": "22:00"
+      },
+      {
+        "date": "2026-10-23",
+        "start": "18:30",
+        "end": "22:00"
+      },
+      {
+        "date": "2026-10-24",
+        "start": "17:30",
+        "end": "22:00"
+      },
+      {
+        "date": "2026-10-25",
+        "start": "17:30",
+        "end": "22:00"
+      },
+      {
+        "date": "2026-10-27",
+        "start": "18:30",
+        "end": "22:00"
+      },
+      {
+        "date": "2026-10-28",
+        "start": "18:30",
+        "end": "22:00"
+      },
+      {
+        "date": "2026-10-29",
+        "start": "18:30",
+        "end": "22:00"
+      },
+      {
+        "date": "2026-10-30",
+        "start": "18:30",
+        "end": "23:00"
+      },
+      {
+        "date": "2026-10-31",
+        "start": "17:00",
+        "end": null
+      }
+    ],
+    "price": "From $39",
+    "organizer": "The Palace Theater",
+    "url": "https://www.thepalacetheatersf.com/blackcat",
+    "description": "16+ immersive vampire hotel: room-by-room live theater with hidden passages, ending at the bar.",
+    "confidence": "high"
+  },
+  {
+    "title": "Chuck Sperry: Archetypes opening",
+    "genre": "party",
+    "venue": "Harman Projects",
+    "address": "1275 Minnesota St, San Francisco, CA 94107",
+    "lat": 37.7543,
+    "lon": -122.3894,
+    "schedule": {
+      "date": "2026-11-07",
+      "start": "16:00",
+      "end": "22:00"
+    },
+    "price": "Free talk; reception ticketed",
+    "organizer": "Harman Projects",
+    "url": "https://www.harmanprojects.com/exhibitions/104-chuck-sperry-archetypes/",
+    "description": "Opening night for the SF poster artist's solo show in Dogpatch; free artist talk at 4pm.",
+    "confidence": "high"
+  },
+  {
+    "title": "Abiogenesis opening at Heron Arts",
+    "genre": "party",
+    "venue": "Heron Arts",
+    "address": "7 Heron St, San Francisco, CA 94103",
+    "lat": 37.7746,
+    "lon": -122.4083,
+    "schedule": {
+      "date": "2026-11-14",
+      "start": "18:00",
+      "end": "21:00"
+    },
+    "price": "Free (RSVP)",
+    "organizer": "Heron Arts",
+    "url": "https://www.sfstation.com/abiogensis-opening-reception-new-works-by-philip-beesley-and-casey-curran-e15774247",
+    "description": "Opening for new kinetic, living-architecture works by Philip Beesley and Casey Curran.",
+    "confidence": "high"
+  },
+  {
+    "title": "ALTERNA Goth Skate: Halloween",
+    "genre": "move",
+    "venue": "Church of 8 Wheels",
+    "address": "554 Fillmore St, San Francisco, CA 94117",
+    "lat": 37.7748,
+    "lon": -122.4306,
+    "schedule": {
+      "date": "2026-10-30",
+      "start": "19:00",
+      "end": "23:00"
+    },
+    "price": "$20",
+    "organizer": "ALTERNA / Church of 8 Wheels",
+    "url": "https://www.sfstation.com/alterna-goth-skate-halloween-edition-at-church-of-8-wheels-friday-the-30th-e15774049",
+    "description": "18+ goth roller skate night inside a former church; skate rental $5.",
+    "confidence": "high"
+  },
+  {
+    "title": "Free Saturdays at the Legion of Honor",
+    "genre": "party",
+    "venue": "Legion of Honor",
+    "address": "100 34th Ave, San Francisco, CA 94121",
+    "lat": 37.7846,
+    "lon": -122.501,
+    "schedule": {
+      "weekday": "Saturday",
+      "start": "09:30",
+      "end": "17:15"
+    },
+    "price": "Free for Bay Area residents",
+    "organizer": "Fine Arts Museums of San Francisco",
+    "url": "https://legionofhonor.famsf.org/free-reduced-admission",
+    "description": "Bay Area residents get free permanent-collection entry every Saturday; book a timed ticket, bring ID.",
+    "confidence": "medium"
   }
 ]

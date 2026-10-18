@@ -14,6 +14,7 @@ struct HomeView: View {
     @Environment(HomeModel.self) private var model
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
     @State private var hostingBlank = false
+    @Namespace private var mapScope
 
     var body: some View {
         @Bindable var model = model
@@ -32,6 +33,9 @@ struct HomeView: View {
                 }
                 .padding(.top, 4)
             }
+            // The compass and locate button live in the column under the search pill:
+            // MapKit's own corner would sit under the status bar on a full-bleed map.
+            .mapScope(mapScope)
         }
         .sheet(isPresented: $model.listOpen) {
             NearbySheet()
@@ -65,7 +69,7 @@ struct HomeView: View {
 
     private func map(shown: [Candidate], now: Date) -> some View {
         let top = Set(shown.prefix(4).map(\.id))
-        return Map(position: $position) {
+        return Map(position: $position, scope: mapScope) {
             if model.walking {
                 Annotation("You", coordinate: location.center, anchor: .bottom) { Avatar() }
                     .annotationTitles(.hidden)
@@ -91,8 +95,8 @@ struct HomeView: View {
         }
         .mapStyle(.standard(elevation: model.walking ? .realistic : .flat, emphasis: .muted, pointsOfInterest: .excludingAll))
         .mapControls {
-            MapUserLocationButton()
-            MapCompass()
+            // Shown from the floating column instead (see `mapScope`).
+            MapCompass().mapControlVisibility(.hidden)
         }
         .ignoresSafeArea()
     }
@@ -160,7 +164,9 @@ struct HomeView: View {
             circleButton(model.walking ? "map" : "figure.walk", label: model.walking ? "Back to the map" : "Walk view", on: model.walking) {
                 toggleWalk()
             }
+            circleButton("location.fill", label: "Show my location", on: position.followsUserLocation) { recenter() }
             circleButton("plus", label: "Host something", on: false) { hostingBlank = true }
+            MapCompass(scope: mapScope)
         }
         .padding(.leading, 14)
     }
@@ -184,6 +190,11 @@ struct HomeView: View {
         } else {
             withAnimation(.smooth(duration: 0.8)) { position = .userLocation(fallback: .automatic) }
         }
+    }
+
+    private func recenter() {
+        if model.walking { followInWorld(); return }
+        withAnimation(.smooth(duration: 0.8)) { position = .userLocation(fallback: .automatic) }
     }
 
     private func followInWorld() {
