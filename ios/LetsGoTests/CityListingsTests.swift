@@ -73,6 +73,23 @@ struct CityListingsTests {
         #expect(listings.allSatisfy { CityListings.covers(.init(latitude: $0.lat, longitude: $0.lon)) })
     }
 
+    @Test func readsTheServerResponse() throws {
+        let body = #"""
+        {"listings":[{"title":"Late show","genre":"music","venue":"Club","address":"","lat":37.76,"lon":-122.42,
+          "schedule":[{"weekday":null,"date":"2026-10-24","start":"21:00","end":null}],
+          "price":"$15","organizer":"Club","url":"","description":"","confidence":"high"}]}
+        """#
+        let response = try JSONCoding.decoder.decode(ListingsDTO.self, from: Data(body.utf8))
+        #expect(response.listings.first?.schedule.first?.date == "2026-10-24")
+
+        // The copy kept for offline reads back like the bundled file.
+        let kept = try CityListings.decode(JSONEncoder().encode(response.listings))
+        #expect(kept.map(\.title) == ["Late show"])
+        let o = CityListings.occurrences(of: kept[0], from: date(17, 12))
+        #expect(o.first?.start == date(24, 21))
+        #expect(o.first?.end == date(24, 23, 30))
+    }
+
     @Test func coversTheCity() {
         #expect(CityListings.covers(.init(latitude: 37.7955, longitude: -122.3937)))
         #expect(!CityListings.covers(.init(latitude: 37.8044, longitude: -122.2712)))  // Oakland

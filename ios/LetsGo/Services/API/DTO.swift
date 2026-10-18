@@ -167,3 +167,30 @@ nonisolated struct NewReviewDTO: Encodable, Sendable {
 nonisolated struct ProfileDTO: Codable, Sendable {
     var displayName: String
 }
+
+/// GET /v1/listings: the same shape as sf_happenings.json, so the phone keeps the server's copy as-is.
+nonisolated struct ListingsDTO: Codable, Sendable {
+    var listings: [ListingDTO]
+}
+
+nonisolated struct ListingDTO: Codable, Sendable {
+    var title: String
+    var genre: String
+    var venue: String
+    var address: String
+    var lat: Double
+    var lon: Double
+    var schedule: [SlotDTO]
+    var price: String
+    var organizer: String
+    var url: String
+    var description: String
+    var confidence: String
+}
+
+nonisolated struct SlotDTO: Codable, Sendable {
+    var weekday: String?
+    var date: String?
+    var start: String
+    var end: String?
+}

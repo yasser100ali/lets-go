@@ -3,9 +3,10 @@ import SwiftData
 import CoreLocation
 import OSLog
 
-/// Real things happening around San Francisco, from `sf_happenings.json` in the app
-/// bundle: weekly regulars (run clubs, markets, trivia) and dated one-offs. Weekly ones
-/// are expanded into actual dates for the next two weeks, so the map is always current.
+/// Real things happening around San Francisco: weekly regulars (run clubs, markets, trivia)
+/// and dated one-offs. They come from the server's /v1/listings, kept on the phone for when
+/// it's offline, and before the first fetch from `sf_happenings.json` in the app bundle.
+/// Weekly ones are expanded into actual dates for the next two weeks, so the map is always current.
 enum CityListings {
     /// Roughly the city, from Ocean Beach to the Embarcadero, Daly City line to the Marina.
     static func covers(_ c: CLLocationCoordinate2D) -> Bool {
@@ -88,6 +89,36 @@ enum CityListings {
 
     // MARK: Loading
 
+    /// The server's latest copy, kept for when the phone is offline.
+    static var cacheURL: URL { URL.cachesDirectory.appending(path: "sf_listings.json") }
+
+    /// What's current: the server's last copy if there is one, else the file the app shipped with.
+    static func current() -> [Listing] {
+        if let data = try? Data(contentsOf: cacheURL), let cached = try? decode(data), !cached.isEmpty {
+            return cached
+        }
+        return bundled()
+    }
+
+    /// Fetches the city's listings and keeps them for offline. A failure, or an empty answer from a
+    /// server nobody has loaded yet, leaves what's there. True when a new copy came in.
+    @discardableResult
+    static func update() async -> Bool {
+        guard APIConfig.isConfigured else { return false }
+        do {
+            let response = try await APIClient.shared.send(
+                Endpoint<ListingsDTO>.get("/v1/listings", query: [URLQueryItem(name: "city", value: "sf")])
+            )
+            guard !response.listings.isEmpty else { return false }
+            try JSONEncoder().encode(response.listings).write(to: cacheURL, options: .atomic)
+            log.info("Listings from the server: \(response.listings.count)")
+            return true
+        } catch {
+            log.error("Fetching listings failed: \(error.localizedDescription, privacy: .public)")
+            return false
+        }
+    }
+
     static func bundled() -> [Listing] {
         guard let url = Bundle.main.url(forResource: "sf_happenings", withExtension: "json") else {
             log.error("sf_happenings.json missing from the bundle")
@@ -146,7 +177,7 @@ enum CityListings {
 
     /// Replaces listed happenings with the current set. Anything you joined or showed up to stays.
     static func refresh(context: ModelContext, now: Date = .now) {
-        let listings = bundled()
+        let listings = current()
         var existing: [String: Gathering] = [:]
         do {
             for g in try context.fetch(FetchDescriptor<Gathering>(predicate: #Predicate { $0.listingKey != nil })) {

@@ -1,8 +1,9 @@
 import uuid
+from datetime import date as date_
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 Genre = Literal["play", "move", "music", "party", "food"]
 
@@ -219,3 +220,55 @@ class ReviewCreate(BaseModel):
     stars: int = Field(ge=1, le=5)
     tags: list[str] = Field(default_factory=list, max_length=8)
     text: str = Field(default="", max_length=2000)
+
+
+# Listings
+
+
+Weekday = Literal["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+HHMM = r"^([01]\d|2[0-4]):[0-5]\d$"
+
+
+class Slot(BaseModel):
+    """Every `weekday`, or once on `date`. No `end` means a typical length for its kind."""
+
+    weekday: Weekday | None = None
+    date: date_ | None = None
+    start: str = Field(pattern=HHMM)
+    end: str | None = Field(default=None, pattern=HHMM)
+
+    @model_validator(mode="after")
+    def _one_kind(self):
+        if (self.weekday is None) == (self.date is None):
+            raise ValueError("a slot is either weekly (weekday) or one-off (date)")
+        return self
+
+
+class ListingIn(BaseModel):
+    """The shape of `sf_happenings.json` in the app, and of what the scout produces."""
+
+    title: str = Field(min_length=1, max_length=160)
+    genre: Genre
+    venue: str = Field(min_length=1, max_length=160)
+    address: str = Field(default="", max_length=200)
+    lat: float = Field(ge=-90, le=90)
+    lon: float = Field(ge=-180, le=180)
+    schedule: list[Slot] = Field(min_length=1)
+    price: str = Field(default="", max_length=80)
+    organizer: str = Field(default="", max_length=160)
+    url: str = Field(default="", max_length=500)
+    description: str = Field(default="", max_length=2000)
+    confidence: Literal["high", "medium", "low"] = "medium"
+
+    @field_validator("schedule", mode="before")
+    @classmethod
+    def _one_or_many(cls, v):
+        return v if isinstance(v, list) else [v]
+
+
+class ListingOut(ListingIn):
+    model_config = ConfigDict(from_attributes=True)
+
+
+class Listings(BaseModel):
+    listings: list[ListingOut]

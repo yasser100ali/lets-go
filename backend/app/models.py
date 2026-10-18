@@ -16,7 +16,7 @@ from sqlalchemy import (
     UniqueConstraint,
     func,
 )
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db import Base
@@ -200,3 +200,33 @@ class Review(Base):
     created_at: Mapped[datetime] = _created()
 
     author: Mapped[User] = relationship(lazy="joined", innerjoin=True)
+
+
+class Listing(Base):
+    """Something real on in a city: a venue's show, a market, a weekly jam. Researched by hand for now;
+    the nightly scout will keep these up to date. The phone turns `schedule` into actual dates."""
+
+    __tablename__ = "listings"
+    id: Mapped[uuid.UUID] = _uuid()
+    # What the scout matches on to update instead of duplicate: city, title and venue, lowercased.
+    key: Mapped[str] = mapped_column(String(400), nullable=False, unique=True)
+    city: Mapped[str] = mapped_column(String(16), nullable=False, index=True)
+    title: Mapped[str] = mapped_column(String(160), nullable=False)
+    genre: Mapped[str] = mapped_column(String(16), nullable=False)
+    venue: Mapped[str] = mapped_column(String(160), nullable=False)
+    address: Mapped[str] = mapped_column(String(200), nullable=False, default="")
+    lat: Mapped[float] = mapped_column(Float, nullable=False)
+    lon: Mapped[float] = mapped_column(Float, nullable=False)
+    # [{"weekday": "Saturday" | "date": "2026-10-24", "start": "20:00", "end": "23:00" | null}]
+    schedule: Mapped[list[dict]] = mapped_column(JSONB, nullable=False)
+    price: Mapped[str] = mapped_column(String(80), nullable=False, default="")
+    organizer: Mapped[str] = mapped_column(String(160), nullable=False, default="")
+    url: Mapped[str] = mapped_column(String(500), nullable=False, default="")
+    description: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    confidence: Mapped[str] = mapped_column(String(8), nullable=False, default="medium")
+    # Where it came from: "manual" for hand research, later a scout source like "ticketmaster".
+    source: Mapped[str] = mapped_column(String(32), nullable=False, default="manual")
+    # live → shown; review → waiting for a person; gone → no longer listed by its source.
+    status: Mapped[str] = mapped_column(String(8), nullable=False, default="live")
+    last_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    created_at: Mapped[datetime] = _created()

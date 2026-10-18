@@ -55,6 +55,7 @@ struct RootView: View {
 
     private func pull() async {
         let center = location.center
+        if CityListings.covers(center), await CityListings.update() { CityListings.refresh(context: context) }
         await sync.run { () throws(APIError) in
             try await Sync.refresh(around: center, context: context)
         }
