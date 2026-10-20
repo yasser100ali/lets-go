@@ -9,8 +9,10 @@ import Observation
 final class HomeModel {
     static let half = PresentationDetent.fraction(0.5)
 
-    var tab: AppTab = .map
+    var tab: AppTab = .today
     var window: TimeWindow = .now
+    /// Hours past now the map is showing, from the slider under it. Only used with `.now`.
+    var ahead: Double = 0
     var genre: Genre?
     var query = ""
     var listOpen = false
@@ -66,5 +68,5 @@ final class HomeModel {
 }
 
 enum AppTab: Hashable {
-    case map, kitchens, you
+    case today, map, lists, kitchens, you
 }

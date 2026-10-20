@@ -92,12 +92,26 @@ enum CityListings {
     /// The server's latest copy, kept for when the phone is offline.
     static var cacheURL: URL { URL.cachesDirectory.appending(path: "sf_listings.json") }
 
-    /// What's current: the server's last copy if there is one, else the file the app shipped with.
+    /// What's current: the server's last copy if there is one, plus anything in the file the app
+    /// shipped with that the server doesn't have yet. Before the first fetch, just the file.
     static func current() -> [Listing] {
+        let shipped = bundled()
         if let data = try? Data(contentsOf: cacheURL), let cached = try? decode(data), !cached.isEmpty {
-            return cached
+            return merge(server: cached, bundled: shipped)
         }
-        return bundled()
+        return shipped
+    }
+
+    /// The server's listings first; a bundled one is added only when the server has nothing
+    /// with the same title at the same venue. New listings ship in the app before the
+    /// server's import runs, and this keeps them from being hidden by an older server copy.
+    static func merge(server: [Listing], bundled: [Listing]) -> [Listing] {
+        let known = Set(server.map(identity))
+        return server + bundled.filter { !known.contains(identity($0)) }
+    }
+
+    static func identity(_ l: Listing) -> String {
+        "\(l.title.trimmingCharacters(in: .whitespaces).lowercased())|\(l.venue.trimmingCharacters(in: .whitespaces).lowercased())"
     }
 
     /// Fetches the city's listings and keeps them for offline. A failure, or an empty answer from a

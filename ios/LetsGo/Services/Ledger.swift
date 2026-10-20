@@ -53,6 +53,15 @@ enum Ledger {
         return earned
     }
 
+    /// Being at a place on the city list. Returns the stamp, the first time.
+    @discardableResult
+    static func visit(_ spot: Spot, context: ModelContext) -> Stamp? {
+        let earned = award(key: spot.stampKey, title: spot.title, symbol: spot.kind.symbol, category: spot.kind.genre, context: context)
+        learn("spot:\(spot.kind.rawValue)", "Into \(spot.kind.noun)", spot.kind.genre, context: context)
+        save(context, "visit")
+        return earned
+    }
+
     static func host(_ g: Gathering, context: ModelContext) {
         context.insert(g)
         award(key: "first-host", title: "Hosted one", symbol: "flag.fill", category: g.category, context: context)
