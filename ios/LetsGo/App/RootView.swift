@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-/// Three tabs (Map, Kitchens, You) with the now bar above the tab bar.
+/// Five tabs (Today, Map, Lists, Kitchens, You) with the now bar above the tab bar.
 struct RootView: View {
     @Environment(LocationService.self) private var location
     @Environment(SyncStatus.self) private var sync
@@ -12,8 +12,14 @@ struct RootView: View {
     var body: some View {
         @Bindable var model = model
         TabView(selection: $model.tab) {
+            Tab("Today", systemImage: "sparkles", value: AppTab.today) {
+                TodayView()
+            }
             Tab("Map", systemImage: "map.fill", value: AppTab.map) {
                 HomeView()
+            }
+            Tab("Lists", systemImage: "checklist", value: AppTab.lists) {
+                ListsView()
             }
             Tab("Kitchens", systemImage: "takeoutbag.and.cup.and.straw.fill", value: AppTab.kitchens) {
                 NavigationStack {

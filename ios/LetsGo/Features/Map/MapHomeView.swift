@@ -20,11 +20,13 @@ struct HomeView: View {
         @Bindable var model = model
         TimelineView(.periodic(from: .now, by: 30)) { timeline in
             let now = timeline.date
-            let all = Nearby.candidates(gatherings: gatherings, kitchens: kitchens, from: location.center, now: now)
+            // The slider under the map moves "now" up to six hours ahead.
+            let at = scrubs ? now.addingTimeInterval(model.ahead * 3600) : now
+            let all = Nearby.candidates(gatherings: gatherings, kitchens: kitchens, from: location.center, now: at)
             let taste = Nearby.taste(notes: notes, gatherings: gatherings, kitchens: kitchens)
-            let shown = model.query.isEmpty ? model.visible(all, now: now, taste: taste) : Search.results(model.query, in: all, now: now)
+            let shown = model.query.isEmpty ? model.visible(all, now: at, taste: taste) : Search.results(model.query, in: all, now: now)
             ZStack(alignment: .top) {
-                map(shown: shown, now: now)
+                map(shown: shown, now: at)
                 if model.walking { SkyBand(now: now).allowsHitTesting(false) }
                 VStack(alignment: .leading, spacing: 10) {
                     searchPill
@@ -32,6 +34,9 @@ struct HomeView: View {
                     floatingButtons
                 }
                 .padding(.top, 4)
+            }
+            .overlay(alignment: .bottom) {
+                if scrubs { scrubber(now: now) }
             }
             // The compass and locate button live in the column under the search pill:
             // MapKit's own corner would sit under the status bar on a full-bleed map.
@@ -157,6 +162,36 @@ struct HomeView: View {
             .padding(.horizontal, 14)
         }
         .scrollIndicators(.hidden)
+    }
+
+    /// The time slider shows with the Now filter, when you're not searching or walking.
+    private var scrubs: Bool { model.window == .now && model.query.isEmpty && !model.walking }
+
+    private func scrubber(now: Date) -> some View {
+        @Bindable var model = model
+        let at = now.addingTimeInterval(model.ahead * 3600)
+        let label = model.ahead == 0 ? "Now" : at.formatted(date: .omitted, time: .shortened)
+        return HStack(spacing: 12) {
+            Text(label)
+                .font(.system(size: 13, weight: .bold))
+                .monospacedDigit()
+                .foregroundStyle(model.ahead == 0 ? Palette.live : Palette.ink)
+                .frame(width: 66, alignment: .leading)
+            Slider(value: $model.ahead, in: 0...6, step: 0.5)
+                .accessibilityLabel("Look ahead")
+                .accessibilityValue(label)
+            if model.ahead > 0 {
+                Button { withAnimation(.snappy) { model.ahead = 0 } } label: {
+                    Image(systemName: "arrow.uturn.backward").font(.system(size: 14, weight: .bold))
+                }
+                .accessibilityLabel("Back to now")
+            }
+        }
+        .padding(.horizontal, 16)
+        .frame(height: 50)
+        .glassEffect(.regular, in: .capsule)
+        .padding(.horizontal, 14)
+        .padding(.bottom, 10)
     }
 
     private var floatingButtons: some View {

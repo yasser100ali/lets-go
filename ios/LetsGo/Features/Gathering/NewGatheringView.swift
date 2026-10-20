@@ -87,6 +87,8 @@ struct NewGatheringView: View {
                 if let c = proxy.convert(point, from: .local) { pin = c }
             }
         }
+        // Rebuilt once the draft is loaded, so the map starts on the draft's pin.
+        .id(loaded)
         .frame(height: 190)
         .clipShape(.rect(cornerRadius: 12))
         .listRowInsets(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
@@ -109,6 +111,9 @@ struct NewGatheringView: View {
         end = draft.end
         placeName = draft.placeName
         capacity = draft.capacity
+        if let lat = draft.latitude, let lon = draft.longitude {
+            pin = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        }
     }
 
     private func post() {

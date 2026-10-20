@@ -98,6 +98,9 @@ struct GatheringDraft: Equatable, Sendable, Identifiable {
     var end: Date
     var placeName: String
     var capacity: Int = 0
+    /// Set when hosting at a known place, so the pin starts there.
+    var latitude: Double? = nil
+    var longitude: Double? = nil
 
     static func from(_ q: SearchQuery, now: Date = .now, calendar: Calendar = .current) -> GatheringDraft {
         let text = q.text.lowercased()

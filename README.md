@@ -6,6 +6,9 @@ Working name. The mocks this was built from: https://claude.ai/artifact/WxbnSewL
 
 ## What's in v0.1
 
+- **Today** — the first tab: the one thing most worth going to right now and why, what starts in the next hour, what's within a 15-minute walk, the week's real listings day by day (weeks start Monday), places from the city list, and kitchens with a drop coming. Sunset time is worked out on the phone (`Sun`).
+- **Lists** — *Know your city: SF 50*: fifty places every San Franciscan should go once (`sf_places.json`: trails, viewpoints, landmarks, food, nights out), closest first, with progress by kind. Each place has a page with distance and climb, the best time to go, what not to miss, who's going there soon, and "post a time, anyone can join". Check in within 200 m for a stamp.
+- **Map time slider** — with the Now filter on, drag up to six hours ahead and the pins change to what's on then.
 - **Map** — glowing pins for everything on in the next three hours, pulsing while they fill up; a dashed ring for a 10-minute walk; Wren's one line and top three picks on the panel.
 - **Gatherings** — headcount, what to bring, who runs it. Join, and check in when you're physically within 200 m to collect a stamp. Host your own from the + button or by telling Wren.
 - **Kitchens** — a page per home kitchen with its drop (a fixed batch at a set time), menu and reviews. Reserve a pickup slot or a porch seat; the pickup spot unlocks after you reserve. Mark it picked up, leave a review; three visits makes you a regular.
@@ -31,7 +34,7 @@ cd backend && python -m app.listings_import ../ios/LetsGo/Resources/sf_happening
 DATABASE_URL=<Railway Postgres public URL> python -m app.listings_import ../ios/LetsGo/Resources/sf_happenings.json  # deployed
 ```
 
-Rows match on city, title and venue; ones the file no longer has are marked gone. This is where the nightly scout will write.
+Rows match on city, title and venue; ones the file no longer has are marked gone. Until the import runs, the phone also shows bundled listings the server doesn't have yet (same title and venue counts as the same listing). This is where the nightly scout will write.
 
 Schema changes go through Alembic (`alembic revision --autogenerate`, then read it). CI runs lint, `alembic check` and the tests.
 

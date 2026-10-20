@@ -3272,5 +3272,873 @@
     "url": "https://legionofhonor.famsf.org/free-reduced-admission",
     "description": "Bay Area residents get free permanent-collection entry every Saturday; book a timed ticket, bring ID.",
     "confidence": "medium"
+  },
+  {
+    "title": "Mad Props: a comedy breakdown of the California ballot",
+    "genre": "party",
+    "venue": "KALW People's Studio, Warfield Commons",
+    "address": "988 Market St, San Francisco, CA 94102",
+    "lat": 37.7826,
+    "lon": -122.4103,
+    "schedule": {
+      "date": "2026-10-20",
+      "start": "19:00",
+      "end": "20:30"
+    },
+    "price": "Free (RSVP; $10–20 suggested)",
+    "organizer": "KALW with the SF Standard, UC Berkeley J-School and SPJ NorCal",
+    "url": "https://www.eventbrite.com/e/mad-props-a-comedy-breakdown-of-the-california-ballot-tickets-2002248179203",
+    "description": "Bay Area journalists walk through the November ballot with jokes and audience games, then drinks. Doors at 6.",
+    "confidence": "high"
+  },
+  {
+    "title": "Alain Damasio and translator talk Horde of the Counterwind",
+    "genre": "party",
+    "venue": "Telegraph Hill Books",
+    "address": "1501 Grant Ave, San Francisco, CA 94133",
+    "lat": 37.8008,
+    "lon": -122.4077,
+    "schedule": {
+      "date": "2026-10-20",
+      "start": "19:00",
+      "end": "20:30"
+    },
+    "price": "Free ($10–15 suggested)",
+    "organizer": "Litquake (Words Around the World) with Villa Albertine",
+    "url": "https://www.eventbrite.com/e/alain-damasio-horde-of-the-counterwind-tickets-1999616477713",
+    "description": "The French sci-fi author and his translator discuss the epic's first English edition in a small North Beach bookshop.",
+    "confidence": "high"
+  },
+  {
+    "title": "Scary early-2000s pop culture trivia at Wine Down",
+    "genre": "play",
+    "venue": "Wine Down SF",
+    "address": "685 Folsom St, San Francisco, CA 94107",
+    "lat": 37.7841,
+    "lon": -122.3983,
+    "schedule": {
+      "date": "2026-10-20",
+      "start": "18:45",
+      "end": null
+    },
+    "price": "Free (21+)",
+    "organizer": "Wine Down SF",
+    "url": "https://www.winedownsf.com/partyrsvp.html",
+    "description": "Monthly team trivia with a Y2K-and-Halloween theme; prizes for top teams, best team name and best dressed.",
+    "confidence": "high"
+  },
+  {
+    "title": "The Ring with the SF Symphony playing the score live",
+    "genre": "music",
+    "venue": "Davies Symphony Hall",
+    "address": "201 Van Ness Ave, San Francisco, CA 94102",
+    "lat": 37.7775,
+    "lon": -122.4204,
+    "schedule": {
+      "date": "2026-10-20",
+      "start": "19:30",
+      "end": null
+    },
+    "price": "From $69",
+    "organizer": "San Francisco Symphony",
+    "url": "https://www.sfsymphony.org/Buy-Tickets/2026-27/The-Ring",
+    "description": "The 2002 horror film on the big screen while the orchestra plays Hans Zimmer's score, conducted by Jason Seber.",
+    "confidence": "high"
+  },
+  {
+    "title": "826 Valencia Writer's Block Party",
+    "genre": "party",
+    "venue": "Southern Pacific Brewing",
+    "address": "620 Treat Ave, San Francisco, CA 94110",
+    "lat": 37.7601,
+    "lon": -122.4142,
+    "schedule": {
+      "date": "2026-10-20",
+      "start": "18:00",
+      "end": "21:00"
+    },
+    "price": "$40 (21+)",
+    "organizer": "826 Valencia Associate Board",
+    "url": "https://sf.funcheap.com/826-valencias-writers-block-party-40-unlimited-beer-wine-free-books-2026/",
+    "description": "Fundraiser for the youth writing nonprofit with unlimited beer and wine, free books and a silent auction.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Rocky Horror with a live shadow cast at the Main Library",
+    "genre": "party",
+    "venue": "SF Main Library, Koret Auditorium",
+    "address": "100 Larkin St, San Francisco, CA 94102",
+    "lat": 37.7792,
+    "lon": -122.4158,
+    "schedule": {
+      "date": "2026-10-21",
+      "start": "17:00",
+      "end": "19:45"
+    },
+    "price": "Free ($5 prop bags)",
+    "organizer": "San Francisco Public Library with The Bawdy Caste",
+    "url": "https://sfpl.org/events/2026/10/21/film-rocky-horror-picture-show-full-shadow-cast",
+    "description": "The Bawdy Caste acts out the film in front of the screen; costumes welcome and newcomers get taught the callbacks. Film at 5:45.",
+    "confidence": "high"
+  },
+  {
+    "title": "Back to the Future Day comedy with Claudia Wells",
+    "genre": "party",
+    "venue": "Boom Boom Room",
+    "address": "1601 Fillmore St, San Francisco, CA 94115",
+    "lat": 37.7846,
+    "lon": -122.4331,
+    "schedule": {
+      "date": "2026-10-21",
+      "start": "19:00",
+      "end": "21:30"
+    },
+    "price": "Free (RSVP)",
+    "organizer": "Value Culture and the Boom Boom Room",
+    "url": "https://sf.funcheap.com/future-day-comedy-show-claudia-wells-jennifer-parker-film/",
+    "description": "The film's original Jennifer Parker signs autographs at 7, then a stand-up showcase at 8.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Living with the Stars on the Day of the Dead (astronomy talk)",
+    "genre": "party",
+    "venue": "Randall Museum",
+    "address": "199 Museum Way, San Francisco, CA 94114",
+    "lat": 37.7644,
+    "lon": -122.4384,
+    "schedule": {
+      "date": "2026-10-21",
+      "start": "19:00",
+      "end": "20:30"
+    },
+    "price": "Free",
+    "organizer": "San Francisco Amateur Astronomers",
+    "url": "https://www.sfaa-astronomy.org/public-events/lectures/lectures_2026/oct21_2026",
+    "description": "Dr. Isabel Hawkins on Maya astronomy, the harvest and Day of the Dead; bring a photo for the shared ofrenda.",
+    "confidence": "high"
+  },
+  {
+    "title": "Litquake: California Journeys",
+    "genre": "party",
+    "venue": "KALW Public Media",
+    "address": "220 Montgomery St, San Francisco, CA 94104",
+    "lat": 37.7911,
+    "lon": -122.4023,
+    "schedule": {
+      "date": "2026-10-21",
+      "start": "19:00",
+      "end": "20:30"
+    },
+    "price": "Free ($10–15 suggested)",
+    "organizer": "Litquake with KALW",
+    "url": "https://www.eventbrite.com/e/california-journeys-tickets-1998858952936",
+    "description": "Three authors read and talk about recent books on California, with photos from each of their journeys.",
+    "confidence": "high"
+  },
+  {
+    "title": "All Hallows Eve: Ellen Datlow and friends read horror",
+    "genre": "party",
+    "venue": "The Lost Church",
+    "address": "988 Columbus Ave, San Francisco, CA 94133",
+    "lat": 37.8034,
+    "lon": -122.4144,
+    "schedule": {
+      "date": "2026-10-21",
+      "start": "20:15",
+      "end": "21:45"
+    },
+    "price": "$15",
+    "organizer": "The Lost Church with Locus Magazine, SF in SF and Publishers Weekly",
+    "url": "https://sf.funcheap.com/hallows-eve-evening-ellen-datlow-friends/",
+    "description": "The horror anthology editor and four contributors read from new stories in an intimate North Beach room.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Midweek Melodies: Squeak, Adeya and Purple Albatross",
+    "genre": "music",
+    "venue": "Golden Gate Park Bandshell",
+    "address": "Music Concourse Dr, Golden Gate Park, San Francisco, CA 94118",
+    "lat": 37.7699,
+    "lon": -122.4686,
+    "schedule": {
+      "date": "2026-10-21",
+      "start": "16:00",
+      "end": "19:00"
+    },
+    "price": "Free",
+    "organizer": "Illuminate LIVE / SF Recreation and Park",
+    "url": "https://sfrecpark.org/Calendar.aspx?EID=10828",
+    "description": "An after-work outdoor concert with three local acts at the bandshell in the Music Concourse.",
+    "confidence": "high"
+  },
+  {
+    "title": "Macabre Marvels: the library's hidden books",
+    "genre": "party",
+    "venue": "SF Main Library, 4th floor",
+    "address": "100 Larkin St, San Francisco, CA 94102",
+    "lat": 37.7792,
+    "lon": -122.4158,
+    "schedule": {
+      "date": "2026-10-22",
+      "start": "18:00",
+      "end": "19:30"
+    },
+    "price": "Free",
+    "organizer": "San Francisco Public Library",
+    "url": "https://sfpl.org/events/2026/10/22/social-macabre-marvels-stacks-inspiration-sfpls-hidden-books",
+    "description": "For one evening the library brings out restricted books of masks, costumes and eerie images to browse, sketch and photograph.",
+    "confidence": "high"
+  },
+  {
+    "title": "B-Movie: Lust & Sound in West-Berlin screening",
+    "genre": "party",
+    "venue": "Goethe-Institut San Francisco",
+    "address": "657 Howard St, San Francisco, CA 94105",
+    "lat": 37.7856,
+    "lon": -122.3996,
+    "schedule": {
+      "date": "2026-10-22",
+      "start": "18:00",
+      "end": "20:00"
+    },
+    "price": "Free",
+    "organizer": "Goethe-Institut San Francisco",
+    "url": "https://www.eventbrite.com/e/b-movie-lust-sound-in-west-berlin-tickets-2000526819570",
+    "description": "Documentary on Berlin's punk and electronic underground from 1979 to reunification, with Nick Cave and Blixa Bargeld.",
+    "confidence": "high"
+  },
+  {
+    "title": "VFX artists' fine art: two opening nights at 111 Minna",
+    "genre": "party",
+    "venue": "111 Minna Gallery",
+    "address": "111 Minna St, San Francisco, CA 94105",
+    "lat": 37.7874,
+    "lon": -122.3993,
+    "schedule": {
+      "date": "2026-10-22",
+      "start": "18:00",
+      "end": "22:00"
+    },
+    "price": "Free (21+)",
+    "organizer": "111 Minna Gallery",
+    "url": "https://111minnagallery.com/event/passion-projects-sf-the-artist-behind-the-effect-opening-night/",
+    "description": "Openings for Randy Gaul's solo show and a group show of personal work by visual-effects artists, with a DJ.",
+    "confidence": "high"
+  },
+  {
+    "title": "Substance Fest night one: synth-pop and post-punk",
+    "genre": "music",
+    "venue": "Great American Music Hall",
+    "address": "859 O'Farrell St, San Francisco, CA 94109",
+    "lat": 37.7848,
+    "lon": -122.4188,
+    "schedule": {
+      "date": "2026-10-22",
+      "start": "18:00",
+      "end": null
+    },
+    "price": "From $30",
+    "organizer": "Restless Nites",
+    "url": "https://sf.funcheap.com/substance-fest-2026-underground-synthpop-postpunk-sf/",
+    "description": "First night of a four-night underground festival: A Split Second, Crash Course in Science, Automelodi and more.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Big Gay Halloween",
+    "genre": "party",
+    "venue": "Great Star Theater",
+    "address": "636 Jackson St, San Francisco, CA 94133",
+    "lat": 37.7964,
+    "lon": -122.4058,
+    "schedule": [
+      {
+        "date": "2026-10-22",
+        "start": "20:00",
+        "end": "22:00"
+      },
+      {
+        "date": "2026-10-23",
+        "start": "20:00",
+        "end": "22:00"
+      },
+      {
+        "date": "2026-10-24",
+        "start": "19:30",
+        "end": null
+      },
+      {
+        "date": "2026-10-24",
+        "start": "22:00",
+        "end": null
+      },
+      {
+        "date": "2026-10-25",
+        "start": "19:00",
+        "end": null
+      }
+    ],
+    "price": "$30–45",
+    "organizer": "Great Star Theater (tickets via Ticketful)",
+    "url": "https://sf.funcheap.com/sfs-wild-big-gay-halloween-at-great-star-theater-october-11-25/",
+    "description": "Final week of a Halloween variety show with acrobats, drag artists and dancers in a historic Chinatown theater.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Carnival of Curiosities Halloween block party",
+    "genre": "party",
+    "venue": "Ashton Ave at Ocean Ave",
+    "address": "393 Ashton Ave, San Francisco, CA 94112",
+    "lat": 37.7235,
+    "lon": -122.4623,
+    "schedule": {
+      "date": "2026-10-23",
+      "start": "18:00",
+      "end": "20:00"
+    },
+    "price": "Free",
+    "organizer": "Ocean Avenue Association",
+    "url": "https://www.eventbrite.com/e/carnival-of-curiosities-a-free-halloween-block-party-on-ocean-avenue-tickets-2002594577289",
+    "description": "A street carnival with midway games, bounce house, face painting and circus performers; costumes welcome.",
+    "confidence": "high"
+  },
+  {
+    "title": "Art for AIDS 30th anniversary kickoff party",
+    "genre": "party",
+    "venue": "Haight Street Art Center",
+    "address": "215 Haight St, San Francisco, CA 94102",
+    "lat": 37.7726,
+    "lon": -122.426,
+    "schedule": {
+      "date": "2026-10-23",
+      "start": "18:00",
+      "end": "21:00"
+    },
+    "price": "Free (donation optional)",
+    "organizer": "Alliance Health Project (UCSF)",
+    "url": "https://sf.funcheap.com/free-30th-anniversary-aids-benefit-art-party-drag-wine-free-food-sf/",
+    "description": "Free food, wine, drag and music plus an early look at the auction art; meet the artists and volunteers.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Fantastic Mr. Fox outdoors at China Basin Park",
+    "genre": "party",
+    "venue": "China Basin Park",
+    "address": "1 China Basin Park, San Francisco, CA 94107",
+    "lat": 37.7761,
+    "lon": -122.3883,
+    "schedule": {
+      "date": "2026-10-23",
+      "start": "18:30",
+      "end": "21:30"
+    },
+    "price": "Free",
+    "organizer": "Mission Rock",
+    "url": "https://www.eventbrite.com/e/mission-rock-fall-friday-night-movies-fantastic-mr-fox-oct-23-tickets-2002405323225",
+    "description": "Outdoor screening on the waterfront lawn; bring a blanket, food and drinks sold nearby.",
+    "confidence": "high"
+  },
+  {
+    "title": "Big Bad Wolf tour: free concert at DNA Lounge",
+    "genre": "music",
+    "venue": "DNA Lounge",
+    "address": "375 11th St, San Francisco, CA 94103",
+    "lat": 37.7711,
+    "lon": -122.4126,
+    "schedule": {
+      "date": "2026-10-23",
+      "start": "19:00",
+      "end": "22:00"
+    },
+    "price": "Free (RSVP, first 300)",
+    "organizer": "California Working Families Party",
+    "url": "https://sf.funcheap.com/free-big-bad-wolf-tour-live-music-political-power-dna-lounge/",
+    "description": "A pre-election concert with Fijiana, DJ Shellheart, J Espinosa and Rocky G.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Sonic the Hedgehog outdoor movie night in McCoppin Square",
+    "genre": "party",
+    "venue": "McCoppin Square",
+    "address": "Taraval St & 23rd Ave, San Francisco, CA 94116",
+    "lat": 37.7436,
+    "lon": -122.4801,
+    "schedule": {
+      "date": "2026-10-23",
+      "start": "17:30",
+      "end": "20:00"
+    },
+    "price": "Free",
+    "organizer": "People of Parkside Sunset (POPS)",
+    "url": "https://sf.funcheap.com/free-outdoor-movie-night-2026-w-free-food-free-popcorn-parkside-sunset-3/",
+    "description": "Neighbors bring blankets for a free film at dusk with free food and popcorn on the Taraval corridor.",
+    "confidence": "medium"
+  },
+  {
+    "title": "One Battle After Another at PROXY Fall Film Fest",
+    "genre": "party",
+    "venue": "PROXY",
+    "address": "432 Octavia St, San Francisco, CA 94102",
+    "lat": 37.7763,
+    "lon": -122.4242,
+    "schedule": {
+      "date": "2026-10-23",
+      "start": "19:15",
+      "end": "22:00"
+    },
+    "price": "Free",
+    "organizer": "PROXY SF",
+    "url": "https://proxysf.net/events/one-battle-after-another-2026-proxy-fall-film-fest",
+    "description": "Free outdoor screening in Hayes Valley; bring a chair, blanket and warm layers.",
+    "confidence": "high"
+  },
+  {
+    "title": "Beats & Crafts night at the Faight Collective",
+    "genre": "party",
+    "venue": "Faight Collective",
+    "address": "473A Haight St, San Francisco, CA 94117",
+    "lat": 37.772,
+    "lon": -122.4299,
+    "schedule": {
+      "date": "2026-10-23",
+      "start": "20:00",
+      "end": "23:00"
+    },
+    "price": "Free",
+    "organizer": "Interrobang",
+    "url": "https://sf.funcheap.com/free-beats-crafts-night-party-live-music-djs-faight-sf/",
+    "description": "Make crafts with supplied materials while bands and DJs play; an ArtSpan Open Studios after-party.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Zombie Prom costume ball",
+    "genre": "party",
+    "venue": "The Great Northern",
+    "address": "119 Utah St, San Francisco, CA 94103",
+    "lat": 37.7677,
+    "lon": -122.4065,
+    "schedule": {
+      "date": "2026-10-23",
+      "start": "21:00",
+      "end": "03:00"
+    },
+    "price": "$35 (21+)",
+    "organizer": "MalLabel Music",
+    "url": "https://sf.funcheap.com/zombie-prom-costume-ball-free-prom-photos-free-pizza-sfs-great-northern/",
+    "description": "Bass music on two stages, a zombie costume contest, prom photos and free pizza 9–10pm; The Widdler headlines.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Alemany Farm Harvest Festival",
+    "genre": "food",
+    "venue": "Alemany Farm",
+    "address": "700 Alemany Blvd, San Francisco, CA 94110",
+    "lat": 37.7331,
+    "lon": -122.4197,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "11:00",
+      "end": "15:00"
+    },
+    "price": "Free",
+    "organizer": "Friends of Alemany Farm",
+    "url": "https://sf.funcheap.com/alemany-farm-harvest-festival-2026-free-bbq-farm-tours-sf/",
+    "description": "Free community barbecue at the city's largest urban farm, with farm tours, live music, games and face painting.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Fisherman's Wharf Chowder Fest",
+    "genre": "food",
+    "venue": "Little Embarcadero, Fisherman's Wharf",
+    "address": "2860 Taylor St, San Francisco, CA 94133",
+    "lat": 37.8087,
+    "lon": -122.4134,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "12:00",
+      "end": "17:00"
+    },
+    "price": "Free entry; tasting passes $50–125",
+    "organizer": "Fisherman's Wharf CBD, Into The Streets and Port of SF",
+    "url": "https://www.eventbrite.com/e/fishermans-wharf-chowder-fest-tickets-2000661026988",
+    "description": "Local restaurants compete for best clam chowder; watch free or buy a pass to taste and vote. Winners at 4:45.",
+    "confidence": "high"
+  },
+  {
+    "title": "Afro-Filipino Jazz Project at Yerba Buena Gardens",
+    "genre": "music",
+    "venue": "Yerba Buena Gardens, Great Lawn",
+    "address": "Mission St between 3rd & 4th Sts, San Francisco, CA 94103",
+    "lat": 37.7846,
+    "lon": -122.4023,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "14:00",
+      "end": "15:30"
+    },
+    "price": "Free",
+    "organizer": "Yerba Buena Gardens Festival",
+    "url": "https://ybgfestival.org/weekend-sessions/",
+    "description": "A free outdoor jazz set on the Great Lawn as part of the festival's Weekend Sessions.",
+    "confidence": "high"
+  },
+  {
+    "title": "An afternoon of chamber music (SF Civic Music)",
+    "genre": "music",
+    "venue": "Noe Valley Ministry",
+    "address": "1021 Sanchez St, San Francisco, CA 94114",
+    "lat": 37.7528,
+    "lon": -122.4294,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "price": "Free (RSVP; $20 suggested)",
+    "organizer": "San Francisco Civic Music Association",
+    "url": "https://www.sfcivicmusic.org/calendar",
+    "description": "Community musicians play Hindemith, Malcolm Arnold's Three Shanties and Dvořák's second piano quartet.",
+    "confidence": "high"
+  },
+  {
+    "title": "Panhandle 3v3 basketball tournament",
+    "genre": "play",
+    "venue": "Nate Thurmond Court, the Panhandle",
+    "address": "Fell St at the Panhandle, San Francisco, CA 94117",
+    "lat": 37.7723,
+    "lon": -122.4485,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "10:00",
+      "end": "15:00"
+    },
+    "price": "Free",
+    "organizer": "Panhandle Hoops",
+    "url": "https://sf.funcheap.com/free-panhandle-3v3-basketball-tournament-panhandle-sf/",
+    "description": "Sixth annual 3-on-3 tournament with live music and local vendors; play (18+, email to register) or bring a blanket and watch.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Laurel Hill Nursery School 80th birthday block party",
+    "genre": "party",
+    "venue": "Euclid Ave (Heather to Iris Ave)",
+    "address": "401 Euclid Ave, San Francisco, CA 94118",
+    "lat": 37.7839,
+    "lon": -122.4527,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "11:00",
+      "end": "15:00"
+    },
+    "price": "Free",
+    "organizer": "Laurel Hill Nursery School",
+    "url": "https://www.laurelhill.org/80years",
+    "description": "A parent co-op founded in 1946 closes the street for live music, games, food and 80 years of photos.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Free morning screening of Casper at the 4 Star",
+    "genre": "party",
+    "venue": "4 Star Theater",
+    "address": "2200 Clement St, San Francisco, CA 94121",
+    "lat": 37.7823,
+    "lon": -122.4829,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "10:00",
+      "end": null
+    },
+    "price": "Free",
+    "organizer": "4 Star Theater",
+    "url": "https://www.4-star-movies.com/calendar-of-events/casper-sat",
+    "description": "The 1995 friendly-ghost film for free at 10am, first come first served; box office opens 30 minutes before.",
+    "confidence": "high"
+  },
+  {
+    "title": "Whack Donuts 2-year jam and breakin' battle",
+    "genre": "party",
+    "venue": "Embarcadero Plaza",
+    "address": "Embarcadero Plaza, 1 Market St, San Francisco, CA 94111",
+    "lat": 37.7949,
+    "lon": -122.3949,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "13:30",
+      "end": "18:00"
+    },
+    "price": "Free",
+    "organizer": "Whack Donuts",
+    "url": "https://sf.funcheap.com/whack-donuts-2year-anniversary-jam-breakin-battle-embarcadero-plaza/",
+    "description": "A 5-on-5 breakdance crew battle with DJs, giveaways and a raffle on the plaza.",
+    "confidence": "medium"
+  },
+  {
+    "title": "When Manilatown Swung: the Manila Serenaders",
+    "genre": "music",
+    "venue": "International Hotel Manilatown Center",
+    "address": "868 Kearny St, San Francisco, CA 94108",
+    "lat": 37.7962,
+    "lon": -122.405,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "14:00",
+      "end": "15:30"
+    },
+    "price": "Free",
+    "organizer": "Manilatown Heritage Foundation",
+    "url": "https://www.manilatown.org/all-events/when-manilatown-swung-the-manila-serenaders",
+    "description": "Live jazz, archival photos and family stories of a 1930s Filipino swing band; 1930s–40s dress encouraged.",
+    "confidence": "high"
+  },
+  {
+    "title": "Giant community sand painting at Ocean Beach",
+    "genre": "party",
+    "venue": "Kelly's Cove, Ocean Beach",
+    "address": "1090 Point Lobos Ave, San Francisco, CA 94121",
+    "lat": 37.7768,
+    "lon": -122.512,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "price": "Free (register; donations welcome)",
+    "organizer": "Andres Amador",
+    "url": "https://sf.funcheap.com/free-giant-sand-painting-community-art-beach-ocean-beach/",
+    "description": "Drop in and help rake one huge temporary drawing into the sand; tools provided, no experience needed.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Gambits & Ghouls chess night at SPARK Social",
+    "genre": "play",
+    "venue": "SPARK Social SF",
+    "address": "601 Mission Bay Blvd N, San Francisco, CA 94158",
+    "lat": 37.7707,
+    "lon": -122.3916,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "15:00",
+      "end": "21:00"
+    },
+    "price": "Free ($10 suggested)",
+    "organizer": "The Black Men's Chess League and SALŌN!",
+    "url": "https://sf.funcheap.com/sf-blackout-gambits-ghouls-chess-game-night-spark-social/",
+    "description": "Costume-friendly chess tournament and beginner lessons, plus mini golf, cornhole, fire pit and food trucks.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Blue Beetle outdoor screening (SF Latino Film Festival)",
+    "genre": "party",
+    "venue": "SPARK Social SF",
+    "address": "601 Mission Bay Blvd N, San Francisco, CA 94158",
+    "lat": 37.7707,
+    "lon": -122.3916,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "18:30",
+      "end": "20:30"
+    },
+    "price": "Free (RSVP)",
+    "organizer": "SPARK Social SF with Cine+Más SF Latino Film Festival",
+    "url": "https://www.eventbrite.com/e/cinemas-blue-beetle-tickets-2003175027431",
+    "description": "Free outdoor movie on the field with 15+ food trucks; bring a blanket.",
+    "confidence": "high"
+  },
+  {
+    "title": "Halloween bar crawl on Polk Street",
+    "genre": "party",
+    "venue": "Mayes Oyster House (check-in)",
+    "address": "1233 Polk St, San Francisco, CA 94109",
+    "lat": 37.7883,
+    "lon": -122.4204,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "16:00",
+      "end": "22:00"
+    },
+    "price": "From $15",
+    "organizer": "CrawlSF",
+    "url": "https://crawlsf.com/guides/san-francisco-halloween-pub-crawl/",
+    "description": "Costumed crawl across Polk Street bars with drink specials, DJs, a costume contest and a scavenger hunt.",
+    "confidence": "high"
+  },
+  {
+    "title": "Full Moon Trip Temple: tea, art and sound healing",
+    "genre": "party",
+    "venue": "Live Worms Gallery",
+    "address": "1345 Grant Ave, San Francisco, CA 94133",
+    "lat": 37.7994,
+    "lon": -122.4075,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "20:00",
+      "end": "23:59"
+    },
+    "price": "Free (donations welcome)",
+    "organizer": "Professor Seagull's Smartshop",
+    "url": "https://sf.funcheap.com/full-moon-trip-temple-north-beach/",
+    "description": "Art-making, tea and snacks, a short film, then a sound bath with world percussion in a North Beach gallery.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Bruno's grand reopening party",
+    "genre": "music",
+    "venue": "Bruno's",
+    "address": "2389 Mission St, San Francisco, CA 94110",
+    "lat": 37.7589,
+    "lon": -122.4188,
+    "schedule": {
+      "date": "2026-10-24",
+      "start": "20:00",
+      "end": "02:00"
+    },
+    "price": "Free before 11pm (RSVP)",
+    "organizer": "Bruno's",
+    "url": "https://sf.funcheap.com/free-brunos-grand-reopening-celebration-djs-mission-sf/",
+    "description": "The old Mission club reopens under new owners with DJs on two floors: pop downstairs, house and EDM upstairs.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Daybreaker Halloween morning dance party",
+    "genre": "move",
+    "venue": "Transamerica Pyramid Redwood Park",
+    "address": "600 Montgomery St, San Francisco, CA 94111",
+    "lat": 37.7952,
+    "lon": -122.4028,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "10:00",
+      "end": "13:00"
+    },
+    "price": "$44–55",
+    "organizer": "Daybreaker",
+    "url": "https://www.daybreaker.com/event/san-francisco-10-25/",
+    "description": "Sober daytime dance party under the redwoods with spooky yoga, DJs and live musicians; costumes encouraged.",
+    "confidence": "high"
+  },
+  {
+    "title": "SFMOMA Free Family Day: K-pop, art and beyond",
+    "genre": "party",
+    "venue": "SFMOMA",
+    "address": "151 3rd St, San Francisco, CA 94103",
+    "lat": 37.7859,
+    "lon": -122.4007,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "10:00",
+      "end": "17:00"
+    },
+    "price": "Free (up to 2 adults per visitor 18 and under)",
+    "organizer": "SFMOMA",
+    "url": "https://www.sfmoma.org/free-days/",
+    "description": "Free museum entry for families, with art-making, an SFPL storytime, a scavenger hunt and a K-pop dance party.",
+    "confidence": "high"
+  },
+  {
+    "title": "Bark at SPARK Howl-O-Ween",
+    "genre": "party",
+    "venue": "SPARK Social SF",
+    "address": "601 Mission Bay Blvd N, San Francisco, CA 94158",
+    "lat": 37.7707,
+    "lon": -122.3916,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "11:00",
+      "end": "17:00"
+    },
+    "price": "Free (RSVP)",
+    "organizer": "SPARK Social SF",
+    "url": "https://www.eventbrite.com/e/bark-at-spark-howl-o-ween-tickets-1998393395441",
+    "description": "Dog Halloween party with pup-cup races at 1 and 2, a costume contest at 3 and a puppy parade; leashes required.",
+    "confidence": "high"
+  },
+  {
+    "title": "Alamo Scare trick-or-treat at the Painted Ladies",
+    "genre": "party",
+    "venue": "Steiner St (Hayes to Grove)",
+    "address": "Steiner St between Hayes St & Grove St, San Francisco, CA 94117",
+    "lat": 37.7765,
+    "lon": -122.4327,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "price": "Free",
+    "organizer": "Alamo Square Neighborhood Association",
+    "url": "https://sf.funcheap.com/alamo-scare-2026-trickortreat-sfs-iconic-painted-ladies-alamo-square/",
+    "description": "Neighborhood trick-or-treating along the Painted Ladies block across from Alamo Square.",
+    "confidence": "medium"
+  },
+  {
+    "title": "Trunk or Treat with bounce houses at New North Church",
+    "genre": "party",
+    "venue": "New North Church parking lot",
+    "address": "777 Brotherhood Way, San Francisco, CA 94132",
+    "lat": 37.7143,
+    "lon": -122.4768,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "17:00",
+      "end": "19:00"
+    },
+    "price": "Free",
+    "organizer": "New North Church",
+    "url": "https://www.newnorth.church/events/halloween",
+    "description": "Family trunk-or-treat with decorated cars, candy, bounce houses, games and food; drop in anytime.",
+    "confidence": "high"
+  },
+  {
+    "title": "Ranger walk: 250 Years on the Presidio",
+    "genre": "move",
+    "venue": "Presidio Visitor Center",
+    "address": "210 Lincoln Blvd, San Francisco, CA 94129",
+    "lat": 37.802,
+    "lon": -122.4568,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "11:00",
+      "end": "12:00"
+    },
+    "price": "Free",
+    "organizer": "National Park Service",
+    "url": "https://presidio.gov/explore/events/presidio-guided-walk-250-years-on-the-presidio/2026-10-25/",
+    "description": "A flat half-mile ranger-led walk across Tunnel Tops and the Main Post covering Ohlone, Spanish and Army history.",
+    "confidence": "high"
+  },
+  {
+    "title": "Steps Toward a Cure 5K and 1-mile walk",
+    "genre": "move",
+    "venue": "Pioneer Log Cabin, Golden Gate Park",
+    "address": "JFK Dr & Stow Lake Dr, Golden Gate Park, San Francisco, CA 94118",
+    "lat": 37.7708,
+    "lon": -122.4752,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "09:00",
+      "end": "12:00"
+    },
+    "price": "$30 adults, $20 kids",
+    "organizer": "Dravet Syndrome Foundation",
+    "url": "https://dravetfoundation.org/gd-event/steps-toward-a-cure-san-francisco-ca-october-25th/",
+    "description": "Charity 5K fun run at 9 and walk at 9:15 in Golden Gate Park, then refreshments and kids' activities.",
+    "confidence": "high"
+  },
+  {
+    "title": "Halloween Sunset Dunes 5K",
+    "genre": "move",
+    "venue": "Great Highway at Taraval St",
+    "address": "Great Hwy & Taraval St, San Francisco, CA 94116",
+    "lat": 37.7418,
+    "lon": -122.5073,
+    "schedule": {
+      "date": "2026-10-25",
+      "start": "09:00",
+      "end": null
+    },
+    "price": "See the club’s race page",
+    "organizer": "Dolphin South End Runners",
+    "url": "https://dserunners.com/race-schedule/",
+    "description": "Flat out-and-back costume 5K on the Great Highway path, with a free half-mile kids' run after. Check-in 8am.",
+    "confidence": "high"
   }
 ]
