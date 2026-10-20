@@ -130,7 +130,8 @@ struct ListingsMergeTests {
         [{"title":"\(title)","genre":"music","venue":"\(venue)","lat":37.77,"lon":-122.42,
           "schedule":{"date":"2026-10-24","start":"20:00"},"price":"\(price)"}]
         """
-        return try #require(CityListings.decode(Data(json.utf8)).first)
+        let all = try CityListings.decode(Data(json.utf8))
+        return try #require(all.first)
     }
 
     @Test func serverWinsAndNewBundledOnesAreAdded() throws {

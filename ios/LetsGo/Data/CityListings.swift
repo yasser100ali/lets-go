@@ -215,6 +215,8 @@ enum CityListings {
                     context.insert(new)
                     return new
                 }()
+                // Two listings can share a title at the same time; keep one pin for both.
+                existing[o.key] = g
                 g.categoryRaw = genre.rawValue
                 g.details = l.description
                 g.placeName = l.venue
