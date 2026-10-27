@@ -13,6 +13,7 @@ struct SpotView: View {
     @Query(sort: \Gathering.start) private var gatherings: [Gathering]
     @State private var earned: Stamp?
     @State private var hosting: GatheringDraft?
+    @State private var here: HereMoment?
 
     /// Close enough to count as being there.
     private let checkInRadius: CLLocationDistance = 200
@@ -41,7 +42,7 @@ struct SpotView: View {
             .safeAreaInset(edge: .bottom) { actions }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(item: $earned) { StampEarnedView(stamp: $0) }
+        .fullScreenCover(item: $here) { YouAreHereView(moment: $0) }
         .sheet(item: $hosting) { NewGatheringView(draft: $0) }
     }
 
@@ -167,7 +168,11 @@ struct SpotView: View {
                     .frame(maxWidth: .infinity)
                     .frame(height: 52)
             } else if meters <= checkInRadius && !location.isUsingFallback {
-                Button { earned = Ledger.visit(spot, context: context) } label: {
+                Button {
+                    earned = Ledger.visit(spot, context: context)
+                    Ledger.arrive(spot.title, genre: spot.kind.genre, with: [], isSample: false, context: context)
+                    here = HereMoment(title: spot.title, genre: spot.kind.genre, checkedInAt: .now, friends: [], stamped: earned != nil)
+                } label: {
                     Label("I'm here. Stamp it.", systemImage: "checkmark.seal")
                 }
                 .buttonStyle(PrimaryButtonStyle(color: spot.kind.color))

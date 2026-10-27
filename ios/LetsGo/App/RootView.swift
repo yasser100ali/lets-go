@@ -10,6 +10,11 @@ struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var model = HomeModel()
     @AppStorage("splash.seen") private var seenQuote = false
+    @Query(sort: \Night.evening, order: .reverse) private var nights: [Night]
+    /// When Let's Go was last brought up (and lit), for the night's phone time.
+    @State private var litSince: Date?
+    /// Steps not yet written to tonight's night, so it isn't saved every few meters.
+    @State private var pendingWalk: Double = 0
 
     var body: some View {
         @Bindable var model = model
@@ -47,7 +52,23 @@ struct RootView: View {
                 }
             })
         }
-        .onAppear { if !seenQuote { model.showQuote = true } }
+        .fullScreenCover(item: $model.recap) { MorningAfterView(night: $0) }
+        .onAppear {
+            if !seenQuote { model.showQuote = true }
+            litSince = .now
+            checkRecap()
+        }
+        .onChange(of: location.odometer) { old, new in
+            pendingWalk += max(0, new - old)
+            if pendingWalk >= 50 {
+                Ledger.walked(pendingWalk, context: context)
+                pendingWalk = 0
+            }
+        }
+        // A dark screen (gone dark, or a pocketed walk) isn't time on the phone.
+        .onChange(of: model.dark) { _, dark in
+            if dark { flushPhoneTime() } else { litSince = .now }
+        }
         .task { location.start() }
         // Fill in the sample neighborhood and pull from the server when the
         // neighborhood changes, and whenever the app comes back.
@@ -57,12 +78,28 @@ struct RootView: View {
             await pull()
         }
         .onChange(of: scenePhase) { _, phase in
+            if phase != .active { flushPhoneTime() }
             if phase == .active {
+                if !model.dark { litSince = .now }
+                checkRecap()
                 // Weekly listings roll forward, so refresh them when the app comes back.
                 if CityListings.covers(location.center) { CityListings.refresh(context: context) }
                 Task { await pull() }
             }
         }
+    }
+
+    private func flushPhoneTime() {
+        guard let since = litSince else { return }
+        litSince = nil
+        Ledger.phoneTime(since: since, context: context)
+    }
+
+    /// The morning after a night out, once.
+    private func checkRecap() {
+        guard !model.showQuote, model.recap == nil else { return }
+        let now = Date.now
+        model.recap = nights.first { NightMath.wantsRecap(evening: $0.evening, stops: $0.stops.count, seen: $0.recapSeenAt != nil, now: now) }
     }
 
     private func pull() async {

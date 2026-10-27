@@ -26,6 +26,7 @@ struct PassportView: View {
     @Query(sort: \TasteNote.createdAt) private var notes: [TasteNote]
     @Query private var gatherings: [Gathering]
     @Query private var orders: [Order]
+    @Query(sort: \Night.evening, order: .reverse) private var nights: [Night]
 
     @Environment(SyncStatus.self) private var sync
     @State private var newNote = ""
@@ -46,6 +47,7 @@ struct PassportView: View {
         VStack(alignment: .leading, spacing: 22) {
             header
             counts
+            lastNight
             cityCard
             stampGrid
             knows
@@ -100,6 +102,35 @@ struct PassportView: View {
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
         .card(radius: 18)
+    }
+
+    /// The latest night out, as a way back to its morning after.
+    @ViewBuilder
+    private var lastNight: some View {
+        if let n = nights.first(where: { !$0.stops.isEmpty }) {
+            Button { model.recap = n } label: {
+                HStack(spacing: 14) {
+                    Image(systemName: "sun.horizon.fill")
+                        .font(.system(size: 20))
+                        .foregroundStyle(Palette.porch)
+                        .frame(width: 44, height: 44)
+                        .background(Palette.porch.opacity(0.12), in: .circle)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(n.evening.formatted(.dateTime.weekday(.wide))), lived").font(.system(size: 16, weight: .bold))
+                        Text("\(n.stops.map(\.title).joined(separator: " \u{00B7} ")) \u{00B7} \(NightMath.miles(n.walkedMeters)) mi")
+                            .font(.system(size: 13))
+                            .foregroundStyle(Palette.muted)
+                            .lineLimit(1)
+                    }
+                    Spacer(minLength: 0)
+                    Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(Palette.muted)
+                }
+                .foregroundStyle(Palette.ink)
+                .padding(14)
+                .card(radius: 22)
+            }
+            .buttonStyle(.plain)
+        }
     }
 
     private var cityCard: some View {
