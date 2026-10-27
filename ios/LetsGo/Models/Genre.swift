@@ -48,13 +48,36 @@ enum Genre: String, CaseIterable, Codable, Identifiable, Sendable {
         }
     }
 
+    /// The pin's glow on the night map.
     var color: Color {
         switch self {
-        case .play: Color(hex: 0x3FA772)
-        case .move: Color(hex: 0x3A9BD9)
-        case .music: Color(hex: 0x9C7BE0)
-        case .party: Color(hex: 0xD46A9A)
-        case .food: Color(hex: 0xE07B4C)
+        case .play: Color(hex: 0x4FD08E)
+        case .move: Color(hex: 0x5AB4F0)
+        case .music: Color(hex: 0xB497F5)
+        case .party: Color(hex: 0xF07BB0)
+        case .food: Color(hex: 0xFFA24C)
+        }
+    }
+
+    /// The icon on top of `color`: the same hue, nearly black.
+    var ink: Color {
+        switch self {
+        case .play: Color(hex: 0x052414)
+        case .move: Color(hex: 0x03192A)
+        case .music: Color(hex: 0x170A33)
+        case .party: Color(hex: 0x2E0716)
+        case .food: Color(hex: 0x2B1300)
+        }
+    }
+
+    /// The badge text over a dark chip: "4/6", "16 left".
+    var light: Color {
+        switch self {
+        case .play: Color(hex: 0xB8F0D2)
+        case .move: Color(hex: 0xB5DDF8)
+        case .music: Color(hex: 0xD9CCFF)
+        case .party: Color(hex: 0xFFC2DC)
+        case .food: Color(hex: 0xFFC58E)
         }
     }
 

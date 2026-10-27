@@ -76,6 +76,23 @@ struct KitchensView: View {
 
 struct MyKitchenRoute: Hashable {}
 
+/// The city list, pushed from Plans or Passport.
+struct CityListRoute: Hashable {}
+
+/// Every kitchen near you, pushed from Plans.
+struct KitchensRoute: Hashable {}
+
+/// Kitchens as a page of its own: your orders, drops near you, your kitchen.
+struct KitchensPage: View {
+    var body: some View {
+        ScrollView { KitchensView() }
+            .scrollIndicators(.hidden)
+            .background(Palette.bg)
+            .navigationTitle("Home kitchens")
+            .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
 struct KitchenRow: View {
     var kitchen: Kitchen
     var now: Date

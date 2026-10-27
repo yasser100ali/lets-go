@@ -1,10 +1,27 @@
 import SwiftUI
 import SwiftData
 
+/// The Passport tab: where you showed up, the city list, and what you're into,
+/// with the settings at the bottom.
+struct PassportTab: View {
+    var body: some View {
+        NavigationStack {
+            ScrollView { PassportView() }
+                .scrollIndicators(.hidden)
+                .background(Palette.bg)
+                .toolbar(.hidden, for: .navigationBar)
+                .navigationDestination(for: CityListRoute.self) { _ in ListsView() }
+                .navigationDestination(for: Spot.self) { SpotView(spot: $0) }
+                .navigationDestination(for: Gathering.self) { GatheringDetailView(gathering: $0) }
+        }
+    }
+}
+
 /// Your passport: stamps for places you showed up, and what you're into.
 struct PassportView: View {
     @Environment(\.modelContext) private var context
     @Environment(LocationService.self) private var location
+    @Environment(HomeModel.self) private var model
     @Query(sort: \Stamp.earnedAt, order: .reverse) private var stamps: [Stamp]
     @Query(sort: \TasteNote.createdAt) private var notes: [TasteNote]
     @Query private var gatherings: [Gathering]
@@ -15,7 +32,6 @@ struct PassportView: View {
     @AppStorage(SampleNeighborhood.enabledKey) private var samplesOn = true
     @AppStorage(APIClient.nameKey) private var displayName = ""
     @AppStorage(APIConfig.overrideKey) private var serverURL = ""
-    @AppStorage(Appearance.storageKey) private var appearance: Appearance = .system
 
     /// Stamps you can work toward, shown locked until earned.
     private let goals: [(key: String, title: String, symbol: String, category: Genre)] = [
@@ -27,41 +43,110 @@ struct PassportView: View {
     ]
 
     var body: some View {
-                VStack(alignment: .leading, spacing: 22) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Your passport").eyebrow()
-                        Text("Around here").display(28)
-                    }
-                    counts
-                    stampGrid
-                    knows
-                    appearancePicker
-                    sampleSettings
-                    serverSettings
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
+        VStack(alignment: .leading, spacing: 22) {
+            header
+            counts
+            cityCard
+            stampGrid
+            knows
+            quoteCard
+            sampleSettings
+            serverSettings
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+    }
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text("Passport").display(44)
+                Spacer()
+                Text(Date.now.formatted(.dateTime.year()))
+                    .font(.system(size: 13, weight: .semibold))
+                    .monospacedDigit()
+                    .foregroundStyle(Palette.soft)
+                    .padding(.horizontal, 12)
+                    .frame(height: 32)
+                    .background(Color.white.opacity(0.07), in: .capsule)
+                    .overlay(Capsule().stroke(Color.white.opacity(0.12)))
+            }
+            Text("Where you showed up, and what you're into.")
+                .font(.serif(21))
+                .foregroundStyle(Palette.soft)
+        }
+        .padding(.top, 8)
     }
 
     private var counts: some View {
         let showUps = gatherings.filter { $0.checkedInAt != nil }.count
-        let joined = gatherings.filter(\.isJoined).count
         let kitchensTried = Set(orders.compactMap { $0.kitchen?.id }).count
+        let city = Spots.stamped(stamps).count
         return HStack(spacing: 8) {
-            count("\(showUps)", "show-ups")
-            count("\(joined)", "joined")
-            count("\(kitchensTried)", "kitchens tried")
+            count(Text("\(showUps)"), "show-ups")
+            count(Text("\(kitchensTried)"), "kitchens tried")
+            NavigationLink(value: CityListRoute()) {
+                count(Text("\(city)\(Text("/\(Spots.all.count)").font(.poster(18)).foregroundStyle(Palette.muted))"), "Know your city")
+            }
+            .buttonStyle(.plain)
         }
     }
 
-    private func count(_ v: String, _ label: String) -> some View {
-        VStack(alignment: .leading, spacing: 1) {
-            Text(v).display(22).monospacedDigit()
-            Text(label).font(.system(size: 11, weight: .semibold)).foregroundStyle(Palette.muted)
+    private func count(_ v: Text, _ label: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            v.font(.poster(32)).monospacedDigit().foregroundStyle(Palette.ink)
+            Text(label).font(.system(size: 12)).foregroundStyle(Palette.muted).lineLimit(1)
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .card(radius: 14)
+        .card(radius: 18)
+    }
+
+    private var cityCard: some View {
+        let done = Spots.stamped(stamps)
+        let total = Spots.all.count
+        let close = Spots.all.filter { done[$0.id] == nil && location.center.distance(to: $0.coordinate) < 1609 }.count
+        return NavigationLink(value: CityListRoute()) {
+            HStack(spacing: 14) {
+                ProgressRing(done: done.count, total: total, size: 56, line: 6)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(Spots.listTitle).font(.system(size: 16, weight: .bold)).foregroundStyle(Palette.ink)
+                    Text(done.isEmpty
+                         ? "\(total) places every San Franciscan should go once. \(close) are under a mile from you."
+                         : "\(done.count) done. \(close) of the rest are under a mile from you.")
+                        .font(.system(size: 13))
+                        .foregroundStyle(Palette.muted)
+                        .multilineTextAlignment(.leading)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(Palette.muted)
+            }
+            .padding(16)
+            .card(radius: 22)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var quoteCard: some View {
+        Button { model.showQuote = true } label: {
+            HStack(spacing: 12) {
+                Text("\u{201C}")
+                    .font(.serif(40))
+                    .foregroundStyle(Palette.accent)
+                    .frame(width: 30, height: 30)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Read the quote again").font(.system(size: 15, weight: .semibold)).foregroundStyle(Palette.ink)
+                    Text("\u{2018}Live more.\u{2019} Fyodor Dostoevsky, Demons")
+                        .font(.serif(15))
+                        .italic()
+                        .foregroundStyle(Palette.muted)
+                }
+                Spacer(minLength: 0)
+            }
+            .padding(14)
+            .card()
+        }
+        .buttonStyle(.plain)
     }
 
     private var stampGrid: some View {
@@ -131,20 +216,6 @@ struct PassportView: View {
             .padding(12)
             .card(radius: 14)
         }
-    }
-
-    private var appearancePicker: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Appearance").eyebrow()
-            Picker("Appearance", selection: $appearance) {
-                ForEach(Appearance.allCases) { Text($0.label).tag($0) }
-            }
-            .pickerStyle(.segmented)
-            Text("Glass is the dark look, Paper the light one. Match phone follows your phone's setting.")
-                .font(.system(size: 12)).foregroundStyle(Palette.muted)
-        }
-        .padding(14)
-        .card()
     }
 
     private var sampleSettings: some View {

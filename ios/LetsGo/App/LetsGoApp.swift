@@ -5,14 +5,14 @@ import SwiftData
 struct LetsGoApp: App {
     @State private var location = LocationService()
     @State private var sync = SyncStatus()
-    @AppStorage(Appearance.storageKey) private var appearance: Appearance = .system
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environment(location)
                 .environment(sync)
-                .preferredColorScheme(appearance.scheme)
+                // Afterglow is a night look; the app has no light mode.
+                .preferredColorScheme(.dark)
                 .tint(Palette.accent)
         }
         .modelContainer(for: [

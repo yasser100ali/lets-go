@@ -1,30 +1,30 @@
 import SwiftUI
 
-/// The top picks on the map: Apple Maps' own marker shape, with a caption under it.
-/// Tinted on Glass, ink on Paper.
+/// A marker with a caption under it, for maps that aren't the home map (hosting, a plan).
 struct MapMarker: View {
     var genre: Genre
     var caption: String
     var detail: String?
     var selected = false
-    @Environment(\.colorScheme) private var scheme
 
     var body: some View {
         VStack(spacing: 3) {
             Image(systemName: genre.symbol)
-                .font(.system(size: selected ? 16 : 13, weight: .semibold))
-                .foregroundStyle(scheme == .dark ? .white : Palette.bg)
+                .font(.system(size: selected ? 16 : 13, weight: .bold))
+                .foregroundStyle(genre.ink)
                 .frame(width: selected ? 38 : 30, height: selected ? 38 : 30)
-                .background(scheme == .dark ? genre.color : Palette.ink, in: .circle)
-                .overlay(Circle().stroke(.white, lineWidth: 2))
-                .shadow(color: .black.opacity(0.35), radius: 4, y: 2)
+                .background(genre.color, in: .circle)
+                .shadow(color: genre.color.opacity(0.5), radius: 10)
             HStack(spacing: 3) {
                 Text(caption).fontWeight(.semibold)
-                if let detail { Text(detail).fontWeight(.medium).opacity(0.7) }
+                if let detail { Text(detail).fontWeight(.medium).foregroundStyle(Palette.muted) }
             }
-            .font(.system(size: 11))
+            .font(.system(size: 11.5))
             .foregroundStyle(Palette.ink)
-            .shadow(color: scheme == .dark ? .black.opacity(0.8) : .white, radius: 2)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 3)
+            .background(Palette.bg.opacity(0.74), in: .rect(cornerRadius: 9))
+            .overlay(RoundedRectangle(cornerRadius: 9).stroke(Color.white.opacity(0.1)))
             .fixedSize()
         }
         .animation(.snappy, value: selected)
@@ -32,19 +32,17 @@ struct MapMarker: View {
     }
 }
 
-/// Everything else on the map: a small dot. Hollow when it's later.
+/// Everything else on the map: a small glowing dot. Hollow when it's later.
 struct MapDot: View {
     var genre: Genre
     var later: Bool
-    @Environment(\.colorScheme) private var scheme
 
     var body: some View {
-        let fill = scheme == .dark ? genre.color : Palette.ink
         Circle()
-            .fill(later ? Palette.bg : fill)
-            .frame(width: 10, height: 10)
-            .overlay(Circle().stroke(later ? fill : .white, lineWidth: later ? 1.5 : 1.5))
-            .shadow(color: .black.opacity(0.25), radius: 2, y: 1)
+            .fill(later ? Palette.bg : genre.color)
+            .frame(width: 14, height: 14)
+            .overlay(Circle().stroke(later ? genre.color : Palette.bg, lineWidth: 2))
+            .shadow(color: later ? .clear : genre.color.opacity(0.7), radius: 5)
             .padding(8)
             .contentShape(Circle())
             .accessibilityLabel(genre.label)
@@ -55,14 +53,13 @@ struct MapDot: View {
 struct CategoryDot: View {
     var category: Genre
     var size: CGFloat = 36
-    @Environment(\.colorScheme) private var scheme
 
     var body: some View {
         Image(systemName: category.symbol)
-            .font(.system(size: size * 0.42, weight: .semibold))
-            .foregroundStyle(scheme == .dark ? category.color : Palette.ink)
+            .font(.system(size: size * 0.44, weight: .semibold))
+            .foregroundStyle(category.color)
             .frame(width: size, height: size)
-            .background(scheme == .dark ? category.color.opacity(0.2) : Palette.raise, in: .circle)
+            .background(category.color.opacity(0.16), in: .rect(cornerRadius: size * 0.32))
     }
 }
 
@@ -75,12 +72,12 @@ struct FilterChip: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.system(size: 14, weight: .medium))
-                .padding(.horizontal, 14)
-                .frame(height: 34)
-                .foregroundStyle(on ? Palette.bg : Palette.ink)
+                .font(.system(size: 14, weight: .semibold))
+                .padding(.horizontal, 15)
+                .frame(height: 36)
+                .foregroundStyle(on ? Color(hex: 0x121016) : Palette.ink)
                 .background(on ? Palette.ink : Color.clear, in: .capsule)
-                .glassEffect(on ? .identity : .regular.interactive(), in: .capsule)
+                .glassEffect(on ? .identity : .regular.tint(Palette.glassTint).interactive(), in: .capsule)
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(on ? .isSelected : [])
@@ -228,12 +225,13 @@ struct TipNote: View {
 
 struct PrimaryButtonStyle: ButtonStyle {
     var color: Color = Palette.accent
+    var ink: Color = Palette.accentInk
     @Environment(\.isEnabled) private var isEnabled
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.system(size: 16, weight: .semibold))
-            .foregroundStyle(Palette.accentInk)
+            .font(.system(size: 17, weight: .bold))
+            .foregroundStyle(ink)
             .frame(maxWidth: .infinity)
             .frame(height: 52)
             .background(color.opacity(isEnabled ? 1 : 0.35), in: .capsule)
@@ -247,10 +245,11 @@ struct SecondaryButtonStyle: ButtonStyle {
         configuration.label
             .font(.system(size: 16, weight: .semibold))
             .foregroundStyle(Palette.ink)
-            .padding(.horizontal, 22)
+            .padding(.horizontal, 20)
             .frame(height: 52)
-            .glassEffect(.regular.interactive(), in: .capsule)
-            .opacity(configuration.isPressed ? 0.8 : 1)
+            .background(Color.white.opacity(0.08), in: .capsule)
+            .overlay(Capsule().stroke(Color.white.opacity(0.14)))
+            .opacity(configuration.isPressed ? 0.75 : 1)
     }
 }
 

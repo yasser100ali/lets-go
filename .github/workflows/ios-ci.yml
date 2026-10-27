@@ -1,0 +1,34 @@
+name: iOS CI
+# Builds and tests every pull request that touches the app, on the Mac mini's
+# Let's Go runner (label "letsgo", the same one iOS CD uses). The project is
+# regenerated from project.yml first, so a PR that changes the spec is built
+# from the spec, not from a stale LetsGo.xcodeproj.
+on:
+  pull_request:
+    paths: ["ios/**", ".github/workflows/ios-ci.yml"]
+
+concurrency:
+  group: ios-ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: [self-hosted, macOS, ARM64, letsgo]
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Put Homebrew on PATH
+        run: echo "/opt/homebrew/bin" >> "$GITHUB_PATH"
+
+      - name: Generate the project
+        run: cd ios && xcodegen generate
+
+      - name: Build and test
+        run: |
+          xcodebuild test -project ios/LetsGo.xcodeproj -scheme LetsGo \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+            -derivedDataPath "$RUNNER_TEMP/dd-ci" CODE_SIGNING_ALLOWED=NO -quiet

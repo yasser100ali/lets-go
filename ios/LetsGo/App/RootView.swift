@@ -1,47 +1,41 @@
 import SwiftUI
 import SwiftData
 
-/// Five tabs (Today, Map, Lists, Kitchens, You) with the now bar above the tab bar.
+/// Map first. Then Plans and Passport, and Wren in the round button at the end of the
+/// tab bar. The quote opens the app the first time.
 struct RootView: View {
     @Environment(LocationService.self) private var location
     @Environment(SyncStatus.self) private var sync
     @Environment(\.modelContext) private var context
     @Environment(\.scenePhase) private var scenePhase
     @State private var model = HomeModel()
+    @AppStorage("splash.seen") private var seenQuote = false
 
     var body: some View {
         @Bindable var model = model
         TabView(selection: $model.tab) {
-            Tab("Today", systemImage: "sparkles", value: AppTab.today) {
-                TodayView()
-            }
-            Tab("Map", systemImage: "map.fill", value: AppTab.map) {
+            Tab("Map", systemImage: "map", value: AppTab.map) {
                 HomeView()
             }
-            Tab("Lists", systemImage: "checklist", value: AppTab.lists) {
-                ListsView()
+            Tab("Plans", systemImage: "calendar", value: AppTab.plans) {
+                PlansView()
             }
-            Tab("Kitchens", systemImage: "takeoutbag.and.cup.and.straw.fill", value: AppTab.kitchens) {
-                NavigationStack {
-                    ScrollView { KitchensView() }
-                        .scrollIndicators(.hidden)
-                        .background(Palette.bg)
-                        .navigationTitle("Kitchens")
-                        .navigationDestination(for: Kitchen.self) { KitchenView(kitchen: $0) }
-                        .navigationDestination(for: Order.self) { OrderStatusView(order: $0) }
-                        .navigationDestination(for: MyKitchenRoute.self) { _ in MyKitchenView() }
-                }
+            Tab("Passport", systemImage: "person.text.rectangle", value: AppTab.passport) {
+                PassportTab()
             }
-            Tab("You", systemImage: "person.crop.circle", value: AppTab.you) {
-                NavigationStack {
-                    ScrollView { PassportView() }
-                        .scrollIndicators(.hidden)
-                        .background(Palette.bg)
-                }
+            Tab("Wren", systemImage: "sparkle", value: AppTab.wren, role: .search) {
+                WrenView()
             }
         }
-        .tabViewBottomAccessory { NowBar() }
+        .tint(Palette.accent)
         .environment(model)
+        .fullScreenCover(isPresented: $model.showQuote) {
+            QuoteSplash {
+                seenQuote = true
+                model.showQuote = false
+            }
+        }
+        .onAppear { if !seenQuote { model.showQuote = true } }
         .task { location.start() }
         // Fill in the sample neighborhood and pull from the server when the
         // neighborhood changes, and whenever the app comes back.

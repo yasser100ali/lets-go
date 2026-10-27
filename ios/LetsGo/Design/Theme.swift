@@ -1,55 +1,45 @@
 import SwiftUI
 import UIKit
 
-/// Two looks, one set of names. Dark is Glass: Apple Maps-dark ground, Liquid Glass
-/// chrome, small muted tints. Light is Paper: off-white, ink-black, a serif for titles.
-/// Every color here resolves per appearance, so views never branch on the theme.
+/// Afterglow: a city at night. Plum-black ground, warm paper ink, one ember accent,
+/// and glass chrome over a custom-tinted map. The whole app is this one look; the
+/// map's quick-decide mode (`Signal`) is the only other set of colors.
 enum Palette {
-    static let bg = dynamic(dark: 0x15181D, light: 0xFAFAF8)
-    static let surface = dynamic(dark: 0x1F232A, light: 0xFFFFFF)
-    static let raise = dynamic(dark: 0x2A2F37, light: 0xF0EFEA)
-    static let ink = dynamic(dark: 0xFFFFFF, light: 0x111111)
-    static let muted = dynamic(dark: 0xEBEBF5, darkAlpha: 0.6, light: 0x77756F)
-    static let line = dynamic(dark: 0xFFFFFF, darkAlpha: 0.1, light: 0xE6E4DE)
-    /// Buttons and selection: system-ish blue on Glass, ink on Paper.
-    static let accent = dynamic(dark: 0x5E9EFF, light: 0x111111)
-    static let accentInk = dynamic(dark: 0xFFFFFF, light: 0xFFFFFF)
-    static let star = dynamic(dark: 0xFFC766, light: 0xB7791F)
-    static let me = dynamic(dark: 0x0A84FF, light: 0x2B5CE6)
-    /// "On now".
-    static let live = dynamic(dark: 0x30D158, light: 0x14915A)
-
-    private static func dynamic(dark: UInt32, darkAlpha: Double = 1, light: UInt32, lightAlpha: Double = 1) -> Color {
-        Color(UIColor { traits in
-            traits.userInterfaceStyle == .dark
-                ? UIColor(hex: dark, alpha: darkAlpha)
-                : UIColor(hex: light, alpha: lightAlpha)
-        })
-    }
+    static let bg = Color(hex: 0x0D0C12)
+    /// Sheets and pages that sit on the map.
+    static let surface = Color(hex: 0x15131C)
+    static let raise = Color(hex: 0x24212C)
+    static let ink = Color(hex: 0xF6F2EA)
+    static let muted = Color(hex: 0xA8A3B3)
+    /// A step brighter than `muted`, for body copy on glass.
+    static let soft = Color(hex: 0xC9C4D2)
+    /// Street names and the quietest labels.
+    static let faint = Color(hex: 0x8E8A9B)
+    static let line = Color.white.opacity(0.1)
+    /// Ember: buttons, Wren, the dots in LIVE. MORE.
+    static let accent = Color(hex: 0xFF5B3A)
+    static let accentSoft = Color(hex: 0xFF9A80)
+    static let accentInk = Color(hex: 0x1A0703)
+    static let star = Color(hex: 0xFFC766)
+    static let me = Color(hex: 0x0A84FF)
+    /// "On now", and a friend who's in.
+    static let live = Color(hex: 0x4FD08E)
+    /// A porch light: someone up for something.
+    static let porch = Color(hex: 0xFFB547)
+    static let porchSoft = Color(hex: 0xFFC88A)
+    /// The walk ring and route lines.
+    static let walk = Color(hex: 0x7FB2FF)
+    /// The tint glass chrome takes over the map.
+    static let glassTint = Color(hex: 0x16141E, opacity: 0.55)
 }
 
-/// The look you picked under You → Appearance.
-enum Appearance: String, CaseIterable, Identifiable {
-    case system, glass, paper
-
-    static let storageKey = "appearance"
-    var id: String { rawValue }
-
-    var label: String {
-        switch self {
-        case .system: "Match phone"
-        case .glass: "Glass"
-        case .paper: "Paper"
-        }
-    }
-
-    var scheme: ColorScheme? {
-        switch self {
-        case .system: nil
-        case .glass: .dark
-        case .paper: .light
-        }
-    }
+/// The quick-decide look: black, white and one acid lime. Numbers instead of icons.
+enum SignalPalette {
+    static let bg = Color(hex: 0x050505)
+    static let ink = Color.white
+    static let muted = Color(hex: 0x9A9A9A)
+    static let lime = Color(hex: 0xD4FF3A)
+    static let panel = Color(hex: 0x121212, opacity: 0.72)
 }
 
 extension UIColor {
@@ -77,38 +67,78 @@ extension Color {
 
 extension Font {
     static let label = Font.system(size: 11, weight: .semibold)
-}
 
-/// Titles: SF Pro bold on Glass, New York (the system serif) on Paper.
-struct DisplayFont: ViewModifier {
-    var size: CGFloat
-    @Environment(\.colorScheme) private var scheme
+    /// The headline face: tall, tight and heavy, like a gig poster.
+    static func poster(_ size: CGFloat, weight: Font.Weight = .heavy) -> Font {
+        .system(size: size, weight: weight).width(.condensed)
+    }
 
-    func body(content: Content) -> some View {
-        content
-            .font(.system(size: size, weight: scheme == .dark ? .bold : .medium, design: scheme == .dark ? .default : .serif))
-            .tracking(scheme == .dark ? -0.4 : -0.3)
+    /// The quote and the quiet lines: the system serif.
+    static func serif(_ size: CGFloat) -> Font {
+        .system(size: size, design: .serif)
     }
 }
 
 extension View {
-    func display(_ size: CGFloat) -> some View { modifier(DisplayFont(size: size)) }
+    /// Page and card titles in the poster face.
+    func display(_ size: CGFloat) -> some View {
+        font(.poster(size)).tracking(-0.2)
+    }
 
-    /// A grouped-list block: soft fill on Glass, white with a hairline on Paper.
+    /// A grouped block: a faint fill with a hairline.
     func card(radius: CGFloat = 18) -> some View { modifier(CardStyle(radius: radius)) }
 
+    /// Small spaced capitals over a section: "OUT NOW · 3".
     func eyebrow(_ color: Color = Palette.muted) -> some View {
-        self.font(.system(size: 12, weight: .semibold)).textCase(.uppercase).tracking(0.4).foregroundStyle(color)
+        self.font(.system(size: 12, weight: .heavy)).textCase(.uppercase).tracking(1.4).foregroundStyle(color)
+    }
+
+    /// The dark glass every floating panel uses.
+    func glassPanel(radius: CGFloat = 34) -> some View {
+        glassEffect(.regular.tint(Palette.glassTint), in: .rect(cornerRadius: radius))
     }
 }
 
 struct CardStyle: ViewModifier {
     var radius: CGFloat
-    @Environment(\.colorScheme) private var scheme
 
     func body(content: Content) -> some View {
         content
-            .background(scheme == .dark ? Color.white.opacity(0.06) : Palette.surface, in: .rect(cornerRadius: radius))
-            .overlay(RoundedRectangle(cornerRadius: radius).stroke(scheme == .dark ? Color.clear : Palette.line))
+            .background(Color.white.opacity(0.05), in: .rect(cornerRadius: radius))
+            .overlay(RoundedRectangle(cornerRadius: radius).stroke(Color.white.opacity(0.08)))
+    }
+}
+
+/// LIVE. MORE. with ember full stops. On one line, or stacked for the Signal header.
+/// Shrinks to fit rather than wrap.
+struct LiveMoreMark: View {
+    var size: CGFloat = 46
+    var stacked = false
+    var dot: Color = Palette.accent
+    var ink: Color = Palette.ink
+
+    var body: some View {
+        Group {
+            if stacked {
+                VStack(alignment: .leading, spacing: -size * 0.16) {
+                    word("LIVE")
+                    word("MORE")
+                }
+            } else {
+                Text("\(Text("LIVE").foregroundStyle(ink))\(Text(".").foregroundStyle(dot)) \(Text("MORE").foregroundStyle(ink))\(Text(".").foregroundStyle(dot))")
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
+            }
+        }
+        .font(.poster(size, weight: .black))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Live more.")
+        .accessibilityAddTraits(.isHeader)
+    }
+
+    private func word(_ w: String) -> some View {
+        Text("\(Text(w).foregroundStyle(ink))\(Text(".").foregroundStyle(dot))")
+            .lineLimit(1)
+            .minimumScaleFactor(0.5)
     }
 }

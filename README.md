@@ -4,19 +4,20 @@ Pokémon Go for hanging out. A live night map of what's happening within walking
 
 Working name. The mocks this was built from: https://claude.ai/artifact/WxbnSewLmj7KwW69GwS1ys (direction A's map with C's Wren line).
 
-## What's in v0.1
+## What's in it
 
-- **Today** — the first tab: the one thing most worth going to right now and why, what starts in the next hour, what's within a 15-minute walk, the week's real listings day by day (weeks start Monday), places from the city list, and kitchens with a drop coming. Sunset time is worked out on the phone (`Sun`).
-- **Lists** — *Know your city: SF 50*: fifty places every San Franciscan should go once (`sf_places.json`: trails, viewpoints, landmarks, food, nights out), closest first, with progress by kind. Each place has a page with distance and climb, the best time to go, what not to miss, who's going there soon, and "post a time, anyone can join". Check in within 200 m for a stamp.
-- **Map time slider** — with the Now filter on, drag up to six hours ahead and the pins change to what's on then.
-- **Map** — glowing pins for everything on in the next three hours, pulsing while they fill up; a dashed ring for a 10-minute walk; Wren's one line and top three picks on the panel.
+**LIVE. MORE.** A social app boosted by AI: it's about getting out and being with people, not about time on the screen, and Wren does the logistics so you can go. It opens on the map, and the first launch opens on the line it's named for (Dostoevsky, *Demons*), clause by clause. Passport → *Read the quote again* brings it back. Designs: https://claude.ai/artifact/VrtFdCRFcZzKaV6f2vJ4AE.
+
+- **Map (the opening screen)** — *Afterglow*: a night-tinted map with glowing pins for everything on in the next three hours. Pins pulse while they fill, faster the fuller they get, with a count on each ("4/6", "16 left"); a dashed ring marks a 10-minute walk. Wren's line sits on a glass sheet at the bottom: the one thing worth going to, why, when to leave, and *I'm in* right there; *Not tonight* moves on to the next. Filters: Now, Tonight, Weekend, kinds of thing, Free. Drag the sheet up (or tap search) for the whole list. Walk view still tilts the map into the street.
+- **Quick pick** — the *Signal* look as a filter mode: black and lime, the top three numbered on the map with real walking routes, *leave by* times, and a ruler of the next five hours you can drag to look ahead.
+- **Plans** — what you've said yes to (gatherings, pickups), then what used to be Today: the one pick, what starts in the next hour, what's within a 15-minute walk, the week's real listings day by day (weeks start Monday), places from the city list, and kitchens with a drop coming. Sunset time is worked out on the phone (`Sun`).
+- **Passport** — show-ups, kitchens tried, *Know your city: SF 50* (fifty places every San Franciscan should go once, `sf_places.json`, closest first, with progress by kind; each place has a page, and checking in within 200 m stamps it), stamps, and everything Wren believes about you, deletable. Settings live at the bottom.
+- **Wren** — the round button at the end of the tab bar. Ask for a mood ("something chill tonight under $15") and get real nearby options; describe a plan ("host a slow jog sat 8am around the lake") and get a draft to post.
 - **Gatherings** — headcount, what to bring, who runs it. Join, and check in when you're physically within 200 m to collect a stamp. Host your own from the + button or by telling Wren.
 - **Kitchens** — a page per home kitchen with its drop (a fixed batch at a set time), menu and reviews. Reserve a pickup slot or a porch seat; the pickup spot unlocks after you reserve. Mark it picked up, leave a review; three visits makes you a regular.
 - **Your kitchen** — open one, keep a menu, post drops, see what sold. Permit checklist (MEHKO in California).
-- **Wren** — ask for a mood ("something chill tonight under $15") and get real nearby options; describe a plan ("slow jog sat 8am around the lake") and get a draft to post. Uses Apple's on-device model when the phone has Apple Intelligence, a local parser otherwise.
-- **Passport** — stamps, counts, and everything Wren believes about you, deletable.
 
-Everything is on-device (SwiftData) for now. Until real neighbors post, a **sample neighborhood** is placed around you, every item tagged *Sample*; turn it off under You.
+Everything is on-device (SwiftData) for now. Until real neighbors post, a **sample neighborhood** is placed around you, every item tagged *Sample*; turn it off at the bottom of Passport.
 
 ## Backend
 
@@ -38,7 +39,7 @@ Rows match on city, title and venue; ones the file no longer has are marked gone
 
 Schema changes go through Alembic (`alembic revision --autogenerate`, then read it). CI runs lint, `alembic check` and the tests.
 
-The app talks to it when it has a server address: under **You → Server** (an ngrok URL to your Mac works), `LETSGO_API` in the Xcode scheme, or `APIConfig.deployed` once there's a real deployment. With no address it runs on the phone's own data, as before. Things from the server are pulled into the on-phone store on launch, on returning to the app and when you move; joining, check-ins, hosting, kitchens, drops, orders and reviews go to the server first when the thing lives there.
+The app talks to it when it has a server address: under **Passport → Server** (an ngrok URL to your Mac works), `LETSGO_API` in the Xcode scheme, or `APIConfig.deployed` once there's a real deployment. With no address it runs on the phone's own data, as before. Things from the server are pulled into the on-phone store on launch, on returning to the app and when you move; joining, check-ins, hosting, kitchens, drops, orders and reviews go to the server first when the thing lives there.
 
 iOS integration tests against a running backend:
 
@@ -47,7 +48,7 @@ TEST_RUNNER_LETSGO_API=http://localhost:8100 xcodebuild test -project ios/LetsGo
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
-Deployed on Railway: project **lets-go**, services `api` (this Dockerfile; runs `alembic upgrade head` on start) and `Postgres`, at https://api-production-658b9.up.railway.app. Deploy from `backend/` with `railway up --service api`. The app uses it by default (`APIConfig.deployed`); You → Server overrides it.
+Deployed on Railway: project **lets-go**, services `api` (this Dockerfile; runs `alembic upgrade head` on start) and `Postgres`, at https://api-production-658b9.up.railway.app. Deploy from `backend/` with `railway up --service api`. The app uses it by default (`APIConfig.deployed`); Passport → Server overrides it.
 
 ## Not yet
 
