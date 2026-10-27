@@ -3,7 +3,7 @@ import OSLog
 
 /// Where the backend lives. Nil means the app runs on this phone's data only.
 nonisolated enum APIConfig {
-    /// Set under You → Server (for a dev server or an ngrok tunnel), or with the
+    /// Set under Passport → Server (for a dev server or an ngrok tunnel), or with the
     /// LETSGO_API environment variable when running from Xcode.
     static let overrideKey = "api.baseURL"
     /// The deployed backend (Railway project "lets-go", service "api").

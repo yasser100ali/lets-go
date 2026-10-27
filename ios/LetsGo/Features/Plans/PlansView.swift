@@ -2,16 +2,16 @@ import SwiftUI
 import SwiftData
 import CoreLocation
 
-/// The Today tab: what's worth leaving the house for. The best pick, what starts in
-/// the next hour, what's a short walk away, the week's real listings day by day,
-/// places from the city list, and kitchens with a drop coming.
-struct TodayView: View {
+/// The Plans tab: what you've said yes to, then what's worth leaving the house for.
+/// The best pick, what starts in the next hour, what's a short walk away, the week's
+/// real listings day by day, home kitchens with a drop coming, and the city list.
+struct PlansView: View {
     @Environment(LocationService.self) private var location
-    @Environment(HomeModel.self) private var model
     @Query(sort: \Gathering.start) private var gatherings: [Gathering]
     @Query private var kitchens: [Kitchen]
     @Query private var notes: [TasteNote]
     @Query private var stamps: [Stamp]
+    @Query(sort: \Order.pickupAt) private var orders: [Order]
 
     @State private var path = NavigationPath()
     @State private var day: Date?
@@ -27,6 +27,7 @@ struct TodayView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         header(all, soon: soon, now: now)
+                        yours(now: now)
                         pick(all, taste: taste, now: now)
                         soonStrip(soon, now: now)
                         walkable(all, excluding: Set(soon.map(\.id)), now: now)
@@ -46,6 +47,52 @@ struct TodayView: View {
             .navigationDestination(for: Spot.self) { SpotView(spot: $0) }
             .navigationDestination(for: Order.self) { OrderStatusView(order: $0) }
             .navigationDestination(for: MyKitchenRoute.self) { _ in MyKitchenView() }
+            .navigationDestination(for: CityListRoute.self) { _ in ListsView() }
+            .navigationDestination(for: KitchensRoute.self) { _ in KitchensPage() }
+        }
+    }
+
+    // MARK: Yours
+
+    /// What you've said yes to that hasn't happened yet: gatherings and pickups.
+    @ViewBuilder
+    private func yours(now: Date) -> some View {
+        let joined = gatherings.filter { $0.isJoined && $0.end > now }.prefix(6)
+        let pickups = orders.filter { $0.status == .reserved && $0.pickupAt.addingTimeInterval(3600) > now }.prefix(4)
+        if !joined.isEmpty || !pickups.isEmpty {
+            sectionHeader("You're in", detail: "Show up, check in, collect the stamp.")
+            VStack(spacing: 0) {
+                ForEach(Array(joined.enumerated()), id: \.element.id) { i, g in
+                    PickRow(pick: Candidate(g, from: location.center), now: now) { path.append(g) }
+                        .padding(.horizontal, 14)
+                    if i < joined.count - 1 || !pickups.isEmpty { Divider().overlay(Palette.line).padding(.leading, 66) }
+                }
+                ForEach(Array(pickups.enumerated()), id: \.element.id) { i, o in
+                    Button { path.append(o) } label: {
+                        HStack(spacing: 12) {
+                            CategoryDot(category: .food, size: 40)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(o.kitchen?.name ?? "Pickup").font(.system(size: 16, weight: .semibold)).foregroundStyle(Palette.ink).lineLimit(1)
+                                Text("\(o.itemCount) item\(o.itemCount == 1 ? "" : "s")\(o.eatOnPorch ? " · porch seat" : "")")
+                                    .font(.system(size: 13)).foregroundStyle(Palette.muted).lineLimit(1)
+                            }
+                            Spacer(minLength: 6)
+                            Text(When.short(o.pickupAt, now: now))
+                                .font(.system(size: 14, weight: .semibold))
+                                .monospacedDigit()
+                                .foregroundStyle(Palette.ink)
+                        }
+                        .padding(.vertical, 11)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.horizontal, 14)
+                    if i < pickups.count - 1 { Divider().overlay(Palette.line).padding(.leading, 66) }
+                }
+            }
+            .padding(.vertical, 2)
+            .card(radius: 20)
+            .padding(.horizontal, 16)
         }
     }
 
@@ -55,8 +102,12 @@ struct TodayView: View {
         let near = Today.walkable(all, now: now, limit: 99).count
         let starting = soon.filter { $0.start > now }.count
         return VStack(alignment: .leading, spacing: 6) {
+            Text("Plans").display(44).foregroundStyle(Palette.ink)
             Text(eyebrow(now: now)).eyebrow()
-            Text(Today.headline(now: now)).display(32).foregroundStyle(Palette.ink)
+            Text(Today.headline(now: now))
+                .font(.serif(21))
+                .foregroundStyle(Palette.soft)
+                .padding(.top, 2)
             countLine(near: near, starting: starting)
                 .font(.system(size: 15))
                 .foregroundStyle(Palette.muted)
@@ -204,7 +255,7 @@ struct TodayView: View {
         let done = Spots.stamped(stamps)
         let next = Spots.closest(Spots.all.filter { done[$0.id] == nil }, to: location.center).prefix(4)
         if !next.isEmpty {
-            sectionHeader("Places to go", detail: "From the city list. Check in when you're there.", action: "See all") { model.tab = .lists }
+            sectionHeader("Places to go", detail: "From the city list. Check in when you're there.", action: "See all") { path.append(CityListRoute()) }
             LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
                 ForEach(Array(next)) { s in
                     NavigationLink(value: s) { SpotCard(spot: s, meters: location.center.distance(to: s.coordinate)) }
@@ -224,7 +275,7 @@ struct TodayView: View {
             .sorted { ($0.nextDrop(after: now)?.start ?? .distantFuture) < ($1.nextDrop(after: now)?.start ?? .distantFuture) }
             .prefix(6)
         if !open.isEmpty {
-            sectionHeader("Home kitchens near you", action: "All kitchens") { model.tab = .kitchens }
+            sectionHeader("Home kitchens near you", action: "All kitchens") { path.append(KitchensRoute()) }
             ScrollView(.horizontal) {
                 HStack(spacing: 12) {
                     ForEach(Array(open)) { k in
@@ -244,7 +295,7 @@ struct TodayView: View {
         let done = Spots.stamped(stamps)
         let total = Spots.all.count
         let close = Spots.all.filter { done[$0.id] == nil && location.center.distance(to: $0.coordinate) < 1609 }.count
-        return Button { model.tab = .lists } label: {
+        return Button { path.append(CityListRoute()) } label: {
             HStack(spacing: 14) {
                 ProgressRing(done: done.count, total: total, size: 56, line: 6)
                 VStack(alignment: .leading, spacing: 3) {

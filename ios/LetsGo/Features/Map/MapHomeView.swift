@@ -2,46 +2,68 @@ import SwiftUI
 import SwiftData
 import MapKit
 
-/// The Map tab: the map, a search pill and filters over it, and the list sheet that
-/// the now bar, the search pill and the pins open. The map follows what's open.
+/// The opening screen: the night map. LIVE. MORE. over it, filters under that, glowing
+/// pins that pulse faster as they fill, a dashed ring for a ten-minute walk, and Wren's
+/// line on a glass sheet at the bottom. "Quick pick" turns it into Signal: black and
+/// lime, the top three numbered, with walking routes and when to leave for each.
 struct HomeView: View {
     @Environment(LocationService.self) private var location
     @Environment(SyncStatus.self) private var sync
+    @Environment(\.modelContext) private var context
     @Query(sort: \Gathering.start) private var gatherings: [Gathering]
     @Query private var kitchens: [Kitchen]
     @Query private var notes: [TasteNote]
 
     @Environment(HomeModel.self) private var model
-    @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
+    @State private var position: MapCameraPosition = HomeView.followMe
     @State private var hostingBlank = false
+    /// "Not tonight": skipped on the Wren card for this session.
+    @State private var skipped: Set<UUID> = []
+    @State private var routes = RouteBook()
+    @State private var joining = false
+    @State private var problem: String?
     @Namespace private var mapScope
+
+    /// Ten minutes at 80 m a minute.
+    static let walkRadius: CLLocationDistance = 800
+
+    /// Follow you, or (without a fix) look at the fallback neighborhood. Not `.automatic`:
+    /// that would frame the night wash, which is 30 km across.
+    static var followMe: MapCameraPosition {
+        .userLocation(fallback: .region(MKCoordinateRegion(center: LocationService.fallback, latitudinalMeters: 3000, longitudinalMeters: 3000)))
+    }
 
     var body: some View {
         @Bindable var model = model
         TimelineView(.periodic(from: .now, by: 30)) { timeline in
             let now = timeline.date
-            // The slider under the map moves "now" up to six hours ahead.
-            let at = scrubs ? now.addingTimeInterval(model.ahead * 3600) : now
+            let signal = model.mode == .signal && !model.walking
+            // Signal's ruler moves "now" up to five hours ahead.
+            let at = signal && model.window == .now ? now.addingTimeInterval(model.ahead * 3600) : now
             let all = Nearby.candidates(gatherings: gatherings, kitchens: kitchens, from: location.center, now: at)
             let taste = Nearby.taste(notes: notes, gatherings: gatherings, kitchens: kitchens)
             let shown = model.query.isEmpty ? model.visible(all, now: at, taste: taste) : Search.results(model.query, in: all, now: now)
+            let top = signal ? Signal.top(shown) : []
             ZStack(alignment: .top) {
-                map(shown: shown, now: at)
+                map(shown: shown, top: top, now: at, signal: signal)
+                shade(signal: signal)
                 if model.walking { SkyBand(now: now).allowsHitTesting(false) }
-                VStack(alignment: .leading, spacing: 10) {
-                    searchPill
-                    if !model.walking { chips }
-                    floatingButtons
+                VStack(alignment: .leading, spacing: 12) {
+                    header(signal: signal, onNow: shown.filter { $0.start <= at }.count, now: now)
+                    if !model.walking { chips(signal: signal) }
                 }
                 .padding(.top, 4)
             }
             .overlay(alignment: .bottom) {
-                if scrubs { scrubber(now: now) }
+                bottom(signal: signal, top: top, shown: shown, now: now, at: at)
             }
-            // The compass and locate button live in the column under the search pill:
-            // MapKit's own corner would sit under the status bar on a full-bleed map.
             .mapScope(mapScope)
+            .task(id: top.map(\.id.uuidString).joined() + location.center.roundedKey) {
+                if !top.isEmpty { await routes.load(top, from: location.center) }
+            }
         }
+        .background(model.mode == .signal ? SignalPalette.bg : Palette.bg)
+        .errorAlert($problem)
         .sheet(isPresented: $model.listOpen) {
             NearbySheet()
                 .environment(model)
@@ -70,11 +92,60 @@ struct HomeView: View {
         }
     }
 
+    // MARK: Bottom
+
+    /// Signal's panel or Wren's card, with the locate and walk buttons over it.
+    private func bottom(signal: Bool, top: [Candidate], shown: [Candidate], now: Date, at: Date) -> some View {
+        @Bindable var model = model
+        return VStack(alignment: .trailing, spacing: 10) {
+            mapButtons
+            if !model.walking {
+                if signal {
+                    SignalPanel(
+                        top: top, total: shown.count, now: now, at: at,
+                        walkMinutes: routes.legs.mapValues(\.minutes), ahead: $model.ahead,
+                        onOpen: { open($0) }, onList: { model.showList() }
+                    )
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                } else {
+                    WrenCard(
+                        picks: shown.filter { !skipped.contains($0.id) }, now: at, busy: joining,
+                        onOpen: { open($0) }, onJoin: { join($0) }, onSkip: { skip($0) },
+                        onList: { model.showList() }, onHost: { hostingBlank = true }
+                    )
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+            }
+        }
+        .padding(.horizontal, 8)
+        .padding(.bottom, 8)
+    }
+
     // MARK: Map
 
-    private func map(shown: [Candidate], now: Date) -> some View {
-        let top = Set(shown.prefix(4).map(\.id))
+    private func map(shown: [Candidate], top: [Candidate], now: Date, signal: Bool) -> some View {
+        let ranked = shown.prefix(4).map(\.id)
+        let numbers = Dictionary(top.enumerated().map { ($0.element.id, $0.offset + 1) }, uniquingKeysWith: { a, _ in a })
         return Map(position: $position, scope: mapScope) {
+            // The night: a plum (or, in Signal, near-black) wash over the streets, under the labels.
+            MapPolygon(coordinates: Self.wash(around: location.center))
+                .foregroundStyle(signal ? SignalPalette.bg.opacity(0.62) : Palette.bg.opacity(0.4))
+                .mapOverlayLevel(level: .aboveRoads)
+            if !signal && !model.walking {
+                MapCircle(center: location.center, radius: Self.walkRadius)
+                    .foregroundStyle(Palette.walk.opacity(0.05))
+                    .stroke(Palette.walk.opacity(0.45), style: StrokeStyle(lineWidth: 1.2, dash: [3, 6]))
+            }
+            if signal {
+                ForEach(top) { c in
+                    if let leg = routes.legs[c.id] {
+                        MapPolyline(coordinates: leg.coordinates)
+                            .stroke(SignalPalette.lime.opacity(0.25), lineWidth: 7)
+                        MapPolyline(coordinates: leg.coordinates)
+                            .stroke(SignalPalette.lime, style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
+                    }
+                }
+            }
             if model.walking {
                 Annotation("You", coordinate: location.center, anchor: .bottom) { Avatar() }
                     .annotationTitles(.hidden)
@@ -84,14 +155,7 @@ struct HomeView: View {
             ForEach(shown) { c in
                 Annotation(c.title, coordinate: .init(latitude: c.lat, longitude: c.lon), anchor: model.walking ? .bottom : .center) {
                     Button { open(c) } label: {
-                        if top.contains(c.id) || model.selectedID == c.id {
-                            VStack(spacing: 0) {
-                                MapMarker(genre: c.category, caption: short(c), detail: markerDetail(c, now: now), selected: model.selectedID == c.id)
-                                if model.walking { Beam(color: c.category.color) }
-                            }
-                        } else {
-                            MapDot(genre: c.category, later: c.start.timeIntervalSince(now) > 90 * 60)
-                        }
+                        pin(c, rank: ranked.firstIndex(of: c.id), number: numbers[c.id], now: now, signal: signal)
                     }
                     .buttonStyle(.plain)
                 }
@@ -106,6 +170,159 @@ struct HomeView: View {
         .ignoresSafeArea()
     }
 
+    @ViewBuilder
+    private func pin(_ c: Candidate, rank: Int?, number: Int?, now: Date, signal: Bool) -> some View {
+        if signal {
+            if let number {
+                SignalPin(number: number, minutes: routes.legs[c.id]?.minutes ?? c.walkMinutes, title: c.title)
+            } else {
+                SignalDot(later: c.start.timeIntervalSince(now) > 90 * 60)
+            }
+        } else if model.walking {
+            VStack(spacing: 0) {
+                NightPin(pick: c, size: 30, now: now, showsCaption: false)
+                Beam(color: c.category.color)
+            }
+        } else if let rank {
+            NightPin(pick: c, size: rank == 0 || model.selectedID == c.id ? 40 : 34, now: now, showsCaption: true)
+        } else if model.selectedID == c.id {
+            NightPin(pick: c, size: 34, now: now, showsCaption: true)
+        } else {
+            MapDot(genre: c.category, later: c.start.timeIntervalSince(now) > 90 * 60)
+        }
+    }
+
+    /// A square about 30 km across: enough to cover any zoom the map is used at.
+    static func wash(around c: CLLocationCoordinate2D) -> [CLLocationCoordinate2D] {
+        let d = 0.15
+        return [
+            .init(latitude: c.latitude + d, longitude: c.longitude - d),
+            .init(latitude: c.latitude + d, longitude: c.longitude + d),
+            .init(latitude: c.latitude - d, longitude: c.longitude + d),
+            .init(latitude: c.latitude - d, longitude: c.longitude - d),
+        ]
+    }
+
+    // MARK: Over the map
+
+    private func shade(signal: Bool) -> some View {
+        let ground = signal ? SignalPalette.bg : Palette.bg
+        return LinearGradient(
+            stops: [
+                .init(color: ground.opacity(signal ? 0.96 : 0.94), location: 0),
+                .init(color: ground.opacity(signal ? 0.8 : 0.62), location: 0.5),
+                .init(color: ground.opacity(0), location: 1),
+            ],
+            startPoint: .top, endPoint: .bottom
+        )
+        .frame(height: signal ? 300 : 230)
+        .ignoresSafeArea(edges: .top)
+        .allowsHitTesting(false)
+    }
+
+    @ViewBuilder
+    private func header(signal: Bool, onNow: Int, now: Date) -> some View {
+        if signal {
+            HStack(alignment: .top) {
+                LiveMoreMark(size: 92, stacked: true, dot: SignalPalette.lime, ink: SignalPalette.ink)
+                Spacer(minLength: 8)
+                VStack(alignment: .trailing, spacing: 6) {
+                    HStack(spacing: 6) {
+                        BlinkDot(color: SignalPalette.lime)
+                        Text("\(onNow) ON NOW")
+                            .foregroundStyle(SignalPalette.lime)
+                    }
+                    .font(.system(size: 12, weight: .heavy))
+                    .tracking(1.4)
+                    .monospacedDigit()
+                    Text(placeLine(now: now))
+                        .font(.system(size: 12, weight: .semibold))
+                        .tracking(1.4)
+                        .foregroundStyle(SignalPalette.muted)
+                }
+                .padding(.top, 12)
+            }
+            .padding(.horizontal, 16)
+        } else {
+            HStack(spacing: 10) {
+                LiveMoreMark(size: 46)
+                Spacer(minLength: 8)
+                circleButton("magnifyingglass", label: CityListings.covers(location.center) ? "Search San Francisco" : "Search nearby") {
+                    model.startSearch()
+                }
+                circleButton("plus", label: "Host something") { hostingBlank = true }
+            }
+            .padding(.leading, 20)
+            .padding(.trailing, 16)
+        }
+    }
+
+    /// "SAN FRANCISCO · SUNSET 6:07"
+    private func placeLine(now: Date) -> String {
+        var parts = [CityListings.covers(location.center) ? "SAN FRANCISCO" : "NEAR YOU"]
+        if let set = Sun.sunset(on: now, at: location.center), set > now {
+            parts.append("SUNSET \(NightPin.hour(set))")
+        }
+        return parts.joined(separator: " · ")
+    }
+
+    private func chips(signal: Bool) -> some View {
+        @Bindable var model = model
+        return ScrollView(.horizontal) {
+            HStack(spacing: 8) {
+                Button { model.toggleSignal() } label: {
+                    Label("Quick pick", systemImage: "bolt.fill")
+                        .font(.system(size: 14, weight: .semibold))
+                        .padding(.horizontal, 15)
+                        .frame(height: 36)
+                        .foregroundStyle(signal ? SignalPalette.bg : Palette.ink)
+                        .background(signal ? SignalPalette.lime : Color.clear, in: .capsule)
+                        .glassEffect(signal ? .identity : .regular.tint(Palette.glassTint).interactive(), in: .capsule)
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint("Just the three things worth leaving for, and when to leave")
+                .accessibilityAddTraits(signal ? .isSelected : [])
+                ForEach(TimeWindow.allCases) { w in
+                    FilterChip(title: w.label, on: model.window == w) {
+                        model.window = w
+                        if w != .now { model.ahead = 0 }
+                    }
+                }
+                ForEach([Genre.food, .play, .music, .party, .move]) { g in
+                    FilterChip(title: g.plural, on: model.genre == g) { model.genre = model.genre == g ? nil : g }
+                }
+                FilterChip(title: "Free", on: model.freeOnly) { model.freeOnly.toggle() }
+            }
+            .padding(.horizontal, 20)
+        }
+        .scrollIndicators(.hidden)
+        .mask(LinearGradient(stops: [.init(color: .black, location: 0.82), .init(color: .clear, location: 1)], startPoint: .leading, endPoint: .trailing))
+    }
+
+    private var mapButtons: some View {
+        VStack(spacing: 10) {
+            if !model.walking { MapCompass(scope: mapScope) }
+            circleButton(model.walking ? "map" : "figure.walk", label: model.walking ? "Back to the map" : "Walk view", on: model.walking) {
+                toggleWalk()
+            }
+            circleButton("location.fill", label: "Show my location", on: position.followsUserLocation) { recenter() }
+        }
+        .padding(.trailing, 8)
+    }
+
+    private func circleButton(_ symbol: String, label: String, on: Bool = false, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: symbol)
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundStyle(on ? Palette.accent : Palette.ink)
+                .frame(width: 44, height: 44)
+        }
+        .glassEffect(.regular.tint(Palette.glassTint).interactive(), in: .circle)
+        .accessibilityLabel(label)
+    }
+
+    // MARK: Actions
+
     private func open(_ c: Candidate) {
         switch c.kind {
         case .gathering:
@@ -115,127 +332,58 @@ struct HomeView: View {
         }
     }
 
-    /// "Pizza drop", "Pickup soccer": short enough to sit under a marker.
-    private func short(_ c: Candidate) -> String {
-        let name = c.kind == .drop ? "\(c.place) drop" : c.title.split(separator: ",").first.map(String.init) ?? c.title
-        return name.count > 22 ? String(name.prefix(20)) + "…" : name
-    }
-
-    private func markerDetail(_ c: Candidate, now: Date) -> String? {
-        if c.start <= now { return "now" }
-        if c.kind == .gathering && c.capacity > 0 { return "\(c.going)/\(c.capacity)" }
-        return c.start.formatted(date: .omitted, time: .shortened)
-    }
-
-    // MARK: Over the map
-
-    private var searchPill: some View {
-        Button { model.startSearch() } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "magnifyingglass").foregroundStyle(Palette.muted)
-                Text(model.query.isEmpty ? (CityListings.covers(location.center) ? "Search San Francisco" : "Search nearby") : model.query)
-                    .foregroundStyle(model.query.isEmpty ? Palette.muted : Palette.ink)
-                    .lineLimit(1)
-                Spacer()
-            }
-            .font(.system(size: 16))
-            .padding(.horizontal, 16)
-            .frame(height: 46)
-            .contentShape(Capsule())
+    private func join(_ c: Candidate) {
+        guard c.kind == .gathering, let g = gatherings.first(where: { $0.id == c.id }) else { return open(c) }
+        joining = true
+        Task {
+            await attempt($problem) { () throws(APIError) in try await Sync.join(g, context: context) }
+            joining = false
         }
-        .buttonStyle(.plain)
-        .glassEffect(.regular.interactive(), in: .capsule)
-        .padding(.horizontal, 14)
     }
 
-    private var chips: some View {
-        @Bindable var model = model
-        return ScrollView(.horizontal) {
-            HStack(spacing: 6) {
-                ForEach(TimeWindow.allCases) { w in
-                    FilterChip(title: w.label, on: model.window == w) { model.window = w }
-                }
-                ForEach([Genre.play, .food, .music, .move, .party]) { g in
-                    FilterChip(title: g.plural, on: model.genre == g) { model.genre = model.genre == g ? nil : g }
-                }
-            }
-            .padding(.horizontal, 14)
-        }
-        .scrollIndicators(.hidden)
-    }
-
-    /// The time slider shows with the Now filter, when you're not searching or walking.
-    private var scrubs: Bool { model.window == .now && model.query.isEmpty && !model.walking }
-
-    private func scrubber(now: Date) -> some View {
-        @Bindable var model = model
-        let at = now.addingTimeInterval(model.ahead * 3600)
-        let label = model.ahead == 0 ? "Now" : at.formatted(date: .omitted, time: .shortened)
-        return HStack(spacing: 12) {
-            Text(label)
-                .font(.system(size: 13, weight: .bold))
-                .monospacedDigit()
-                .foregroundStyle(model.ahead == 0 ? Palette.live : Palette.ink)
-                .frame(width: 66, alignment: .leading)
-            Slider(value: $model.ahead, in: 0...6, step: 0.5)
-                .accessibilityLabel("Look ahead")
-                .accessibilityValue(label)
-            if model.ahead > 0 {
-                Button { withAnimation(.snappy) { model.ahead = 0 } } label: {
-                    Image(systemName: "arrow.uturn.backward").font(.system(size: 14, weight: .bold))
-                }
-                .accessibilityLabel("Back to now")
-            }
-        }
-        .padding(.horizontal, 16)
-        .frame(height: 50)
-        .glassEffect(.regular, in: .capsule)
-        .padding(.horizontal, 14)
-        .padding(.bottom, 10)
-    }
-
-    private var floatingButtons: some View {
-        VStack(spacing: 10) {
-            circleButton(model.walking ? "map" : "figure.walk", label: model.walking ? "Back to the map" : "Walk view", on: model.walking) {
-                toggleWalk()
-            }
-            circleButton("location.fill", label: "Show my location", on: position.followsUserLocation) { recenter() }
-            circleButton("plus", label: "Host something", on: false) { hostingBlank = true }
-            MapCompass(scope: mapScope)
-        }
-        .padding(.leading, 14)
-    }
-
-    private func circleButton(_ symbol: String, label: String, on: Bool, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Image(systemName: symbol)
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(on ? Palette.accent : Palette.ink)
-                .frame(width: 46, height: 46)
-        }
-        .glassEffect(.regular.interactive(), in: .circle)
-        .accessibilityLabel(label)
+    private func skip(_ c: Candidate) {
+        withAnimation(.snappy) { _ = skipped.insert(c.id) }
     }
 
     private func toggleWalk() {
         model.walking.toggle()
         if model.walking {
             model.listOpen = false
+            model.mode = .afterglow
             followInWorld()
         } else {
-            withAnimation(.smooth(duration: 0.8)) { position = .userLocation(fallback: .automatic) }
+            withAnimation(.smooth(duration: 0.8)) { position = HomeView.followMe }
         }
     }
 
     private func recenter() {
         if model.walking { followInWorld(); return }
-        withAnimation(.smooth(duration: 0.8)) { position = .userLocation(fallback: .automatic) }
+        withAnimation(.smooth(duration: 0.8)) { position = HomeView.followMe }
     }
 
     private func followInWorld() {
         withAnimation(.smooth(duration: 1.0)) {
             position = .camera(MapCamera(centerCoordinate: location.center, distance: 520, heading: 20, pitch: 68))
         }
+    }
+}
+
+/// A small dot that blinks: "on now".
+struct BlinkDot: View {
+    var color: Color
+    @State private var dim = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    var body: some View {
+        Circle()
+            .fill(color)
+            .frame(width: 7, height: 7)
+            .opacity(dim ? 0.25 : 1)
+            .onAppear {
+                guard !reduceMotion else { return }
+                withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) { dim = true }
+            }
+            .accessibilityHidden(true)
     }
 }
 

@@ -2,8 +2,9 @@ import SwiftUI
 import SwiftData
 import CoreLocation
 
-/// The Lists tab: the city list, every place a San Franciscan should go once,
-/// closest first, with what you've stamped and how far along you are.
+/// The city list, every place a San Franciscan should go once, closest first, with
+/// what you've stamped and how far along you are. Pushed from Passport and Plans,
+/// whose stacks show its places (`Spot`) and gatherings.
 struct ListsView: View {
     @Environment(LocationService.self) private var location
     @Query(sort: \Stamp.earnedAt) private var stamps: [Stamp]
@@ -11,23 +12,20 @@ struct ListsView: View {
 
     var body: some View {
         let done = Spots.stamped(stamps)
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 18) {
-                    progressCard(done: done)
-                    filters
-                    list(done: done)
-                }
-                .padding(.horizontal, 16)
-                .padding(.top, 8)
-                .padding(.bottom, 30)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                progressCard(done: done)
+                filters
+                list(done: done)
             }
-            .scrollIndicators(.hidden)
-            .background(Palette.bg)
-            .navigationTitle("Lists")
-            .navigationDestination(for: Spot.self) { SpotView(spot: $0) }
-            .navigationDestination(for: Gathering.self) { GatheringDetailView(gathering: $0) }
+            .padding(.horizontal, 16)
+            .padding(.top, 8)
+            .padding(.bottom, 30)
         }
+        .scrollIndicators(.hidden)
+        .background(Palette.bg)
+        .navigationTitle("Know your city")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     private func progressCard(done: [String: Date]) -> some View {
