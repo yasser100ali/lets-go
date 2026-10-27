@@ -64,10 +64,33 @@ enum HomeLine {
 
     // MARK: Wren's line
 
-    /// What Wren says about the top pick. `clock` formats times ("7:42 PM").
-    static func sentence(for c: Candidate, now: Date, clock: (Date) -> String = HomeLine.clock) -> Line {
+    /// What Wren says about the top pick. With friends going, it leads with them, and with a
+    /// meet-up it says who you'll walk in with. `clock` formats times ("7:42 PM").
+    static func sentence(
+        for c: Candidate, now: Date, friends: [Friend] = [], meet: MeetUp? = nil,
+        clock: (Date) -> String = HomeLine.clock
+    ) -> Line {
         let live = c.start <= now
         let walk = c.walkMinutes
+        if c.kind == .gathering, !friends.isEmpty {
+            let who = Crowd.names(friends)
+            let verb = friends.count == 1 ? "is" : "are"
+            let at = c.place.isEmpty ? "" : " at \(c.place)"
+            let what = c.title.lowercasedFirst
+            let lead = live ? "\(who) \(verb) at \(what)\(at)" : "\(who) \(verb) going to \(what)\(at)"
+            let tail: String
+            if let meet, !live {
+                tail = " Leave at \(clock(meet.leave)) and you'll walk in with \(meet.friendName)."
+            } else if live {
+                tail = " It's a \(walk)-minute walk."
+            } else {
+                tail = " Leave at \(clock(leaveBy(c, now: now))) to get there for the start."
+            }
+            if let spots = c.spotsLeft, spots > 0, spots <= 3 {
+                return Line(lead: lead + ", and ", emphasis: spots == 1 ? "they need one more." : "they need \(number(spots)).", tail: tail)
+            }
+            return Line(lead: lead + ".", tail: tail)
+        }
         switch c.kind {
         case .drop:
             let lead = live

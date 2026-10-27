@@ -1,8 +1,8 @@
 import SwiftUI
 import SwiftData
 
-/// Map first. Then Plans and Passport, and Wren in the round button at the end of the
-/// tab bar. The quote opens the app the first time.
+/// Map first. Then People, Plans and Passport, and Wren in the round button at the end
+/// of the tab bar. The quote opens the app the first time.
 struct RootView: View {
     @Environment(LocationService.self) private var location
     @Environment(SyncStatus.self) private var sync
@@ -17,6 +17,9 @@ struct RootView: View {
             Tab("Map", systemImage: "map", value: AppTab.map) {
                 HomeView()
             }
+            Tab("People", systemImage: "person.2", value: AppTab.people) {
+                PeopleView()
+            }
             Tab("Plans", systemImage: "calendar", value: AppTab.plans) {
                 PlansView()
             }
@@ -30,10 +33,19 @@ struct RootView: View {
         .tint(Palette.accent)
         .environment(model)
         .fullScreenCover(isPresented: $model.showQuote) {
-            QuoteSplash {
+            QuoteSplash(onDone: {
                 seenQuote = true
                 model.showQuote = false
-            }
+            }, onInvite: {
+                seenQuote = true
+                model.showQuote = false
+                model.tab = .people
+                Task {
+                    // Let the cover go before the sheet comes up.
+                    try? await Task.sleep(for: .milliseconds(500))
+                    model.addingFriend = true
+                }
+            })
         }
         .onAppear { if !seenQuote { model.showQuote = true } }
         .task { location.start() }
@@ -58,6 +70,7 @@ struct RootView: View {
         if CityListings.covers(center), await CityListings.update() { CityListings.refresh(context: context) }
         await sync.run { () throws(APIError) in
             try await Sync.refresh(around: center, context: context)
+            try await Sync.refreshPeople(around: center, context: context)
         }
     }
 }

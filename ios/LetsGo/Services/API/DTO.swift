@@ -21,6 +21,8 @@ nonisolated struct GatheringDTO: Codable, Sendable, Identifiable {
     var isJoined: Bool
     var checkedInAt: Date?
     var distanceM: Double?
+    /// Your friends who are in. Older servers don't send it.
+    var friendsGoing: [PersonDTO]?
 }
 
 nonisolated struct NewGatheringDTO: Encodable, Sendable {
@@ -193,4 +195,87 @@ nonisolated struct SlotDTO: Codable, Sendable {
     var date: String?
     var start: String
     var end: String?
+}
+
+// People (backend/app/routes/people.py)
+
+nonisolated struct PersonDTO: Codable, Sendable, Hashable {
+    var id: UUID
+    var displayName: String
+}
+
+nonisolated struct FriendCodeDTO: Codable, Sendable {
+    var code: String
+    var expiresAt: Date
+}
+
+nonisolated struct AcceptCodeDTO: Encodable, Sendable {
+    var code: String
+}
+
+nonisolated struct PorchLightInDTO: Encodable, Sendable {
+    var hours: Double
+    var note: String
+    var lat: Double?
+    var lon: Double?
+}
+
+nonisolated struct PorchLightDTO: Codable, Sendable {
+    var onUntil: Date
+    var note: String
+    var lat: Double?
+    var lon: Double?
+    var distanceM: Double?
+}
+
+nonisolated struct OutNowDTO: Codable, Sendable {
+    var gatheringId: UUID
+    var title: String
+    var placeName: String
+    var startsAt: Date
+    var endsAt: Date
+    var state: String
+    var lat: Double
+    var lon: Double
+}
+
+nonisolated struct FriendDTO: Codable, Sendable {
+    var id: UUID
+    var displayName: String
+    var porchLight: PorchLightDTO?
+    var out: OutNowDTO?
+    var wavedAt: Date?
+}
+
+nonisolated struct CrewDTO: Codable, Sendable {
+    var id: UUID
+    var name: String
+    var isMine: Bool
+    var members: [PersonDTO]
+}
+
+nonisolated struct NewCrewDTO: Encodable, Sendable {
+    var name: String
+    var memberIds: [UUID]
+}
+
+nonisolated struct InviteFriendsDTO: Encodable, Sendable {
+    var userIds: [UUID]
+}
+
+nonisolated struct InvitedDTO: Codable, Sendable {
+    var invited: Int
+}
+
+nonisolated struct GatheringInviteDTO: Codable, Sendable {
+    var gathering: GatheringDTO
+    var sender: PersonDTO
+    var createdAt: Date
+}
+
+nonisolated struct PeopleDTO: Codable, Sendable {
+    var porchLight: PorchLightDTO?
+    var friends: [FriendDTO]
+    var crews: [CrewDTO]
+    var invites: [GatheringInviteDTO]
 }

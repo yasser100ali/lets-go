@@ -3,14 +3,16 @@ from datetime import timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from sqlalchemy import select
+from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth import current_user
 from app.config import settings
 from app.db import get_session
 from app.geo import bbox, distance_m
-from app.models import Gathering, GatheringMember, Kitchen, User
-from app.schemas import CheckIn, GatheringCreate, GatheringOut, Nearby
+from app.models import Gathering, GatheringInvite, GatheringMember, Kitchen, User
+from app.schemas import CheckIn, GatheringCreate, GatheringOut, Invited, InviteFriends, Nearby
+from app.social import friend_ids
 from app.views import gathering_out, kitchen_out, now, ratings
 
 router = APIRouter(prefix="/v1", tags=["gatherings"])
@@ -46,11 +48,12 @@ async def nearby(
         )
         .order_by(Gathering.starts_at)
     )
+    friends = await friend_ids(session, user.id)
     gatherings = []
     for g in gs.unique():
         d = distance_m(lat, lon, g.lat, g.lon)
         if d <= radius_m:
-            gatherings.append(gathering_out(g, user.id, d))
+            gatherings.append(gathering_out(g, user.id, d, friends))
 
     ks = list(
         (
@@ -81,14 +84,15 @@ async def create_gathering(
     session.add(g)
     await session.commit()
     g = await _get(session, g.id)
-    return gathering_out(g, user.id)
+    return gathering_out(g, user.id, friend_ids=await friend_ids(session, user.id))
 
 
 @router.get("/gatherings/{gathering_id}", response_model=GatheringOut)
 async def get_gathering(
     gathering_id: uuid.UUID, user: User = Depends(current_user), session: AsyncSession = Depends(get_session)
 ) -> GatheringOut:
-    return gathering_out(await _get(session, gathering_id), user.id)
+    g = await _get(session, gathering_id)
+    return gathering_out(g, user.id, friend_ids=await friend_ids(session, user.id))
 
 
 @router.delete("/gatherings/{gathering_id}", status_code=204)
@@ -117,7 +121,7 @@ async def join(
         raise HTTPException(404, "Gathering not found")
     await session.refresh(g, ["members"])
     if any(m.user_id == user.id for m in g.members):
-        return gathering_out(g, user.id)
+        return gathering_out(g, user.id, friend_ids=await friend_ids(session, user.id))
     if g.ends_at <= now():
         raise HTTPException(409, "It's over")
     if g.capacity and len(g.members) >= g.capacity:
@@ -125,7 +129,7 @@ async def join(
     session.add(GatheringMember(gathering_id=g.id, user_id=user.id))
     await session.commit()
     await session.refresh(g, ["members"])
-    return gathering_out(g, user.id)
+    return gathering_out(g, user.id, friend_ids=await friend_ids(session, user.id))
 
 
 @router.delete("/gatherings/{gathering_id}/join", response_model=GatheringOut)
@@ -140,7 +144,7 @@ async def leave(
         await session.delete(member)
         await session.commit()
         await session.refresh(g, ["members"])
-    return gathering_out(g, user.id)
+    return gathering_out(g, user.id, friend_ids=await friend_ids(session, user.id))
 
 
 @router.post("/gatherings/{gathering_id}/check-in", response_model=GatheringOut)
@@ -170,4 +174,31 @@ async def check_in(
         member.checked_in_at = t
     await session.commit()
     await session.refresh(g, ["members"])
-    return gathering_out(g, user.id)
+    return gathering_out(g, user.id, friend_ids=await friend_ids(session, user.id))
+
+
+@router.post("/gatherings/{gathering_id}/invites", response_model=Invited)
+async def invite(
+    gathering_id: uuid.UUID,
+    body: InviteFriends,
+    user: User = Depends(current_user),
+    session: AsyncSession = Depends(get_session),
+) -> Invited:
+    """Ask friends along. Only friends; asking twice is a no-op."""
+    g = await _get(session, gathering_id)
+    if g.ends_at <= now():
+        raise HTTPException(409, "It's over")
+    friends = await friend_ids(session, user.id)
+    wanted = set(body.user_ids) - {user.id}
+    if not wanted <= friends:
+        raise HTTPException(422, "You can only invite friends")
+    already = {m.user_id for m in g.members}
+    rows = [{"gathering_id": g.id, "to_id": uid, "from_id": user.id} for uid in wanted - already]
+    if not rows:
+        return Invited(invited=0)
+    added = await session.scalars(
+        insert(GatheringInvite).values(rows).on_conflict_do_nothing().returning(GatheringInvite.to_id)
+    )
+    count = len(list(added))
+    await session.commit()
+    return Invited(invited=count)

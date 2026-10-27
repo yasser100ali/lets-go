@@ -11,7 +11,7 @@ import OSLog
 /// Sample and on-phone-only things never touch the network.
 enum Sync {
     private static let log = Logger(subsystem: "com.yasser100ali.letsgo", category: "sync")
-    private static var api: APIClient { .shared }
+    static var api: APIClient { .shared }
 
     // MARK: Pull
 
@@ -212,7 +212,7 @@ enum Sync {
 
     // MARK: Mapping
 
-    private static func update(_ g: Gathering, from dto: GatheringDTO) {
+    static func update(_ g: Gathering, from dto: GatheringDTO) {
         g.title = dto.title
         g.categoryRaw = dto.genre
         g.details = dto.details
@@ -229,6 +229,7 @@ enum Sync {
         g.isJoined = dto.isJoined
         g.othersGoing = max(0, dto.going - (dto.isJoined ? 1 : 0))
         if let at = dto.checkedInAt { g.checkedInAt = at }
+        g.friendIDs = dto.friendsGoing?.map(\.id) ?? []
         g.isSample = false
     }
 
@@ -302,7 +303,7 @@ enum Sync {
         }
     }
 
-    private static func fetch<T: PersistentModel>(_ context: ModelContext, _ d: FetchDescriptor<T>) -> [T] {
+    static func fetch<T: PersistentModel>(_ context: ModelContext, _ d: FetchDescriptor<T>) -> [T] {
         do {
             return try context.fetch(d)
         } catch {

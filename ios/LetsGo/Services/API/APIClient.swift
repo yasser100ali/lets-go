@@ -47,7 +47,7 @@ nonisolated struct Endpoint<Response: Decodable & Sendable>: Sendable {
     var body: Data?
     /// Only safe-to-repeat requests retry. A POST that timed out may still have
     /// happened on the server; repeating it could, say, place a second order.
-    var retries: Int { method == "GET" || method == "DELETE" ? 2 : 0 }
+    var retries: Int { method == "GET" || method == "DELETE" || method == "PUT" ? 2 : 0 }
 
     static func get(_ path: String, query: [URLQueryItem] = []) -> Endpoint {
         Endpoint(method: "GET", path: path, query: query)
@@ -63,6 +63,11 @@ nonisolated struct Endpoint<Response: Decodable & Sendable>: Sendable {
 
     static func patch(_ path: String, _ body: some Encodable) -> Endpoint {
         Endpoint(method: "PATCH", path: path, body: try? JSONCoding.encoder.encode(body))
+    }
+
+    /// Sets something to exactly this, so repeating it is safe.
+    static func put(_ path: String, _ body: some Encodable) -> Endpoint {
+        Endpoint(method: "PUT", path: path, body: try? JSONCoding.encoder.encode(body))
     }
 
     static func delete(_ path: String) -> Endpoint {

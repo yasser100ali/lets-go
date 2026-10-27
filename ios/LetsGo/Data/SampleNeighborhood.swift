@@ -13,7 +13,7 @@ enum SampleNeighborhood {
     private static let seededAtKey = "sample.seededAt"
     private static let versionKey = "sample.version"
     /// Bump when the seed content changes so phones reseed.
-    private static let version = 3
+    private static let version = 4
     static let enabledKey = "sample.enabled"
     private static let log = Logger(subsystem: "com.yasser100ali.letsgo", category: "seed")
     private static var seeding = false
@@ -43,6 +43,8 @@ enum SampleNeighborhood {
     static func clear(context: ModelContext) {
         do {
             try context.delete(model: Gathering.self, where: #Predicate { $0.isSample })
+            try context.delete(model: Person.self, where: #Predicate { $0.isSample })
+            try context.delete(model: Crew.self, where: #Predicate { $0.isSample })
             // Cascade rules only run for object deletes, so delete sample kitchens one by one.
             try context.fetch(FetchDescriptor<Kitchen>(predicate: #Predicate { $0.isSample })).forEach { context.delete($0) }
         } catch {
@@ -131,8 +133,41 @@ enum SampleNeighborhood {
             context.insert(k.drop)
             k.drop.kitchen = k.kitchen
         }
+        seedPeople(around: c, context: context, now: now)
         Ledger.save(context, "seed samples")
         log.info("Seeded \(withGatherings ? gatherings.count : 0) gatherings, \(places.count) real places nearby")
+    }
+
+    // MARK: People
+
+    /// Sample friends until you have real ones. The "team" pair and the "solo" one are put on
+    /// the best things nearby when the screens draw (`Crowd.resolve`); porch lights sit on
+    /// nearby blocks. Every one shows as Sample wherever they appear.
+    private static func seedPeople(around c: CLLocationCoordinate2D, context: ModelContext, now: Date) {
+        func person(_ name: String, _ role: String, free: Int?) -> Person {
+            let p = Person(name: name, isSample: true, sampleRole: role)
+            p.freeAfterHour = free
+            context.insert(p)
+            return p
+        }
+        let maya = person("Maya", "team", free: 14)
+        let theo = person("Theo", "team", free: 16)
+        _ = person("Jun", "solo", free: 12)
+        let priya = person("Priya", "porch", free: 13)
+        priya.porchUntil = now.addingTimeInterval(2 * 3600)
+        priya.porchNote = "Up for something"
+        let home = c.offset(east: 180, north: -60)
+        priya.latitude = home.latitude
+        priya.longitude = home.longitude
+        let omar = person("Omar", "porch", free: 21)
+        omar.porchUntil = now.addingTimeInterval(3 * 3600)
+        omar.porchNote = "Free after 9 \u{00B7} up for a late ride"
+        let flat = c.offset(east: -420, north: 260)
+        omar.latitude = flat.latitude
+        omar.longitude = flat.longitude
+        let ben = person("Ben", "home", free: 18)
+        for name in ["Luc\u{00ED}a", "Ana", "Leo"] { _ = person(name, "home", free: nil) }
+        context.insert(Crew(name: "Tuesday trivia", memberIDs: [maya.id, theo.id, ben.id], isSample: true))
     }
 
     // MARK: Building blocks
