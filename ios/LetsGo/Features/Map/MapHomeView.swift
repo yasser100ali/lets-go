@@ -15,7 +15,7 @@ struct HomeView: View {
     @Query private var notes: [TasteNote]
 
     @Environment(HomeModel.self) private var model
-    @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
+    @State private var position: MapCameraPosition = HomeView.followMe
     @State private var hostingBlank = false
     /// "Not tonight": skipped on the Wren card for this session.
     @State private var skipped: Set<UUID> = []
@@ -26,6 +26,12 @@ struct HomeView: View {
 
     /// Ten minutes at 80 m a minute.
     static let walkRadius: CLLocationDistance = 800
+
+    /// Follow you, or (without a fix) look at the fallback neighborhood. Not `.automatic`:
+    /// that would frame the night wash, which is 30 km across.
+    static var followMe: MapCameraPosition {
+        .userLocation(fallback: .region(MKCoordinateRegion(center: LocationService.fallback, latitudinalMeters: 3000, longitudinalMeters: 3000)))
+    }
 
     var body: some View {
         @Bindable var model = model
@@ -346,13 +352,13 @@ struct HomeView: View {
             model.mode = .afterglow
             followInWorld()
         } else {
-            withAnimation(.smooth(duration: 0.8)) { position = .userLocation(fallback: .automatic) }
+            withAnimation(.smooth(duration: 0.8)) { position = HomeView.followMe }
         }
     }
 
     private func recenter() {
         if model.walking { followInWorld(); return }
-        withAnimation(.smooth(duration: 0.8)) { position = .userLocation(fallback: .automatic) }
+        withAnimation(.smooth(duration: 0.8)) { position = HomeView.followMe }
     }
 
     private func followInWorld() {
