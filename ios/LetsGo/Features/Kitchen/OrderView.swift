@@ -7,6 +7,8 @@ struct OrderView: View {
     var kitchen: Kitchen
     var drop: Drop
     @Binding var bag: [UUID: Int]
+    /// Picked to start with: the slot a plan wants.
+    var preferredSlot: Date? = nil
 
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
@@ -38,6 +40,9 @@ struct OrderView: View {
             }
         }
         .presentationBackground(Palette.bg)
+        .onAppear {
+            if slot == nil, let preferredSlot, drop.slots.contains(preferredSlot) { slot = preferredSlot }
+        }
     }
 
     private var form: some View {

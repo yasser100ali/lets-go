@@ -7,11 +7,14 @@ import CoreLocation
 /// real listings day by day, home kitchens with a drop coming, and the city list.
 struct PlansView: View {
     @Environment(LocationService.self) private var location
+    @Environment(\.modelContext) private var context
     @Query(sort: \Gathering.start) private var gatherings: [Gathering]
     @Query private var kitchens: [Kitchen]
     @Query private var notes: [TasteNote]
     @Query private var stamps: [Stamp]
     @Query(sort: \Order.pickupAt) private var orders: [Order]
+    @Query(sort: \SavedPlan.day) private var plans: [SavedPlan]
+    @Query private var people: [Person]
 
     @State private var path = NavigationPath()
     @State private var day: Date?
@@ -27,6 +30,7 @@ struct PlansView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         header(all, soon: soon, now: now)
+                        planned(now: now)
                         yours(now: now)
                         pick(all, taste: taste, now: now)
                         soonStrip(soon, now: now)
@@ -49,6 +53,48 @@ struct PlansView: View {
             .navigationDestination(for: MyKitchenRoute.self) { _ in MyKitchenView() }
             .navigationDestination(for: CityListRoute.self) { _ in ListsView() }
             .navigationDestination(for: KitchensRoute.self) { _ in KitchensPage() }
+            .navigationDestination(for: SavedPlan.self) { PlanView(plan: $0) }
+        }
+    }
+
+    // MARK: Plans Wren made
+
+    @ViewBuilder
+    private func planned(now: Date) -> some View {
+        let today = Calendar.current.startOfDay(for: now)
+        let upcoming = plans.filter { $0.day >= today }
+        if !upcoming.isEmpty {
+            sectionHeader("Your plans", detail: "Wren does the logistics. You show up.")
+            VStack(spacing: 10) {
+                ForEach(upcoming) { p in
+                    let group = people.filter { p.friendIDs.contains($0.id) }.map(\.snapshot)
+                    Button { path.append(p) } label: {
+                        HStack(spacing: 12) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(p.dayLine).eyebrow(Palette.accentSoft)
+                                Text(p.title).font(.poster(24))
+                                Text(p.stops.map(\.title).joined(separator: " \u{2192} "))
+                                    .font(.system(size: 13))
+                                    .foregroundStyle(Palette.muted)
+                                    .lineLimit(1)
+                            }
+                            Spacer(minLength: 6)
+                            AvatarStack(friends: group, size: 26, includesYou: true, ground: Color(hex: 0x1A1822))
+                        }
+                        .foregroundStyle(Palette.ink)
+                        .padding(16)
+                        .card(radius: 22)
+                    }
+                    .buttonStyle(.plain)
+                    .contextMenu {
+                        Button(role: .destructive) {
+                            context.delete(p)
+                            Ledger.save(context, "delete plan")
+                        } label: { Label("Delete plan", systemImage: "trash") }
+                    }
+                }
+            }
+            .padding(.horizontal, 16)
         }
     }
 
