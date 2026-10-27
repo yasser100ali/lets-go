@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreLocation
 
 /// Wren's line on a glass sheet over the map: the one thing worth going to, why, and
 /// when to leave, with "I'm in" right there. "Not tonight" moves on to the next one.
@@ -6,6 +7,9 @@ import SwiftUI
 struct WrenCard: View {
     var picks: [Candidate]
     var now: Date
+    /// Your people tonight (`Crowd.resolve`), for who's going and who to walk in with.
+    var friends: [Friend] = []
+    var here: CLLocationCoordinate2D
     var busy: Bool
     var onOpen: (Candidate) -> Void
     var onJoin: (Candidate) -> Void
@@ -27,7 +31,9 @@ struct WrenCard: View {
                 .accessibilityAddTraits(.isButton)
             header
             if let top = picks.first {
-                line(HomeLine.sentence(for: top, now: now))
+                let going = Crowd.going(to: top, among: friends)
+                line(HomeLine.sentence(for: top, now: now, friends: going,
+                                       meet: MeetUp.best(here: here, friends: going, to: top, now: now)))
                     .onTapGesture { onOpen(top) }
                     .accessibilityAddTraits(.isButton)
                     .padding(.top, 10)
@@ -60,9 +66,13 @@ struct WrenCard: View {
                 .font(.system(size: 12, weight: .bold))
                 .tracking(1)
                 .foregroundStyle(Palette.accentSoft)
-            if picks.first?.isSample == true { SampleTag() }
+            if let top = picks.first, top.isSample || Crowd.going(to: top, among: friends).contains(where: { $0.isSample }) {
+                SampleTag()
+            }
             Spacer()
             if let top = picks.first, top.kind == .gathering {
+                AvatarStack(friends: Crowd.going(to: top, among: friends), size: 24, includesYou: top.isJoined)
+                    .animation(.snappy, value: top.isJoined)
                 Text(verbatim: count(top))
                     .font(.system(size: 13, weight: .semibold))
                     .monospacedDigit()

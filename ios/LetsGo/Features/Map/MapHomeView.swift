@@ -13,6 +13,7 @@ struct HomeView: View {
     @Query(sort: \Gathering.start) private var gatherings: [Gathering]
     @Query private var kitchens: [Kitchen]
     @Query private var notes: [TasteNote]
+    @Query private var people: [Person]
 
     @Environment(HomeModel.self) private var model
     @State private var position: MapCameraPosition = HomeView.followMe
@@ -42,20 +43,21 @@ struct HomeView: View {
             let at = signal && model.window == .now ? now.addingTimeInterval(model.ahead * 3600) : now
             let all = Nearby.candidates(gatherings: gatherings, kitchens: kitchens, from: location.center, now: at)
             let taste = Nearby.taste(notes: notes, gatherings: gatherings, kitchens: kitchens)
-            let shown = model.query.isEmpty ? model.visible(all, now: at, taste: taste) : Search.results(model.query, in: all, now: now)
+            let friends = tonight(all, taste: taste, now: at)
+            let shown = filtered(all, taste: taste, friends: friends, now: now, at: at)
             let top = signal ? Signal.top(shown) : []
             ZStack(alignment: .top) {
-                map(shown: shown, top: top, now: at, signal: signal)
+                map(shown: shown, top: top, friends: friends, now: at, signal: signal)
                 shade(signal: signal)
                 if model.walking { SkyBand(now: now).allowsHitTesting(false) }
                 VStack(alignment: .leading, spacing: 12) {
                     header(signal: signal, onNow: shown.filter { $0.start <= at }.count, now: now)
-                    if !model.walking { chips(signal: signal) }
+                    if !model.walking { chips(signal: signal, friendsOut: Crowd.mapped(friends, now: at).count) }
                 }
                 .padding(.top, 4)
             }
             .overlay(alignment: .bottom) {
-                bottom(signal: signal, top: top, shown: shown, now: now, at: at)
+                bottom(signal: signal, top: top, shown: shown, friends: friends, now: now, at: at)
             }
             .mapScope(mapScope)
             .task(id: top.map(\.id.uuidString).joined() + location.center.roundedKey) {
@@ -94,8 +96,19 @@ struct HomeView: View {
 
     // MARK: Bottom
 
+    /// Your people tonight: real friends where the server says, sample ones on the best picks.
+    private func tonight(_ all: [Candidate], taste: Taste, now: Date) -> [Friend] {
+        Crowd.resolve(people.map(\.snapshot), picks: Picks.picks(all, now: now, taste: taste, limit: 12), here: location.center, now: now)
+    }
+
+    private func filtered(_ all: [Candidate], taste: Taste, friends: [Friend], now: Date, at: Date) -> [Candidate] {
+        let shown = model.query.isEmpty ? model.visible(all, now: at, taste: taste) : Search.results(model.query, in: all, now: now)
+        guard model.friendsOnly else { return shown }
+        return shown.filter { !Crowd.going(to: $0, among: friends).isEmpty }
+    }
+
     /// Signal's panel or Wren's card, with the locate and walk buttons over it.
-    private func bottom(signal: Bool, top: [Candidate], shown: [Candidate], now: Date, at: Date) -> some View {
+    private func bottom(signal: Bool, top: [Candidate], shown: [Candidate], friends: [Friend], now: Date, at: Date) -> some View {
         @Bindable var model = model
         return VStack(alignment: .trailing, spacing: 10) {
             mapButtons
@@ -109,7 +122,8 @@ struct HomeView: View {
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                 } else {
                     WrenCard(
-                        picks: shown.filter { !skipped.contains($0.id) }, now: at, busy: joining,
+                        picks: shown.filter { !skipped.contains($0.id) }, now: at, friends: friends,
+                        here: location.center, busy: joining,
                         onOpen: { open($0) }, onJoin: { join($0) }, onSkip: { skip($0) },
                         onList: { model.showList() }, onHost: { hostingBlank = true }
                     )
@@ -123,7 +137,7 @@ struct HomeView: View {
 
     // MARK: Map
 
-    private func map(shown: [Candidate], top: [Candidate], now: Date, signal: Bool) -> some View {
+    private func map(shown: [Candidate], top: [Candidate], friends: [Friend], now: Date, signal: Bool) -> some View {
         let ranked = shown.prefix(4).map(\.id)
         let numbers = Dictionary(top.enumerated().map { ($0.element.id, $0.offset + 1) }, uniquingKeysWith: { a, _ in a })
         return Map(position: $position, scope: mapScope) {
@@ -151,6 +165,25 @@ struct HomeView: View {
                     .annotationTitles(.hidden)
             } else {
                 UserAnnotation()
+            }
+            if !model.walking {
+                ForEach(Crowd.mapped(friends, now: now)) { f in
+                    if let at = f.coordinate {
+                        Annotation(f.name, coordinate: at, anchor: .center) {
+                            if signal {
+                                Text(f.initial)
+                                    .font(.system(size: 9, weight: .bold))
+                                    .foregroundStyle(SignalPalette.ink)
+                                    .frame(width: 20, height: 20)
+                                    .background(SignalPalette.bg, in: .circle)
+                                    .overlay(Circle().stroke(SignalPalette.ink, lineWidth: 1.5))
+                            } else {
+                                FriendPin(friend: f, now: now)
+                            }
+                        }
+                        .annotationTitles(.hidden)
+                    }
+                }
             }
             ForEach(shown) { c in
                 Annotation(c.title, coordinate: .init(latitude: c.lat, longitude: c.lon), anchor: model.walking ? .bottom : .center) {
@@ -266,7 +299,7 @@ struct HomeView: View {
         return parts.joined(separator: " · ")
     }
 
-    private func chips(signal: Bool) -> some View {
+    private func chips(signal: Bool, friendsOut: Int) -> some View {
         @Bindable var model = model
         return ScrollView(.horizontal) {
             HStack(spacing: 8) {
@@ -282,6 +315,9 @@ struct HomeView: View {
                 .buttonStyle(.plain)
                 .accessibilityHint("Just the three things worth leaving for, and when to leave")
                 .accessibilityAddTraits(signal ? .isSelected : [])
+                if friendsOut > 0 || model.friendsOnly {
+                    FilterChip(title: "Friends \u{00B7} \(friendsOut)", on: model.friendsOnly) { model.friendsOnly.toggle() }
+                }
                 ForEach(TimeWindow.allCases) { w in
                     FilterChip(title: w.label, on: model.window == w) {
                         model.window = w

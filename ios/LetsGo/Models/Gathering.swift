@@ -33,6 +33,10 @@ final class Gathering {
     var sourceURL: String?
     var priceText: String = ""
     var address: String = ""
+    /// Friends who are going, from the server (`Person.id`s, which for real friends are their server ids).
+    var friendIDs: [UUID] = []
+    /// The friend who asked you along, if one did.
+    var invitedBy: String = ""
 
     var isListing: Bool { listingKey != nil }
 

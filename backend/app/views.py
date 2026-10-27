@@ -7,14 +7,19 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Drop, Gathering, Kitchen, Order, Review
-from app.schemas import DropOut, GatheringOut, KitchenOut, OrderLineOut, OrderOut
+from app.schemas import DropOut, GatheringOut, KitchenOut, OrderLineOut, OrderOut, PersonOut
 
 
 def now() -> datetime:
     return datetime.now(UTC)
 
 
-def gathering_out(g: Gathering, viewer_id: uuid.UUID, distance: float | None = None) -> GatheringOut:
+def gathering_out(
+    g: Gathering,
+    viewer_id: uuid.UUID,
+    distance: float | None = None,
+    friend_ids: set[uuid.UUID] | frozenset[uuid.UUID] = frozenset(),
+) -> GatheringOut:
     mine = next((m for m in g.members if m.user_id == viewer_id), None)
     return GatheringOut(
         id=g.id,
@@ -35,7 +40,17 @@ def gathering_out(g: Gathering, viewer_id: uuid.UUID, distance: float | None = N
         is_joined=mine is not None,
         checked_in_at=mine.checked_in_at if mine else None,
         distance_m=distance,
+        friends_going=friends_going(g, friend_ids),
     )
+
+
+def friends_going(g: Gathering, friend_ids: set[uuid.UUID] | frozenset[uuid.UUID]) -> list[PersonOut]:
+    # Filter before touching anything else on a member: a row added this request has nothing loaded.
+    friends = [m for m in g.members if m.user_id in friend_ids]
+    return [
+        PersonOut(id=m.user_id, display_name=m.user.display_name)
+        for m in sorted(friends, key=lambda m: m.joined_at)
+    ]
 
 
 def drop_out(d: Drop) -> DropOut:

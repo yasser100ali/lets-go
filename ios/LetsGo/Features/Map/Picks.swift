@@ -30,6 +30,8 @@ struct Candidate: Identifiable, Hashable, Sendable {
     var priceText: String = ""
     var lat: Double = 0
     var lon: Double = 0
+    /// Friends the server says are going (`Person.id`s).
+    var friendIDs: [UUID] = []
     var isFree: Bool { kind == .gathering && (priceText.isEmpty || priceText.lowercased().hasPrefix("free")) }
 }
 
@@ -42,7 +44,7 @@ extension Candidate {
             place: g.placeName,
             searchText: [g.title, g.details, g.placeName, g.address, g.hostName, g.bring, g.priceText, g.category.label, g.category.noun]
                 .joined(separator: " ").lowercased(),
-            priceText: g.priceText, lat: g.latitude, lon: g.longitude
+            priceText: g.priceText, lat: g.latitude, lon: g.longitude, friendIDs: g.friendIDs
         )
     }
 

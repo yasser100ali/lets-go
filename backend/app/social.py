@@ -1,0 +1,59 @@
+"""Who your friends are, and what of theirs you're allowed to see."""
+
+import uuid
+from datetime import timedelta
+
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.models import Friendship, Gathering, GatheringMember
+from app.schemas import OutNow
+from app.views import now
+
+# How soon a joined gathering has to start for a friend to count as heading there.
+HEADING_WINDOW = timedelta(minutes=90)
+
+
+async def friend_ids(session: AsyncSession, user_id: uuid.UUID) -> set[uuid.UUID]:
+    rows = await session.scalars(select(Friendship.friend_id).where(Friendship.user_id == user_id))
+    return set(rows)
+
+
+async def are_friends(session: AsyncSession, a: uuid.UUID, b: uuid.UUID) -> bool:
+    return await session.get(Friendship, (a, b)) is not None
+
+
+async def out_now(session: AsyncSession, ids: set[uuid.UUID]) -> dict[uuid.UUID, OutNow]:
+    """For each friend: the gathering they're checked in to, or else the one they joined that starts
+    soonest within the next 90 minutes. Only gatherings they joined count; nobody is tracked."""
+    if not ids:
+        return {}
+    t = now()
+    rows = await session.execute(
+        select(GatheringMember, Gathering)
+        .join(Gathering, Gathering.id == GatheringMember.gathering_id)
+        .where(
+            GatheringMember.user_id.in_(ids),
+            Gathering.cancelled_at.is_(None),
+            Gathering.ends_at > t,
+            Gathering.starts_at < t + HEADING_WINDOW,
+        )
+        .order_by(Gathering.starts_at)
+    )
+    found: dict[uuid.UUID, OutNow] = {}
+    for member, g in rows.unique():
+        there = member.checked_in_at is not None and g.starts_at - timedelta(minutes=30) <= t
+        current = found.get(member.user_id)
+        if current is not None and (current.state == "there" or not there):
+            continue
+        found[member.user_id] = OutNow(
+            gathering_id=g.id,
+            title=g.title,
+            place_name=g.place_name,
+            starts_at=g.starts_at,
+            ends_at=g.ends_at,
+            state="there" if there else "heading",
+            lat=g.lat,
+            lon=g.lon,
+        )
+    return found

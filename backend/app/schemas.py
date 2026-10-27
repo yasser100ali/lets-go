@@ -73,6 +73,8 @@ class GatheringOut(Out):
     is_joined: bool
     checked_in_at: datetime | None
     distance_m: float | None = None
+    # Which of your friends are in. Never anyone else's names.
+    friends_going: list["PersonOut"] = []
 
 
 class CheckIn(BaseModel):
@@ -272,3 +274,94 @@ class ListingOut(ListingIn):
 
 class Listings(BaseModel):
     listings: list[ListingOut]
+
+
+# People
+
+
+class PersonOut(BaseModel):
+    id: uuid.UUID
+    display_name: str
+
+
+class FriendCodeOut(BaseModel):
+    code: str
+    expires_at: datetime
+
+
+class FriendCodeAccept(BaseModel):
+    code: str = Field(min_length=4, max_length=20)
+
+
+class PorchLightIn(BaseModel):
+    hours: float = Field(default=2, gt=0, le=4)
+    note: str = Field(default="", max_length=80)
+    lat: float | None = Field(default=None, ge=-90, le=90)
+    lon: float | None = Field(default=None, ge=-180, le=180)
+
+
+class PorchLightOut(BaseModel):
+    on_until: datetime
+    note: str
+    lat: float | None = None
+    lon: float | None = None
+    distance_m: float | None = None
+
+
+class OutNow(BaseModel):
+    """Where a friend is tonight, from what they joined: there (checked in) or heading (starts soon)."""
+
+    gathering_id: uuid.UUID
+    title: str
+    place_name: str
+    starts_at: datetime
+    ends_at: datetime
+    state: Literal["there", "heading"]
+    lat: float
+    lon: float
+
+
+class FriendOut(BaseModel):
+    id: uuid.UUID
+    display_name: str
+    porch_light: PorchLightOut | None = None
+    out: OutNow | None = None
+    # When they last waved at you, within the last two hours.
+    waved_at: datetime | None = None
+
+
+class CrewCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=40)
+    member_ids: list[uuid.UUID] = Field(default_factory=list, max_length=30)
+
+
+class CrewOut(BaseModel):
+    id: uuid.UUID
+    name: str
+    is_mine: bool
+    members: list[PersonOut]
+
+
+class InviteFriends(BaseModel):
+    user_ids: list[uuid.UUID] = Field(min_length=1, max_length=30)
+
+
+class Invited(BaseModel):
+    invited: int
+
+
+class GatheringInviteOut(BaseModel):
+    gathering: GatheringOut
+    sender: PersonOut
+    created_at: datetime
+
+
+class People(BaseModel):
+    porch_light: PorchLightOut | None
+    friends: list[FriendOut]
+    crews: list[CrewOut]
+    invites: list[GatheringInviteOut]
+
+
+# GatheringOut names PersonOut before it's defined.
+GatheringOut.model_rebuild()

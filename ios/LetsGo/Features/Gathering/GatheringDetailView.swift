@@ -8,7 +8,11 @@ struct GatheringDetailView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     @Query private var allGatherings: [Gathering]
+    @Query private var kitchens: [Kitchen]
+    @Query private var notes: [TasteNote]
+    @Query private var people: [Person]
     @State private var earned: Stamp?
+    @State private var inviting = false
     @State private var confirmDelete = false
     @State private var busy = false
     @State private var problem: String?
@@ -24,7 +28,7 @@ struct GatheringDetailView: View {
                     VStack(alignment: .leading, spacing: 14) {
                         titleBlock(now: now)
                         InfoStrip(items: facts(now: now))
-                        if !gathering.isListing { capacityCard }
+                        whosIn(now: now)
                         if let note = tipNote(now: now) { TipNote(text: note) }
                         if !gathering.details.isEmpty {
                             Text(gathering.details).font(.system(size: 15)).foregroundStyle(Palette.ink.opacity(0.9))
@@ -50,6 +54,7 @@ struct GatheringDetailView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $earned) { StampEarnedView(stamp: $0) }
+        .sheet(isPresented: $inviting) { InviteFriendsView(gathering: gathering) }
         .errorAlert($problem)
         .confirmationDialog("Cancel \(gathering.title)?", isPresented: $confirmDelete, titleVisibility: .visible) {
             Button("Cancel it", role: .destructive) {
@@ -86,27 +91,22 @@ struct GatheringDetailView: View {
         ]
     }
 
-    private var capacityCard: some View {
-        VStack(alignment: .leading, spacing: 9) {
-            HStack {
-                Text(gathering.capacity > 0 ? "\(gathering.going) of \(gathering.capacity) in" : "\(gathering.going) going")
-                    .font(.system(size: 15, weight: .bold))
-                Spacer()
-                if let left = gathering.spotsLeft {
-                    Text(left == 0 ? "Full" : "\(left) open")
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(left == 0 ? Palette.muted : Palette.live)
-                }
-            }
-            if gathering.capacity > 0 {
-                SeatsBar(taken: gathering.going, capacity: gathering.capacity, color: Palette.ink)
-            }
-            if !gathering.bring.isEmpty {
-                Text("Bring: \(gathering.bring)").font(.system(size: 13)).foregroundStyle(Palette.muted)
-            }
+    /// Seats and friends for things with people to count; for a listing, just your friends.
+    @ViewBuilder
+    private func whosIn(now: Date) -> some View {
+        let all = Nearby.candidates(gatherings: allGatherings, kitchens: kitchens, from: location.center, now: now)
+        let taste = Nearby.taste(notes: notes, gatherings: allGatherings, kitchens: kitchens)
+        let friends = Crowd.resolve(people.map(\.snapshot), picks: Picks.picks(all, now: now, taste: taste, limit: 12),
+                                    here: location.center, now: now)
+        let me = Candidate(gathering, from: location.center)
+        let going = Crowd.going(to: me, among: friends)
+        if !gathering.isListing || !going.isEmpty {
+            WhosInCard(
+                gathering: gathering, friends: going,
+                meet: gathering.isJoined || gathering.isLive(at: now) ? nil : MeetUp.best(here: location.center, friends: going, to: me, now: now),
+                now: now
+            )
         }
-        .padding(14)
-        .card()
     }
 
     /// "Free" → "Free"; "$10–20" → "$10–20"; long text gets cut to its first part.
@@ -217,7 +217,13 @@ struct GatheringDetailView: View {
                 .buttonStyle(PrimaryButtonStyle())
                 .disabled(gathering.isFull)
             }
+            if gathering.checkedInAt == nil, !people.isEmpty {
+                Button("Bring someone") { inviting = true }
+                    .buttonStyle(SecondaryButtonStyle())
+                    .fixedSize()
+            }
         }
+        .sensoryFeedback(.success, trigger: gathering.isJoined)
         .disabled(busy)
         .padding(.horizontal, 18)
         .padding(.top, 10)

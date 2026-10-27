@@ -17,6 +17,8 @@ final class HomeModel {
     var ahead: Double = 0
     var genre: Genre?
     var freeOnly = false
+    /// Only things your friends are going to.
+    var friendsOnly = false
     var query = ""
     var listOpen = false
     var detent: PresentationDetent = HomeModel.half
@@ -29,6 +31,8 @@ final class HomeModel {
     var focus: Focus?
     /// The Dostoevsky splash: on first launch, and again from Passport.
     var showQuote = false
+    /// The add-a-friend sheet on People, opened from the splash's "A friend sent me an invite".
+    var addingFriend = false
 
     struct Focus: Equatable {
         var id = UUID()
@@ -88,7 +92,7 @@ final class HomeModel {
 }
 
 enum AppTab: Hashable {
-    case map, plans, passport, wren
+    case map, people, plans, passport, wren
 }
 
 enum MapMode: Hashable {

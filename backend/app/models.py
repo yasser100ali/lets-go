@@ -79,6 +79,7 @@ class GatheringMember(Base):
     checked_in_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     gathering: Mapped[Gathering] = relationship(back_populates="members")
+    user: Mapped[User] = relationship(lazy="joined", innerjoin=True)
 
 
 class Kitchen(Base):
@@ -230,3 +231,92 @@ class Listing(Base):
     status: Mapped[str] = mapped_column(String(8), nullable=False, default="live")
     last_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     created_at: Mapped[datetime] = _created()
+
+
+# People: friends, crews, porch lights, and who's invited to what.
+
+
+class Friendship(Base):
+    """One row each way, so "my friends" is a single lookup. Made by accepting a friend code."""
+
+    __tablename__ = "friendships"
+    __table_args__ = (CheckConstraint("user_id <> friend_id", name="friendship_not_self"),)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    friend_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    created_at: Mapped[datetime] = _created()
+
+    friend: Mapped[User] = relationship(foreign_keys=[friend_id], lazy="joined", innerjoin=True)
+
+
+class FriendCode(Base):
+    """A one-use code you hand a friend in person or in a message. Accepting it makes you friends."""
+
+    __tablename__ = "friend_codes"
+    id: Mapped[uuid.UUID] = _uuid()
+    code: Mapped[str] = mapped_column(String(12), nullable=False, unique=True)
+    from_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    used_by_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"))
+    used_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = _created()
+
+    sender: Mapped[User] = relationship(foreign_keys=[from_id], lazy="joined", innerjoin=True)
+
+
+class PorchLight(Base):
+    """ "Up for something" for a couple of hours, seen only by friends. Where is optional."""
+
+    __tablename__ = "porch_lights"
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    on_until: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    note: Mapped[str] = mapped_column(String(80), nullable=False, default="")
+    lat: Mapped[float | None] = mapped_column(Float)
+    lon: Mapped[float | None] = mapped_column(Float)
+    created_at: Mapped[datetime] = _created()
+
+
+class Wave(Base):
+    """A wave at a friend whose porch light is on. They see it for two hours."""
+
+    __tablename__ = "waves"
+    id: Mapped[uuid.UUID] = _uuid()
+    from_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    to_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    created_at: Mapped[datetime] = _created()
+
+
+class Crew(Base):
+    """A named group of friends you go out with: "Tuesday trivia", "the run lot"."""
+
+    __tablename__ = "crews"
+    id: Mapped[uuid.UUID] = _uuid()
+    owner_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    name: Mapped[str] = mapped_column(String(40), nullable=False)
+    created_at: Mapped[datetime] = _created()
+
+    members: Mapped[list["CrewMember"]] = relationship(cascade="all, delete-orphan", lazy="selectin")
+
+
+class CrewMember(Base):
+    __tablename__ = "crew_members"
+    crew_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("crews.id", ondelete="CASCADE"), primary_key=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    added_at: Mapped[datetime] = _created()
+
+    user: Mapped[User] = relationship(lazy="joined", innerjoin=True)
+
+
+class GatheringInvite(Base):
+    """A friend asking you along. One per person per gathering."""
+
+    __tablename__ = "gathering_invites"
+    gathering_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("gatherings.id", ondelete="CASCADE"), primary_key=True
+    )
+    to_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    from_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    created_at: Mapped[datetime] = _created()
+
+    sender: Mapped[User] = relationship(foreign_keys=[from_id], lazy="joined", innerjoin=True)
