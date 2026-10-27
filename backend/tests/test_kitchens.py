@@ -212,3 +212,23 @@ async def test_removed_item_leaves_menu_but_not_old_orders(client):
     assert me["menu"] == []
     orders = (await client.get("/v1/orders", headers=you)).json()
     assert orders[0]["lines"][0]["name"] == "Margherita"
+
+
+async def test_the_porch_table_names_only_friends(client):
+    from tests.test_people import befriend
+
+    dana, maya, stranger, you = (
+        await make_user(client, "Dana"),
+        await make_user(client, "Maya"),
+        await make_user(client, "Stranger"),
+        await make_user(client, "You"),
+    )
+    k, item = await open_kitchen(client, dana)
+    drop = await post_drop(client, dana)
+    await befriend(client, maya, you)
+    for who, slot in ((maya, 1), (stranger, 2)):
+        r = await client.post("/v1/orders", json=order_body(drop, item, slot=slot, porch=True), headers=who)
+        assert r.status_code == 201, r.text
+    table = (await client.get(f"/v1/kitchens/{k['id']}", headers=you)).json()["table"]
+    assert table["seats"] == 8 and table["taken"] == 2
+    assert [f["display_name"] for f in table["friends"]] == ["Maya"]

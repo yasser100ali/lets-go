@@ -8,6 +8,8 @@ struct MorningAfterView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     @Query private var stamps: [Stamp]
+    @Query(filter: #Predicate<Intro> { !$0.dismissed && !$0.saidHi }) private var intros: [Intro]
+    @State private var openIntro: Intro?
     @State private var grown = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -39,6 +41,13 @@ struct MorningAfterView: View {
                 }
                 ribbon(end: end, out: out).padding(.top, 22)
                 tiles(out: out).padding(.top, 8)
+                if let intro = intros.first {
+                    ThirdTimeRow(intro: intro) { openIntro = intro }
+                        .environment(\.colorScheme, .dark)
+                        .padding(14)
+                        .background(ink, in: .rect(cornerRadius: 24))
+                        .padding(.top, 8)
+                }
                 Text("\(Text("\u{2018}Live more.\u{2019}").italic().foregroundStyle(ember)) Same time next week?")
                     .font(.serif(21))
                     .foregroundStyle(Color(hex: 0x3D3A46))
@@ -53,6 +62,7 @@ struct MorningAfterView: View {
         .scrollIndicators(.hidden)
         .background(paper.ignoresSafeArea())
         .preferredColorScheme(.light)
+        .sheet(item: $openIntro) { ThirdTimeView(intro: $0).presentationBackground(Palette.bg).preferredColorScheme(.dark) }
         .onAppear {
             if reduceMotion { grown = true } else { withAnimation(.timingCurve(0.3, 0.6, 0.2, 1, duration: 1.6).delay(0.2)) { grown = true } }
         }

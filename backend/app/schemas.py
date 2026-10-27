@@ -168,11 +168,27 @@ class KitchenOut(Out):
     distance_m: float | None = None
 
 
+class TableFriend(BaseModel):
+    id: uuid.UUID
+    display_name: str
+    pickup_at: datetime
+
+
+class TableOut(BaseModel):
+    """The shared porch table for the next drop: seats, how many have a porch seat, and which of your
+    friends are sitting down when. First come; nothing is reserved to a chair."""
+
+    seats: int
+    taken: int
+    friends: list[TableFriend]
+
+
 class KitchenDetail(KitchenOut):
     menu: list[MenuItemOut]
     reviews: list[ReviewOut]
     # Present only for the owner and for people with an order here.
     pickup_note: str | None
+    table: TableOut | None = None
 
 
 class Nearby(BaseModel):
@@ -356,11 +372,29 @@ class GatheringInviteOut(BaseModel):
     created_at: datetime
 
 
+class SharedNight(BaseModel):
+    title: str
+    starts_at: datetime
+
+
+class IntroOut(BaseModel):
+    """Someone you keep checking in alongside. Seen only by the two of you, each on your own."""
+
+    person: PersonOut
+    together: list[SharedNight]
+    said_hi: bool
+
+
+class IntroResult(BaseModel):
+    connected: bool
+
+
 class People(BaseModel):
     porch_light: PorchLightOut | None
     friends: list[FriendOut]
     crews: list[CrewOut]
     invites: list[GatheringInviteOut]
+    intros: list[IntroOut] = []
 
 
 # GatheringOut names PersonOut before it's defined.

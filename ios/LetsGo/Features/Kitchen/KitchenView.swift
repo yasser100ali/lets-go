@@ -6,8 +6,11 @@ struct KitchenView: View {
     @Bindable var kitchen: Kitchen
     @Environment(LocationService.self) private var location
     @Environment(\.modelContext) private var context
+    @Query private var people: [Person]
     @State private var bag: [UUID: Int] = [:]
     @State private var ordering = false
+    /// Sitting down with a friend: the slot and the porch, picked for you.
+    @State private var sitAt: Date?
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: 30)) { timeline in
@@ -15,13 +18,22 @@ struct KitchenView: View {
             let drop = kitchen.nextDrop(after: now)
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
-                    PhotoHero(kitchen: kitchen, height: 170, radius: 20)
-                        .padding(.horizontal, 16)
-                        .padding(.top, 4)
+                    if kitchen.porchTables > 0 {
+                        GarageArt(sign: "\(kitchen.cuisine)\ntonight")
+                            .frame(height: 220)
+                            .clipShape(.rect(cornerRadius: 20))
+                            .padding(.horizontal, 16)
+                            .padding(.top, 4)
+                    } else {
+                        PhotoHero(kitchen: kitchen, height: 170, radius: 20)
+                            .padding(.horizontal, 16)
+                            .padding(.top, 4)
+                    }
                     VStack(alignment: .leading, spacing: 18) {
                         titleBlock
                         InfoStrip(items: facts(drop: drop, now: now))
                         if let drop { dropLine(drop, now: now) }
+                        if let table = table(drop) { SharedTableCard(table: table, name: kitchen.porchTables > 0 ? "The porch table" : "The table") }
                         menu(drop: drop)
                         reviews
                         if kitchen.isSample { SampleNote() }
@@ -35,15 +47,27 @@ struct KitchenView: View {
             .background(Palette.bg)
             .safeAreaInset(edge: .bottom) {
                 if let drop, !drop.isSoldOut, !kitchen.isMine {
-                    Button(bagCount > 0 ? "Reserve \(bagCount) · \(Pricing.format(bagSubtotal))" : "Add something to reserve") { ordering = true }
-                        .buttonStyle(PrimaryButtonStyle())
-                        .disabled(bagCount == 0)
-                        .padding(.horizontal, 18)
-                        .padding(.bottom, 6)
+                    HStack(spacing: 10) {
+                        if let seat = table(drop)?.friends.first, table(drop)?.open ?? 0 > 0, seat.at > now {
+                            Button("Sit with \(seat.friend.firstName) \u{00B7} \(NightPin.hour(seat.at))") { sit(at: seat.at, drop: drop) }
+                                .buttonStyle(PrimaryButtonStyle())
+                            Button("Pick up") { ordering = true }
+                                .buttonStyle(SecondaryButtonStyle())
+                                .disabled(bagCount == 0)
+                        } else {
+                            Button(bagCount > 0 ? "Reserve \(bagCount) · \(Pricing.format(bagSubtotal))" : "Add something to reserve") { ordering = true }
+                                .buttonStyle(PrimaryButtonStyle())
+                                .disabled(bagCount == 0)
+                        }
+                    }
+                    .padding(.horizontal, 18)
+                    .padding(.bottom, 6)
                 }
             }
-            .sheet(isPresented: $ordering) {
-                if let drop { OrderView(kitchen: kitchen, drop: drop, bag: $bag) }
+            .sheet(isPresented: $ordering, onDismiss: { sitAt = nil }) {
+                if let drop {
+                    OrderView(kitchen: kitchen, drop: drop, bag: $bag, preferredSlot: sitAt.flatMap { snap($0, in: drop) }, preferPorch: sitAt != nil)
+                }
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -139,6 +163,26 @@ struct KitchenView: View {
     }
 
     private var bagCount: Int { bag.values.reduce(0, +) }
+
+    private func table(_ drop: Drop?) -> SharedTable.Table? {
+        SharedTable.table(
+            seats: kitchen.porchTables, serverTaken: kitchen.tableTaken, serverFriends: kitchen.tableFriends,
+            people: people.map(\.snapshot), kitchenName: kitchen.name, isSample: kitchen.isSample,
+            drop: drop.map { (start: $0.start, end: $0.end) }
+        )
+    }
+
+    /// Sit down with a friend: one of the first thing on the menu if the bag's empty, their slot, the porch.
+    private func sit(at: Date, drop: Drop) {
+        if bagCount == 0, let first = kitchen.sortedMenu.first { bag = [first.id: 1] }
+        sitAt = at
+        ordering = true
+    }
+
+    /// The pickup slot on the drop's grid at or just before a time.
+    private func snap(_ at: Date, in drop: Drop) -> Date? {
+        drop.slots.last { $0 <= at } ?? drop.slots.first
+    }
 
     private var bagSubtotal: Int {
         kitchen.menu.reduce(0) { $0 + $1.priceCents * (bag[$1.id] ?? 0) }

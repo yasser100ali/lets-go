@@ -263,6 +263,11 @@ enum Sync {
         k.baseReviewCount = max(0, dto.reviewCount - k.reviews.count)
         k.baseRatingTotal = max(0, (dto.rating ?? 0) * Double(dto.reviewCount) - Double(localStars))
         if let note = dto.pickupNote { k.pickupNote = note }
+        if let table = dto.table {
+            k.tableSeats = table.seats
+            k.tableTaken = table.taken
+            k.tableFriends = table.friends.map { TableSeat(personID: $0.id, name: $0.displayName, at: $0.pickupAt) }
+        }
         if let reviews = dto.reviews {
             k.sampleReviews = reviews.map {
                 SampleReview(stars: $0.stars, text: $0.text, author: $0.authorName,

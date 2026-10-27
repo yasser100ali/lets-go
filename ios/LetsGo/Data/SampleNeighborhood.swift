@@ -13,7 +13,7 @@ enum SampleNeighborhood {
     private static let seededAtKey = "sample.seededAt"
     private static let versionKey = "sample.version"
     /// Bump when the seed content changes so phones reseed.
-    private static let version = 4
+    private static let version = 5
     static let enabledKey = "sample.enabled"
     private static let log = Logger(subsystem: "com.yasser100ali.letsgo", category: "seed")
     private static var seeding = false
@@ -45,6 +45,7 @@ enum SampleNeighborhood {
             try context.delete(model: Gathering.self, where: #Predicate { $0.isSample })
             try context.delete(model: Person.self, where: #Predicate { $0.isSample })
             try context.delete(model: Crew.self, where: #Predicate { $0.isSample })
+            try context.delete(model: Intro.self, where: #Predicate { $0.isSample })
             // Cascade rules only run for object deletes, so delete sample kitchens one by one.
             try context.fetch(FetchDescriptor<Kitchen>(predicate: #Predicate { $0.isSample })).forEach { context.delete($0) }
         } catch {
@@ -165,9 +166,22 @@ enum SampleNeighborhood {
         let flat = c.offset(east: -420, north: 260)
         omar.latitude = flat.latitude
         omar.longitude = flat.longitude
-        let ben = person("Ben", "home", free: 18)
         for name in ["Luc\u{00ED}a", "Ana", "Leo"] { _ = person(name, "home", free: nil) }
-        context.insert(Crew(name: "Tuesday trivia", memberIDs: [maya.id, theo.id, ben.id], isSample: true))
+        context.insert(Crew(name: "Tuesday trivia", memberIDs: [maya.id, theo.id], isSample: true))
+        // Third time's a friend: Ben, who hosts trivia, at the same table three Tuesdays running.
+        let cal = Calendar.current
+        let tuesdays: [Date] = (1...3).compactMap { weeks in
+            let back = cal.date(byAdding: .day, value: -7 * weeks, to: now) ?? now
+            let day = cal.dateComponents([.weekday], from: back).weekday ?? 3
+            let toTuesday = (day - 3 + 7) % 7
+            let tuesday = cal.date(byAdding: .day, value: -toTuesday, to: back) ?? back
+            return cal.date(bySettingHour: 20, minute: 0, second: 0, of: tuesday)
+        }
+        context.insert(Intro(
+            id: UUID(), name: "Ben",
+            together: tuesdays.reversed().map { SharedNight(title: "Trivia at The Dubliner", startsAt: $0) },
+            isSample: true
+        ))
     }
 
     // MARK: Building blocks

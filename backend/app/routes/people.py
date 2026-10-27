@@ -22,6 +22,7 @@ from app.models import (
     Friendship,
     Gathering,
     GatheringInvite,
+    Intro,
     PorchLight,
     User,
     Wave,
@@ -33,12 +34,15 @@ from app.schemas import (
     FriendCodeOut,
     FriendOut,
     GatheringInviteOut,
+    IntroOut,
+    IntroResult,
     People,
     PersonOut,
     PorchLightIn,
     PorchLightOut,
+    SharedNight,
 )
-from app.social import are_friends, friend_ids, out_now
+from app.social import INTRO_AFTER, are_friends, checked_in_with, friend_ids, out_now
 from app.views import gathering_out, now
 
 router = APIRouter(prefix="/v1", tags=["people"])
@@ -206,7 +210,77 @@ async def people(
         friends=friends,
         crews=crews,
         invites=invites,
+        intros=await _intros(session, user.id, ids),
     )
+
+
+async def _intros(session: AsyncSession, me: uuid.UUID, friends: set[uuid.UUID]) -> list[IntroOut]:
+    together = {
+        other: nights
+        for other, nights in (await checked_in_with(session, me)).items()
+        if len(nights) >= INTRO_AFTER and other not in friends
+    }
+    if not together:
+        return []
+    mine = {i.other_id: i for i in await session.scalars(select(Intro).where(Intro.user_id == me))}
+    names = {u.id: u.display_name for u in await session.scalars(select(User).where(User.id.in_(together)))}
+    out = []
+    for other, nights in together.items():
+        intro = mine.get(other)
+        if intro is not None and intro.declined_at is not None:
+            continue
+        out.append(
+            IntroOut(
+                person=PersonOut(id=other, display_name=names.get(other, "Someone")),
+                together=[SharedNight(title=t, starts_at=at) for t, at in nights[-5:]],
+                said_hi=intro is not None and intro.said_hi_at is not None,
+            )
+        )
+    return sorted(out, key=lambda i: -len(i.together))
+
+
+async def _my_intro(session: AsyncSession, me: uuid.UUID, other: uuid.UUID) -> Intro:
+    if len((await checked_in_with(session, me)).get(other, [])) < INTRO_AFTER:
+        raise HTTPException(404, "Not yet. Three real check-ins together first.")
+    intro = await session.get(Intro, (me, other))
+    if intro is None:
+        intro = Intro(user_id=me, other_id=other)
+        session.add(intro)
+    return intro
+
+
+@router.post("/intros/{other_id}/hi", response_model=IntroResult)
+async def say_hi(
+    other_id: uuid.UUID, user: User = Depends(current_user), session: AsyncSession = Depends(get_session)
+) -> IntroResult:
+    """Say hi. If they already did, you're friends now; if not, they hear nothing until they do."""
+    if await are_friends(session, user.id, other_id):
+        return IntroResult(connected=True)
+    intro = await _my_intro(session, user.id, other_id)
+    intro.said_hi_at = intro.said_hi_at or now()
+    intro.declined_at = None
+    theirs = await session.get(Intro, (other_id, user.id))
+    connected = theirs is not None and theirs.said_hi_at is not None and theirs.declined_at is None
+    if connected:
+        session.add_all(
+            [
+                Friendship(user_id=user.id, friend_id=other_id),
+                Friendship(user_id=other_id, friend_id=user.id),
+            ]
+        )
+    await session.commit()
+    return IntroResult(connected=connected)
+
+
+@router.post("/intros/{other_id}/not-now", status_code=204)
+async def not_now(
+    other_id: uuid.UUID, user: User = Depends(current_user), session: AsyncSession = Depends(get_session)
+) -> Response:
+    intro = await _my_intro(session, user.id, other_id)
+    intro.declined_at = now()
+    intro.said_hi_at = None
+    await session.commit()
+    return Response(status_code=204)
 
 
 # Porch light

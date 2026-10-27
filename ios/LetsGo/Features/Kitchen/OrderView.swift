@@ -9,6 +9,8 @@ struct OrderView: View {
     @Binding var bag: [UUID: Int]
     /// Picked to start with: the slot a plan wants.
     var preferredSlot: Date? = nil
+    /// Start with "eat on the porch" on: sitting down at the shared table.
+    var preferPorch = false
 
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
@@ -42,6 +44,7 @@ struct OrderView: View {
         .presentationBackground(Palette.bg)
         .onAppear {
             if slot == nil, let preferredSlot, drop.slots.contains(preferredSlot) { slot = preferredSlot }
+            if preferPorch, kitchen.porchTables > 0 { porch = true }
         }
     }
 

@@ -194,3 +194,71 @@ async def test_crews_are_made_of_friends(client):
     assert len((await client.get("/v1/people", headers=you)).json()["crews"][0]["members"]) == 2
     assert (await client.delete(f"/v1/crews/{crew['id']}", headers=you)).status_code == 204
     assert (await client.get("/v1/people", headers=theo)).json()["crews"] == []
+
+
+# Third time's a friend
+
+
+async def check_in_together(client, host, people, n):
+    """n gatherings, all of `people` checked in to each."""
+    for i in range(n):
+        g = await host_game(client, host, title=f"Trivia {i}", starts_at=at(5), capacity=0)
+        for p in people:
+            r = await client.post(
+                f"/v1/gatherings/{g['id']}/check-in", json={"lat": g["lat"], "lon": g["lon"]}, headers=p
+            )
+            assert r.status_code == 200, r.text
+
+
+async def test_three_check_ins_together_offer_an_intro(client):
+    sam, you, ben = (
+        await make_user(client, "Sam"),
+        await make_user(client, "You"),
+        await make_user(client, "Ben"),
+    )
+    await check_in_together(client, sam, [you, ben], 2)
+    assert (await client.get("/v1/people", headers=you)).json()["intros"] == []
+    ben_id = await me_id(client, ben)
+    assert (await client.post(f"/v1/intros/{ben_id}/hi", headers=you)).status_code == 404
+
+    await check_in_together(client, sam, [you, ben], 1)
+    intros = (await client.get("/v1/people", headers=you)).json()["intros"]
+    assert [i["person"]["display_name"] for i in intros] == ["Ben"]
+    assert len(intros[0]["together"]) == 3 and not intros[0]["said_hi"]
+
+
+async def test_both_saying_hi_makes_friends_and_one_tells_nothing(client):
+    sam, you, ben = (
+        await make_user(client, "Sam"),
+        await make_user(client, "You"),
+        await make_user(client, "Ben"),
+    )
+    await check_in_together(client, sam, [you, ben], 3)
+    you_id, ben_id = await me_id(client, you), await me_id(client, ben)
+
+    r = await client.post(f"/v1/intros/{ben_id}/hi", headers=you)
+    assert r.json() == {"connected": False}
+    # Ben's card looks exactly the same as before you said hi.
+    bens = (await client.get("/v1/people", headers=ben)).json()
+    assert bens["intros"][0]["said_hi"] is False and bens["friends"] == []
+    assert (await client.get("/v1/people", headers=you)).json()["intros"][0]["said_hi"] is True
+
+    r = await client.post(f"/v1/intros/{you_id}/hi", headers=ben)
+    assert r.json() == {"connected": True}
+    mine = (await client.get("/v1/people", headers=you)).json()
+    assert [f["display_name"] for f in mine["friends"]] == ["Ben"] and mine["intros"] == []
+
+
+async def test_not_now_hides_the_card(client):
+    sam, you, ben = (
+        await make_user(client, "Sam"),
+        await make_user(client, "You"),
+        await make_user(client, "Ben"),
+    )
+    await check_in_together(client, sam, [you, ben], 3)
+    ben_id = await me_id(client, ben)
+    assert (await client.post(f"/v1/intros/{ben_id}/not-now", headers=you)).status_code == 204
+    assert (await client.get("/v1/people", headers=you)).json()["intros"] == []
+    # Ben still sees his; saying hi from his side alone connects nothing.
+    you_id = await me_id(client, you)
+    assert (await client.post(f"/v1/intros/{you_id}/hi", headers=ben)).json() == {"connected": False}
