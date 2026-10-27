@@ -18,8 +18,11 @@ from app.schemas import (
     MenuItemOut,
     OrderOut,
     ReviewOut,
+    TableFriend,
+    TableOut,
 )
-from app.views import drop_out, kitchen_out, now, order_out, ratings
+from app.social import friend_ids
+from app.views import drop_out, kitchen_out, next_drop, now, order_out, ratings
 
 router = APIRouter(prefix="/v1/kitchens", tags=["kitchens"])
 
@@ -43,6 +46,7 @@ async def _detail(session: AsyncSession, k: Kitchen, user: User) -> KitchenDetai
         select(Order.id).where(Order.kitchen_id == k.id, Order.buyer_id == user.id).limit(1)
     )
     return KitchenDetail(
+        table=await _table(session, k, user),
         **base.model_dump(),
         menu=[MenuItemOut.model_validate(m) for m in k.menu if m.active],
         reviews=[
@@ -56,6 +60,36 @@ async def _detail(session: AsyncSession, k: Kitchen, user: User) -> KitchenDetai
             for r in reviews
         ],
         pickup_note=k.pickup_note if (k.owner_id == user.id or has_order) else None,
+    )
+
+
+async def _table(session: AsyncSession, k: Kitchen, user: User) -> TableOut | None:
+    """The porch table at the next drop: four seats a table, first come. Names only your friends."""
+    drop = next_drop(k, now())
+    if k.porch_tables == 0 or drop is None:
+        return None
+    porch = list(
+        (
+            await session.scalars(
+                select(Order)
+                .where(Order.drop_id == drop.id, Order.eat_on_porch.is_(True))
+                .order_by(Order.pickup_at)
+            )
+        ).unique()
+    )
+    friends = await friend_ids(session, user.id)
+    names = {}
+    if friends:
+        buyers = {o.buyer_id for o in porch if o.buyer_id in friends}
+        names = {u.id: u.display_name for u in await session.scalars(select(User).where(User.id.in_(buyers)))}
+    return TableOut(
+        seats=k.porch_tables * 4,
+        taken=len(porch),
+        friends=[
+            TableFriend(id=o.buyer_id, display_name=names[o.buyer_id], pickup_at=o.pickup_at)
+            for o in porch
+            if o.buyer_id in names
+        ],
     )
 
 

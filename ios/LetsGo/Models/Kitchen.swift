@@ -27,6 +27,10 @@ final class Kitchen {
     var sampleReviews: [SampleReview] = []
     /// The backend's id. Its reviews are kept in `sampleReviews` too, as shown text.
     var remoteID: UUID?
+    /// The shared porch table at the next drop, from the server: seats, porch orders, friends at it.
+    var tableSeats: Int = 0
+    var tableTaken: Int = 0
+    var tableFriends: [TableSeat] = []
 
     @Relationship(deleteRule: .cascade, inverse: \MenuItem.kitchen) var menu: [MenuItem] = []
     @Relationship(deleteRule: .cascade, inverse: \Drop.kitchen) var drops: [Drop] = []

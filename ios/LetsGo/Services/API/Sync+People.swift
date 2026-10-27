@@ -98,6 +98,17 @@ extension Sync {
             context.insert(Crew(id: c.id, name: c.name, memberIDs: c.members.map(\.id).filter { friendIDs.contains($0) }, isMine: c.isMine))
         }
 
+        // Third time's a friend: the server's list replaces the phone's real ones.
+        if let intros = dto.intros {
+            for i in fetch(context, FetchDescriptor<Intro>(predicate: #Predicate { !$0.isSample })) { context.delete(i) }
+            for i in intros {
+                context.insert(Intro(
+                    id: i.person.id, name: i.person.displayName,
+                    together: i.together.map { SharedNight(title: $0.title, startsAt: $0.startsAt) }, saidHi: i.saidHi
+                ))
+            }
+        }
+
         MyPorchLight.set(until: dto.porchLight?.onUntil, note: dto.porchLight?.note ?? "")
         Ledger.save(context, "apply people")
     }
@@ -129,6 +140,33 @@ extension Sync {
         }
         p.youWavedAt = .now
         Ledger.save(context, "wave")
+    }
+
+    // MARK: Third time's a friend
+
+    /// Say hi. Returns true when they already had, and you're friends now. A sample intro
+    /// says hi back (it's a sample).
+    @discardableResult
+    static func sayHi(_ intro: Intro, around c: CLLocationCoordinate2D, context: ModelContext) async throws(APIError) -> Bool {
+        if intro.isSample {
+            intro.saidHi = true
+            Ledger.save(context, "say hi")
+            return false
+        }
+        let result: IntroResultDTO = try await api.send(.post("/v1/intros/\(intro.id.uuidString)/hi"))
+        intro.saidHi = true
+        Ledger.save(context, "say hi")
+        if result.connected { try await refreshPeople(around: c, context: context) }
+        return result.connected
+    }
+
+    static func notNow(_ intro: Intro, context: ModelContext) async throws(APIError) {
+        if !intro.isSample {
+            let _: Empty = try await api.send(.post("/v1/intros/\(intro.id.uuidString)/not-now"))
+        }
+        intro.dismissed = true
+        intro.saidHi = false
+        Ledger.save(context, "not now")
     }
 
     // MARK: Porch light

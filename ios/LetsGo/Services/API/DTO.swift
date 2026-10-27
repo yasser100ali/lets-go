@@ -88,6 +88,19 @@ nonisolated struct KitchenDTO: Codable, Sendable, Identifiable {
     var menu: [MenuItemDTO]?
     var reviews: [ReviewDTO]?
     var pickupNote: String?
+    var table: TableDTO?
+}
+
+nonisolated struct TableDTO: Codable, Sendable {
+    var seats: Int
+    var taken: Int
+    var friends: [TableFriendDTO]
+}
+
+nonisolated struct TableFriendDTO: Codable, Sendable {
+    var id: UUID
+    var displayName: String
+    var pickupAt: Date
 }
 
 nonisolated struct NearbyDTO: Codable, Sendable {
@@ -278,4 +291,21 @@ nonisolated struct PeopleDTO: Codable, Sendable {
     var friends: [FriendDTO]
     var crews: [CrewDTO]
     var invites: [GatheringInviteDTO]
+    /// Third time's a friend. Older servers don't send it.
+    var intros: [IntroDTO]?
+}
+
+nonisolated struct SharedNightDTO: Codable, Sendable {
+    var title: String
+    var startsAt: Date
+}
+
+nonisolated struct IntroDTO: Codable, Sendable {
+    var person: PersonDTO
+    var together: [SharedNightDTO]
+    var saidHi: Bool
+}
+
+nonisolated struct IntroResultDTO: Codable, Sendable {
+    var connected: Bool
 }

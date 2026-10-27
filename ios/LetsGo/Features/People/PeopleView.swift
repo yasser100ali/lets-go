@@ -6,7 +6,7 @@ import MapKit
 /// (with a way to join them), whose porch lights are on (wave), invites, and crews.
 struct PeopleView: View {
     enum Segment: String, CaseIterable, Identifiable {
-        case friends = "Friends", crews = "Crews"
+        case friends = "Friends", crews = "Crews", met = "Met"
         var id: String { rawValue }
     }
 
@@ -18,6 +18,7 @@ struct PeopleView: View {
     @Query(sort: \Gathering.start) private var gatherings: [Gathering]
     @Query private var kitchens: [Kitchen]
     @Query private var notes: [TasteNote]
+    @Query(filter: #Predicate<Intro> { !$0.dismissed }) private var intros: [Intro]
     @AppStorage(MyPorchLight.untilKey) private var porchUntil: Double = 0
 
     @State private var segment: Segment = .friends
@@ -26,6 +27,7 @@ struct PeopleView: View {
     @State private var busy = false
     @State private var problem: String?
     @State private var makingCrew = false
+    @State private var openIntro: Intro?
 
     var body: some View {
         @Bindable var model = model
@@ -50,6 +52,7 @@ struct PeopleView: View {
         }
         .sheet(isPresented: $model.addingFriend) { AddFriendView() }
         .sheet(isPresented: $makingCrew) { NewCrewView(people: people) }
+        .sheet(item: $openIntro) { ThirdTimeView(intro: $0).presentationBackground(Palette.bg) }
         .errorAlert($problem)
     }
 
@@ -138,6 +141,7 @@ struct PeopleView: View {
                 switch segment {
                 case .friends: friendsList(friends, now: now)
                 case .crews: crewsList
+                case .met: metList
                 }
             }
             .padding(.horizontal, 20)
@@ -158,6 +162,10 @@ struct PeopleView: View {
     private func friendsList(_ friends: [Friend], now: Date) -> some View {
         PorchLightCard(until: porchUntil > 0 ? Date(timeIntervalSince1970: porchUntil) : nil, now: now, busy: busy) { on in
             toggle(on)
+        }
+        if let intro = intros.first(where: { !$0.saidHi }) ?? intros.first {
+            ThirdTimeRow(intro: intro) { openIntro = intro }
+                .padding(.top, 14)
         }
         invites(now: now)
         let out = Crowd.outNow(friends)
@@ -301,6 +309,25 @@ struct PeopleView: View {
         }
         .padding(.top, 20)
         .padding(.bottom, 4)
+    }
+
+    // MARK: Met
+
+    @ViewBuilder
+    private var metList: some View {
+        Text("People you keep checking in alongside. After three real check-ins together, either of you can say hi; both, and you're friends.")
+            .font(.system(size: 14))
+            .foregroundStyle(Palette.muted)
+            .padding(.top, 4)
+        ForEach(intros) { intro in
+            ThirdTimeRow(intro: intro) { openIntro = intro }
+                .padding(.top, 12)
+        }
+        if intros.isEmpty {
+            Text("Nobody yet. Keep showing up.")
+                .font(.system(size: 15, weight: .semibold))
+                .padding(.top, 16)
+        }
     }
 
     // MARK: Crews

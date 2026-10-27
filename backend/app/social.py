@@ -1,10 +1,11 @@
 """Who your friends are, and what of theirs you're allowed to see."""
 
 import uuid
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import aliased
 
 from app.models import Friendship, Gathering, GatheringMember
 from app.schemas import OutNow
@@ -57,3 +58,31 @@ async def out_now(session: AsyncSession, ids: set[uuid.UUID]) -> dict[uuid.UUID,
             lon=g.lon,
         )
     return found
+
+
+# Three real check-ins at the same things, and Wren offers an intro.
+INTRO_AFTER = 3
+
+
+async def checked_in_with(
+    session: AsyncSession, user_id: uuid.UUID
+) -> dict[uuid.UUID, list[tuple[str, datetime]]]:
+    """Everyone who checked in to the same gatherings as you, with the (title, start) of each one."""
+    mine = aliased(GatheringMember)
+    theirs = aliased(GatheringMember)
+    rows = await session.execute(
+        select(theirs.user_id, Gathering.title, Gathering.starts_at)
+        .join(mine, mine.gathering_id == theirs.gathering_id)
+        .join(Gathering, Gathering.id == theirs.gathering_id)
+        .where(
+            mine.user_id == user_id,
+            mine.checked_in_at.is_not(None),
+            theirs.user_id != user_id,
+            theirs.checked_in_at.is_not(None),
+        )
+        .order_by(Gathering.starts_at)
+    )
+    out: dict[uuid.UUID, list[tuple[str, datetime]]] = {}
+    for other, title, starts_at in rows:
+        out.setdefault(other, []).append((title, starts_at))
+    return out

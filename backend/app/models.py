@@ -320,3 +320,16 @@ class GatheringInvite(Base):
     created_at: Mapped[datetime] = _created()
 
     sender: Mapped[User] = relationship(foreign_keys=[from_id], lazy="joined", innerjoin=True)
+
+
+class Intro(Base):
+    """Third time's a friend: after three real check-ins at the same things, each of you can say hi.
+    Both saying hi makes you friends. One saying hi tells the other nothing."""
+
+    __tablename__ = "intros"
+    __table_args__ = (CheckConstraint("user_id <> other_id", name="intro_not_self"),)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    other_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    said_hi_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    declined_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = _created()

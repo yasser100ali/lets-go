@@ -27,6 +27,7 @@ struct PassportView: View {
     @Query private var gatherings: [Gathering]
     @Query private var orders: [Order]
     @Query(sort: \Night.evening, order: .reverse) private var nights: [Night]
+    @Query private var people: [Person]
 
     @Environment(SyncStatus.self) private var sync
     @State private var newNote = ""
@@ -47,7 +48,9 @@ struct PassportView: View {
         VStack(alignment: .leading, spacing: 22) {
             header
             counts
+            mostNightsWith
             lastNight
+            nightsList
             cityCard
             stampGrid
             knows
@@ -73,7 +76,7 @@ struct PassportView: View {
                     .background(Color.white.opacity(0.07), in: .capsule)
                     .overlay(Capsule().stroke(Color.white.opacity(0.12)))
             }
-            Text("Where you showed up, and what you're into.")
+            Text("Who you were with, and where.")
                 .font(.serif(21))
                 .foregroundStyle(Palette.soft)
         }
@@ -81,12 +84,13 @@ struct PassportView: View {
     }
 
     private var counts: some View {
+        let out = nights.filter { !$0.stops.isEmpty }
         let showUps = gatherings.filter { $0.checkedInAt != nil }.count
-        let kitchensTried = Set(orders.compactMap { $0.kitchen?.id }).count
+        let met = Set(out.flatMap { $0.stops.flatMap(\.withNames) }).count
         let city = Spots.stamped(stamps).count
         return HStack(spacing: 8) {
-            count(Text("\(showUps)"), "show-ups")
-            count(Text("\(kitchensTried)"), "kitchens tried")
+            count(Text("\(max(out.count, showUps > 0 ? 1 : 0))"), "nights out")
+            count(Text("\(met)"), met == 1 ? "person" : "people")
             NavigationLink(value: CityListRoute()) {
                 count(Text("\(city)\(Text("/\(Spots.all.count)").font(.poster(18)).foregroundStyle(Palette.muted))"), "Know your city")
             }
@@ -102,6 +106,70 @@ struct PassportView: View {
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
         .card(radius: 18)
+    }
+
+    /// Who you've been out with most: one count per night.
+    @ViewBuilder
+    private var mostNightsWith: some View {
+        let ranked = PassportPeople.mostNightsWith(nights.map(\.stops), people: people.map(\.snapshot))
+        if !ranked.isEmpty {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Text("Most nights with").eyebrow()
+                    Spacer()
+                    if ranked.contains(where: { $0.friend.isSample }) { SampleTag(text: "Sample people") }
+                }
+                ScrollView(.horizontal) {
+                    HStack(spacing: 16) {
+                        ForEach(ranked, id: \.friend.id) { r in
+                            VStack(spacing: 6) {
+                                FriendAvatar(friend: r.friend, size: 52)
+                                Text(r.friend.firstName).font(.system(size: 12.5, weight: .semibold)).lineLimit(1)
+                                Text("\(r.nights)").font(.system(size: 12, weight: .bold)).monospacedDigit().foregroundStyle(Palette.accentSoft)
+                            }
+                            .frame(width: 58)
+                        }
+                    }
+                }
+                .scrollIndicators(.hidden)
+            }
+        }
+    }
+
+    /// Every night out, newest first: the date as a stamp, where, and who with.
+    @ViewBuilder
+    private var nightsList: some View {
+        let out = nights.filter { !$0.stops.isEmpty }
+        if !out.isEmpty {
+            VStack(alignment: .leading, spacing: 0) {
+                Text("Nights").eyebrow()
+                ForEach(Array(out.prefix(12).enumerated()), id: \.element.id) { i, n in
+                    let with = PassportPeople.with(n.stops, people: people.map(\.snapshot))
+                    Button { model.recap = n } label: {
+                        HStack(alignment: .top, spacing: 14) {
+                            DateSeal(date: n.evening, color: n.stops.first?.genre.color ?? Palette.accent, tilt: [-8.0, 6, -4, 9][i % 4])
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(PassportPeople.title(n.stops, evening: n.evening, with: with)).font(.system(size: 16, weight: .bold)).lineLimit(1)
+                                Text(n.stops.map(\.title).joined(separator: " \u{00B7} ")).font(.system(size: 13)).foregroundStyle(Palette.muted).lineLimit(1)
+                                if !with.isEmpty {
+                                    HStack(spacing: 8) {
+                                        AvatarStack(friends: with, size: 22, ground: Palette.bg)
+                                        if with.contains(where: \.isSample) { SampleTag() }
+                                    }
+                                    .padding(.top, 6)
+                                }
+                            }
+                            Spacer(minLength: 0)
+                        }
+                        .foregroundStyle(Palette.ink)
+                        .padding(.vertical, 12)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    if i < min(out.count, 12) - 1 { Divider().overlay(Palette.line) }
+                }
+            }
+        }
     }
 
     /// The latest night out, as a way back to its morning after.

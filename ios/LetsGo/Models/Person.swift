@@ -135,3 +135,38 @@ extension Person {
         )
     }
 }
+
+/// Someone you keep ending up at the same things with: three real check-ins together.
+/// If you both say hi, you're friends; if one doesn't, nobody hears a thing.
+@Model
+final class Intro {
+    /// Their id on the server (sample ones get their own).
+    var id: UUID
+    var name: String
+    var together: [SharedNight]
+    var saidHi: Bool
+    var isSample: Bool
+    var dismissed: Bool = false
+
+    init(id: UUID, name: String, together: [SharedNight], saidHi: Bool = false, isSample: Bool = false) {
+        self.id = id
+        self.name = name
+        self.together = together
+        self.saidHi = saidHi
+        self.isSample = isSample
+    }
+
+    var friend: Friend { Friend(id: id, name: name, isSample: isSample) }
+}
+
+struct SharedNight: Codable, Hashable, Sendable {
+    var title: String
+    var startsAt: Date
+}
+
+/// A seat at a kitchen's shared porch table: who sits down when.
+struct TableSeat: Codable, Hashable, Sendable {
+    var personID: UUID
+    var name: String
+    var at: Date
+}
