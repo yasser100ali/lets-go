@@ -100,6 +100,66 @@ enum Ledger {
         save(context, "open kitchen")
     }
 
+    // MARK: Nights out
+
+    /// Tonight's night, made when you first show up somewhere.
+    static func night(at now: Date = .now, create: Bool, context: ModelContext) -> Night? {
+        let evening = NightMath.evening(of: now)
+        do {
+            if let n = try context.fetch(FetchDescriptor<Night>(predicate: #Predicate { $0.evening == evening })).first { return n }
+        } catch {
+            log.error("Night fetch failed: \(error.localizedDescription, privacy: .public)")
+        }
+        guard create else { return nil }
+        let n = Night(evening: evening, startedAt: now)
+        context.insert(n)
+        return n
+    }
+
+    /// You showed up: the place goes on tonight's night, with whoever's there with you.
+    @discardableResult
+    static func arrive(_ title: String, genre: Genre, with friends: [Friend], isSample: Bool, context: ModelContext, now: Date = .now) -> Night? {
+        guard let n = night(at: now, create: true, context: context) else { return nil }
+        if !n.stops.contains(where: { $0.title == title }) {
+            n.stops.append(NightStop(title: title, genreRaw: genre.rawValue, arrivedAt: now,
+                                     withIDs: friends.map(\.id), withNames: friends.map(\.firstName),
+                                     isSample: isSample || friends.contains { $0.isSample }))
+        }
+        n.lastActiveAt = now
+        save(context, "arrive")
+        return n
+    }
+
+    /// Steps and phone time only count once a night has started.
+    static func walked(_ meters: Double, context: ModelContext, now: Date = .now) {
+        guard meters > 0, let n = night(at: now, create: false, context: context) else { return }
+        n.walkedMeters += meters
+        n.lastActiveAt = now
+        save(context, "walked")
+    }
+
+    /// Let's Go was open and lit from `since` until now. Only the part after the night began counts.
+    static func phoneTime(since: Date, context: ModelContext, now: Date = .now) {
+        guard let n = night(at: now, create: false, context: context) else { return }
+        let from = max(since, n.startedAt)
+        let seconds = now.timeIntervalSince(from)
+        guard seconds > 0 else { return }
+        n.phoneSeconds += seconds
+        if n.glances.last.map({ from.timeIntervalSince($0) > 120 }) ?? true { n.glances.append(from) }
+        save(context, "phone time")
+    }
+
+    static func goDark(until: Date?, context: ModelContext, now: Date = .now) {
+        guard let n = night(at: now, create: false, context: context) else { return }
+        n.darkUntil = until
+        save(context, "go dark")
+    }
+
+    static func sawRecap(_ n: Night, context: ModelContext) {
+        n.recapSeenAt = .now
+        save(context, "recap seen")
+    }
+
     // MARK: Stamps and taste
 
     @discardableResult

@@ -13,6 +13,8 @@ struct GatheringDetailView: View {
     @Query private var people: [Person]
     @State private var earned: Stamp?
     @State private var inviting = false
+    @State private var here: HereMoment?
+    @State private var walk: WalkTarget?
     @State private var confirmDelete = false
     @State private var busy = false
     @State private var problem: String?
@@ -53,7 +55,8 @@ struct GatheringDetailView: View {
             .safeAreaInset(edge: .bottom) { actions(now: now) }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(item: $earned) { StampEarnedView(stamp: $0) }
+        .fullScreenCover(item: $here) { YouAreHereView(moment: $0) }
+        .fullScreenCover(item: $walk) { EyesUpView(target: $0) }
         .sheet(isPresented: $inviting) { InviteFriendsView(gathering: gathering) }
         .errorAlert($problem)
         .confirmationDialog("Cancel \(gathering.title)?", isPresented: $confirmDelete, titleVisibility: .visible) {
@@ -91,15 +94,20 @@ struct GatheringDetailView: View {
         ]
     }
 
-    /// Seats and friends for things with people to count; for a listing, just your friends.
-    @ViewBuilder
-    private func whosIn(now: Date) -> some View {
+    /// Your friends going to this, real or (placed) sample.
+    private func friendsGoing(now: Date) -> [Friend] {
         let all = Nearby.candidates(gatherings: allGatherings, kitchens: kitchens, from: location.center, now: now)
         let taste = Nearby.taste(notes: notes, gatherings: allGatherings, kitchens: kitchens)
         let friends = Crowd.resolve(people.map(\.snapshot), picks: Picks.picks(all, now: now, taste: taste, limit: 12),
                                     here: location.center, now: now)
+        return Crowd.going(to: Candidate(gathering, from: location.center), among: friends)
+    }
+
+    /// Seats and friends for things with people to count; for a listing, just your friends.
+    @ViewBuilder
+    private func whosIn(now: Date) -> some View {
         let me = Candidate(gathering, from: location.center)
-        let going = Crowd.going(to: me, among: friends)
+        let going = friendsGoing(now: now)
         if !gathering.isListing || !going.isEmpty {
             WhosInCard(
                 gathering: gathering, friends: going,
@@ -191,9 +199,13 @@ struct GatheringDetailView: View {
                 Button("You're here") {}.buttonStyle(PrimaryButtonStyle(color: gathering.category.color)).disabled(true)
             } else if canCheckIn {
                 Button("Check in") {
-                    let here = location.center
+                    let at = location.center
+                    let with = friendsGoing(now: now)
                     run { () throws(APIError) in
-                        earned = try await Sync.checkIn(gathering, at: here, context: context)
+                        earned = try await Sync.checkIn(gathering, at: at, context: context)
+                        Ledger.arrive(gathering.placeName, genre: gathering.category, with: with, isSample: gathering.isSample, context: context)
+                        here = HereMoment(title: gathering.placeName, genre: gathering.category, checkedInAt: .now,
+                                          friends: with, stamped: earned != nil)
                     }
                 }
                 .buttonStyle(PrimaryButtonStyle(color: gathering.category.color))
@@ -217,7 +229,19 @@ struct GatheringDetailView: View {
                 .buttonStyle(PrimaryButtonStyle())
                 .disabled(gathering.isFull)
             }
-            if gathering.checkedInAt == nil, !people.isEmpty {
+            if gathering.checkedInAt != nil {
+                Button { here = HereMoment(title: gathering.placeName, genre: gathering.category, checkedInAt: gathering.checkedInAt ?? now,
+                                           friends: friendsGoing(now: now), stamped: true) } label: {
+                    Image(systemName: "moon.stars")
+                }
+                .buttonStyle(SecondaryButtonStyle())
+                .accessibilityLabel("You're here")
+            } else if gathering.isJoined, !canCheckIn, distance > checkInRadius, !gathering.hasEnded(at: now) {
+                Button { walkThere(now: now) } label: { Label("Walk", systemImage: "figure.walk") }
+                    .buttonStyle(SecondaryButtonStyle())
+                    .fixedSize()
+                    .accessibilityLabel("Walk me there, eyes up")
+            } else if !people.isEmpty {
                 Button("Bring someone") { inviting = true }
                     .buttonStyle(SecondaryButtonStyle())
                     .fixedSize()
@@ -229,6 +253,11 @@ struct GatheringDetailView: View {
         .padding(.top, 10)
         .padding(.bottom, 6)
         .background(Palette.bg)
+    }
+
+    private func walkThere(now: Date) {
+        walk = WalkTarget(title: gathering.placeName, genre: gathering.category, latitude: gathering.latitude,
+                          longitude: gathering.longitude, start: gathering.start, friends: friendsGoing(now: now))
     }
 
     private func run(_ work: @escaping () async throws(APIError) -> Void) {

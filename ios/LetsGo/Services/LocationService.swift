@@ -13,6 +13,9 @@ final class LocationService: NSObject, CLLocationManagerDelegate {
     private(set) var coordinate: CLLocationCoordinate2D?
     private(set) var authorization: CLAuthorizationStatus
     private(set) var lastError: String?
+    /// Meters moved since launch, from good fixes only. The night out reads its walk from this.
+    private(set) var odometer: Double = 0
+    @ObservationIgnored private var lastFix: CLLocation?
 
     @ObservationIgnored private let manager = CLLocationManager()
     @ObservationIgnored private let log = Logger(subsystem: "com.yasser100ali.letsgo", category: "location")
@@ -30,6 +33,12 @@ final class LocationService: NSObject, CLLocationManagerDelegate {
     var isUsingFallback: Bool { coordinate == nil }
     var isDenied: Bool { authorization == .denied || authorization == .restricted }
 
+    /// Fine-grained fixes while a walk is guiding you turn by turn; coarse the rest of the time.
+    func setPrecise(_ on: Bool) {
+        manager.desiredAccuracy = on ? kCLLocationAccuracyBest : kCLLocationAccuracyNearestTenMeters
+        manager.distanceFilter = on ? 4 : 25
+    }
+
     func start() {
         switch manager.authorizationStatus {
         case .notDetermined:
@@ -44,9 +53,21 @@ final class LocationService: NSObject, CLLocationManagerDelegate {
     nonisolated func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let latest = locations.last else { return }
         let c = latest.coordinate
+        let accuracy = latest.horizontalAccuracy
+        let lat = c.latitude, lon = c.longitude
         Task { @MainActor in
-            self.coordinate = c
+            self.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
             self.lastError = nil
+            guard accuracy >= 0, accuracy < 50 else { return }
+            let fix = CLLocation(latitude: lat, longitude: lon)
+            if let last = self.lastFix {
+                let step = fix.distance(from: last)
+                // Ignore jitter, and jumps no one walks.
+                if step >= 5 && step < 400 { self.odometer += step }
+                if step >= 5 { self.lastFix = fix }
+            } else {
+                self.lastFix = fix
+            }
         }
     }
 

@@ -112,6 +112,7 @@ struct PlanView: View {
     @State private var routes = RouteBook()
     @State private var lines: [Int: [CLLocationCoordinate2D]] = [:]
     @State private var holding: Kitchen?
+    @State private var walk: WalkTarget?
     @State private var bag: [UUID: Int] = [:]
     @State private var busy = false
     @State private var problem: String?
@@ -136,6 +137,7 @@ struct PlanView: View {
                 OrderView(kitchen: k, drop: drop, bag: $bag, preferredSlot: plan.stops.first(where: { $0.kitchenID == k.id })?.start)
             }
         }
+        .fullScreenCover(item: $walk) { EyesUpView(target: $0) }
         .errorAlert($problem)
     }
 
@@ -275,6 +277,16 @@ struct PlanView: View {
                     if stop.isSample { SampleTag() }
                 }
                 Text(stop.note).font(.system(size: 13.5)).foregroundStyle(Color(hex: 0xB5B0BF)).fixedSize(horizontal: false, vertical: true)
+                if Calendar.current.isDateInToday(stop.start), stop.start.addingTimeInterval(3600) > .now {
+                    Button("Walk there, eyes up") {
+                        let group = people.filter { plan.friendIDs.contains($0.id) }.map(\.snapshot)
+                        walk = WalkTarget(title: stop.title, genre: stop.genre, latitude: stop.latitude,
+                                          longitude: stop.longitude, start: stop.start, friends: group)
+                    }
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundStyle(Palette.walk)
+                    .padding(.top, 4)
+                }
                 if !held(stop), let action = holdAction(stop) {
                     Button(action.title, action: action.run)
                         .font(.system(size: 13, weight: .bold))

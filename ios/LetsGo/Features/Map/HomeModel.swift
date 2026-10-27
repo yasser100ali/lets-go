@@ -31,6 +31,10 @@ final class HomeModel {
     var focus: Focus?
     /// The Dostoevsky splash: on first launch, and again from Passport.
     var showQuote = false
+    /// A dark screen is up (gone dark, or a pocketed walk): phone time stops counting.
+    var dark = false
+    /// The morning after, when there's a night to show.
+    var recap: Night?
     /// Put in Wren's box: what you said for a plan you're changing.
     var wrenDraft: String?
     /// The add-a-friend sheet on People, opened from the splash's "A friend sent me an invite".
