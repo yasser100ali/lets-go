@@ -31,6 +31,8 @@ final class HomeModel {
     var focus: Focus?
     /// The Dostoevsky splash: on first launch, and again from Passport.
     var showQuote = false
+    /// Put in Wren's box: what you said for a plan you're changing.
+    var wrenDraft: String?
     /// The add-a-friend sheet on People, opened from the splash's "A friend sent me an invite".
     var addingFriend = false
 
